@@ -20,7 +20,7 @@ plt.rcParams['font.family'] = ['Times New Roman', 'serif']
 # define some stopwords
 stop = nt.corpus.stopwords.words('english')
 for i in '$-@_.&+#!*\\(),\'"?:%':
-	stop.append(i)
+    stop.append(i)
 stop.append('n\'t')
 
 # read the data
@@ -42,8 +42,8 @@ bodies_tokens = (bodies.apply(nt.word_tokenize)).apply(lambda x: [token for toke
 # get a large array of all tokens to be analysed
 bodies_tokens_raw = []
 for bodies_sentence in bodies_tokens:
-	for bodies_token in bodies_sentence:
-		bodies_tokens_raw.append(bodies_token)
+    for bodies_token in bodies_sentence:
+        bodies_tokens_raw.append(bodies_token)
 
 # create a list of tuples (token, sentiment)
 tokens_sentiments = []
@@ -56,17 +56,17 @@ rq1: token-based sentiment analysis.
 
 # loop through the tokens one by one, assign each word a score, then add it to the list.
 for token in bodies_tokens_raw:
-	tokens_sentiments.append(tuple((token, afn.score(token))))
+    tokens_sentiments.append(tuple((token, afn.score(token))))
 
 # filter the sentiment data into three categories: positive, neutral and negative.
 sentiments_pos, sentiments_neg, sentiments_neu = [], [], []
 for token_sentiment in tokens_sentiments:
-	if token_sentiment[1] > 0:
-		sentiments_pos.append(token_sentiment)
-	elif token_sentiment[1] < 0:
-		sentiments_neg.append(token_sentiment)
-	else:
-		sentiments_neu.append(token_sentiment)
+    if token_sentiment[1] > 0:
+        sentiments_pos.append(token_sentiment)
+    elif token_sentiment[1] < 0:
+        sentiments_neg.append(token_sentiment)
+    else:
+        sentiments_neu.append(token_sentiment)
 
 # generate a string of positive and negative tokens
 # these will be used for generating the wordclouds.
@@ -114,7 +114,7 @@ plt.figure()
 plt.imshow(wordcloud, interpolation="bilinear")
 plt.axis('off')
 plt.title("Word Cloud: Positive Tokens")
-plt.show()
+# plt.show()
 wordcloud.to_file("./results/rq1/wordcloud_pos.png")
 
 # wordcloud (negative tokens)
