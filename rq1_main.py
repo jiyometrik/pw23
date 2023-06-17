@@ -24,7 +24,7 @@ for i in '$-@_.&+#!*\\(),\'"?:%':
 stop.append('n\'t')
 
 # read the data
-data = pd.read_csv('./data/Datafiniti_Hotel_Reviews.csv', header=0, sep=',', on_bad_lines='skip')
+data = pd.read_csv('./data/datafiniti_reviews.csv', header=0, sep=',', on_bad_lines='skip')
 
 # extract the title and body text of each review into a large list
 bodies, titles = data['reviews.text'].astype(str), data['reviews.title'].astype(str)
