@@ -35,11 +35,11 @@ for row in df.index:
     polarities.append(polarity)
 
 # write the sentiments to a new csv
-reviews = pd.read_csv('./data/Datafiniti_Hotel_Reviews.csv', header=0, sep=',', on_bad_lines='skip')
+reviews = pd.read_csv('./data/datafiniti_reviews.csv', header=0, sep=',', on_bad_lines='skip')
 combined_data = reviews[['reviews.rating', 'reviews.title', 'reviews.text']].copy()
 combined_data.insert(1, value=df['sent.pos'], column='sent.pos')
 combined_data.insert(2, value=df['sent.neg'], column='sent.neg')
-combined_data.insert(3, value=nets, colum='sent.net')
+combined_data.insert(3, value=nets, column='sent.net')
 combined_data.insert(4, value=polarities, column='sent.polarity')
 combined_data.to_csv('./data/combined_sentiments.csv')
 
