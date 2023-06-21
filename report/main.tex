@@ -2,12 +2,12 @@
 \usepackage{pw23}
 \usepackage{scrlayer-scrpage}
 % \setkomafont{\pagehead}{\itshape}
-\ihead{\itshape Group 8-01}
+\ihead{\itshape Group 8--01}
 \ohead{\itshape SMTP (Mathematics)}
 
 \subject{SMTP (Mathematics) Written Report}
 \title{Decoding Hotel Reviews through Sentiment Analysis}
-\subtitle{Group 8-01}
+\subtitle{Group 8--01}
 \author{
 	% Yap Hao Ming Darren (3i227, L) \and Fu Jinghang (3i104) \and Tan Jiahe (3i325)
 	Fu Jinghang (3i104) \and
@@ -58,10 +58,126 @@ Therefore, we propose using sentiment analysis to extract customers' true feedba
 \end{enumerate}
 
 \subsection{Research Questions}
-\subsection{Field of Math}
+\begin{enumerate}
+	\item How could we quantify the sentiments of individual words on a numerical scale?
+	\item How could we quantify the sentiments of paragraphs on a numerical scale?
+	\item How could we use tokens in hotel reviews to predict the overall sentiment of the review?
+\end{enumerate}
+
+\subsection{Fields of Math}
+\begin{itemize}
+	\item Data Science
+	\item Machine Learning
+	\item Probability and Statistics
+\end{itemize}
+
 \subsection{Terminology}
+Below is a listing of the terminology, mostly pertaining to sentiment
+analysis, used in this report.
+
+\begin{table}[htpb]
+	\caption{Terminology used in this report.}
+	\label{tab:terms}
+	\begin{center}
+		\begin{tabular}[]{|p{.3\textwidth}|p{.7\textwidth}|}
+			\hline
+			\bf{Term}                        & \bf{Definition}                                                                                                                                       \\
+			\hline
+			Sentiment analysis               & Process of determining the emotional tone of text                                                                                                     \\
+			\hline
+			Token                            & A unit of meaning (usually a word) that carries sentiment                                                                                             \\
+			\hline
+			Tokenise                         & To split a piece of text up into its constituent tokens, to be used for further analysis.                                                             \\
+			\hline
+			Lemmatise                        & To sort, so as to group together, inflected or variant forms of the same word, eg. `watching', `watchful', and `watched'.                             \\
+			\hline
+			Stop words                       & Tokens that carry little meaning during sentiment identification, such as `is', `I', `that', etc.                                                     \\
+			\hline
+			Lexicon                          & A dictionary that maps singular tokens to a category of sentiments or sentiment scores                                                                \\
+			\hline
+			Polarity                         & Whether a piece of text is positive, negative or neutral in sentiment                                                                                 \\
+			\hline
+			Bipartite sentiment              & Sentiment which is grouped into two categories, usually positive and negative.                                                                        \\
+			\hline
+			Tripartite sentiment             & Sentiment which is grouped into three categories, usually positive, negative and neutral.                                                             \\
+			\hline
+			Sentiment score                  & A number that shows the overall sentiment of a token or a piece of text                                                                               \\
+			\hline
+			Lexicon-based sentiment analysis & A method of sentiment analysis which sorts tokens into categories, aided by a lexicon, then calculates the overall sentiment score of a piece of text \\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\pagebreak
 
 \section{Literature Review}
+Sentiment analysis is a field of study which utilises computational methods to analyse text,
+and then categorises the text, usually into three main polarities ---  positive, neutral
+and negative. It has broad applications which range from determining consumers' opinion in
+sales and product analysis, to competitor research in marketing, and even detecting public
+opinion in social media monitoring. Sentiment analysis will be used in this project to
+analyse hotel occupants' reviews, and also determine the most significant upsides
+and downsides of each hotel, without interference from human bias.
+
+Sohangir et al. (2018) predicted the stock market opinion of StockTwits communities
+of expert investors. Sentiment analysis was used in a Deep Learning model to extract
+sentiment from Big Data. A Pearson Correlation Coefficient combined the linear correlation
+between users' sentiment and future stock prices, which
+proved the accuracy of user sentiment to $53\%$.
+It was concluded that convolutional neural networks (CNN), a Deep Learning algorithm,
+was able to predict stock market movement based on sentiment.
+
+Using the social networking site Twitter, Villavicencio et al. (2021)
+determined Filipinos' sentiment in response to the Philippine government's efforts
+at tackling COVID--19, specifically the implementation of vaccination. Natural
+Language Processing (NLP) techniques such as sentiment analysis were used to
+extract sentiment from text in the English and Filipino languages, which was used to
+train a Naïve Bayes model. A confusion matrix was produced, representing the
+prediction accuracy of the Naïve Bayes model ($81.77\%$) at classifying
+sentiment into positive, neutral and negative categories. It was concluded that
+sentiment analysis towards COVID-19 vaccines were very accurate, even helping the
+Philippine government better conduct budget planning and coordinate COVID-19 efforts.
+
+Borrajo-Millán et al. (2021) analysed tourism quality in Spain by
+extracting sentiment from reviews by Chinese people on the tourism
+social networking sites Baidu Travel, Ctrip, Mafengwo, and Qunar.
+Two sentiment analysis methods, lexicon-matching and corpus-based machine
+learning methods, were used. These methods allow the processing of
+unstructured text of comparatively longer lengths. Clustered data
+visualisation categorised aspects of Spanish tourism into positive
+and negative groups, with the majority residing with positive sentiment.
+It was concluded that sentiment analysis can be used to improve tourism
+quality and sustainability decision-making.
+
+Guzman et al. (2014b) used SentiStrength, a tool for lexical sentiment
+analysis --- sentiment analysis done on short, low quality texts --- to study
+emotions expressed in GitHub commit comments of different open-source projects.
+Their method involved assigning scores to each word, then calculating the net
+score for each comment. SentiStrength splits each comment into snippets, assigns
+each a score by computing the maximum and minimum scores of the sentences it contains.
+Following which, the average of the positive and negative scores is taken as the
+sentiment score of the entire commit. This study showed that Java projects warranted
+more negative comments, and projects which had more distributed teams tended
+to have a higher positive sentiment.
+
+In conclusion, the literature reviewed showed many possible applications
+of sentiment analysis in quantifying the underlying emotion of feedback
+on online platforms. Lexicon-based sentiment analysis, which assigns each
+word a sentiment, then calculates a sentence’s total sentiment score, can
+be used, due to its simplicity in implementation, and the availability of
+many open-source sentiment lexicons. In addition, sentiment categorisation
+using lexicon-based sentiment analysis makes accurate predictions upwards of
+$70\%$ of the time (Khoo et al., 2017). SentiStrength would also be useful for % TODO cite!
+detecting sentiment from hotel reviews which are usually short in length quickly
+and efficiently, optimising the process of extracting sentiment from tourists'
+reviews of hotels. Using SentiStrength for sentiment generation is also
+rather accurate, generating both positive and negative sentiments with more
+than $60\%$ accuracy (Thelwall et al., 2010). Therefore, the strategies listed % TODO cite!
+above could be adopted or emulated on a smaller scale for this project.
+
+\pagebreak
+
 \section{Methodology}
 \section{Results}
 \section{Discussions and Further Extension}
