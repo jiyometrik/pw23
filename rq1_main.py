@@ -1,6 +1,4 @@
-"""
-imports.
-"""
+# imports
 from afinn import Afinn
 from os import path
 import matplotlib.pyplot as plt
@@ -8,11 +6,10 @@ import nltk as nt
 import pandas as pd
 import wordcloud as wc
 
-# TODO: uncomment the following two lines for the first time you run this program!
 nt.download('punkt')
 nt.download('stopwords')
 
-# matplotlib things
+# matplotlib
 plt.figure(figsize=(3, 6), dpi=60)
 plt.style.use('seaborn-v0_8')
 plt.rcParams['font.family'] = ['Times New Roman', 'serif']
@@ -25,24 +22,25 @@ stop.append('n\'t')
 
 # read the data
 data = pd.read_csv('./data/datafiniti_reviews.csv',
-                   header=0, sep=',', on_bad_lines='skip')
+                   header=0,
+                   sep=',',
+                   on_bad_lines='skip')
 
 # extract the title and body text of each review into a large list
 bodies = data['reviews.text'].astype(str)
 titles = data['reviews.title'].astype(str)
 
-"""
-remove extraneous words that should not be analysed: 
-remove "... More" from reviews (if it exists):
-	"... More" (captured while web-scraping)
-	"Bad", "Good"
-"""
+'''
+remove extraneous words that should not be analysed:
+remove '... More' from reviews (if it exists):
+	'... More' (captured while web-scraping)
+	'Bad', 'Good'
+'''
 bodies = bodies.str.replace('((Bad|Good):)|(\\.\\.\\. More)', '', regex=True)
 
 # tokenise, remove stop words and puncutation
 bodies_tokens = (bodies.apply(nt.word_tokenize)).apply(
-    lambda x: [token for token in x if token.lower() not in stop]
-)
+    lambda x: [token for token in x if token.lower() not in stop])
 
 # get a large array of all tokens to be analysed
 bodies_tokens_raw = []
@@ -55,18 +53,16 @@ tokens_sentiments = []
 
 # sentiment analysis starts here.
 afn = Afinn()
-"""
-rq1: token-based sentiment analysis.
-"""
 
-"""
-loop through the tokens one by one, assign each word a score,
-then add it to the list.
-"""
+# rq1: token-based sentiment analysis.
+
+'''loop through the tokens one by one,
+assign each word a score, then add it to the list.'''
 for token in bodies_tokens_raw:
     tokens_sentiments.append(tuple((token, afn.score(token))))
 
-# filter the sentiment data into three categories: positive, neutral and negative.
+'''filter the sentiment data into three categories:
+positive, neutral and negative.'''
 sentiments_pos, sentiments_neg, sentiments_neu = [], [], []
 for token_sentiment in tokens_sentiments:
     if token_sentiment[1] > 0:
@@ -76,7 +72,7 @@ for token_sentiment in tokens_sentiments:
     else:
         sentiments_neu.append(token_sentiment)
 
-# generate a string of positive and negative tokens
+# generate a string of positive and negative tokens ---
 # these will be used for generating the wordclouds.
 tokens_pos = "".join(token_pos[0] + " " for token_pos in sentiments_pos)
 tokens_neg = "".join(token_neg[0] + " " for token_neg in sentiments_neg)
@@ -117,7 +113,9 @@ plt.savefig("./results/rq1/pie_tripartite.png", dpi=600)
 
 # wordcloud (positive tokens)
 wordcloud = wc.WordCloud(background_color="white",
-                         mode="RGB", width=1280, height=720)
+                         mode="RGB",
+                         width=1280,
+                         height=720)
 wordcloud.generate(tokens_pos)
 plt.figure()
 plt.imshow(wordcloud, interpolation="bilinear")
