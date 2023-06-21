@@ -1,15 +1,13 @@
 \documentclass[12pt]{scrartcl}
 \usepackage{pw23}
 \usepackage{scrlayer-scrpage}
-% \setkomafont{\pagehead}{\itshape}
-\ihead{\itshape Group 8--01}
-\ohead{\itshape SMTP (Mathematics)}
+\ihead{\it{Group 8--01}}
+\ohead{\it{SMTP (Mathematics)}}
 
 \subject{SMTP (Mathematics) Written Report}
 \title{Decoding Hotel Reviews through Sentiment Analysis}
 \subtitle{Group 8--01}
 \author{
-	% Yap Hao Ming Darren (3i227, L) \and Fu Jinghang (3i104) \and Tan Jiahe (3i325)
 	Fu Jinghang (3i104) \and
 	Tan Jia He (3i325) \and
 	Yap Hao Ming Darren (3i227, L)
@@ -45,7 +43,7 @@ the Philippines, or the European Hotelstars Union system,
 these are given by customers subjectively and do not reflect the reasons for customers giving the rating.
 There is also evidence of manipulation of ratings by hotel management itself, where hotels may be
 compelled to forge positive or negative ratings to bias the overall rating.
-This made up $2.1\%$ of the $66$ million reviews submitted to TripAdvisor (TripAdvisor, 2019). % cite here!
+This made up $2.1\%$ of the $66$ million reviews submitted to TripAdvisor (TripAdvisor, 2019). % TODO cite!
 Therefore, we propose using sentiment analysis to extract customers' true feedback on hotels instead.
 
 \section{Objectives and Research Questions}
@@ -53,7 +51,6 @@ Therefore, we propose using sentiment analysis to extract customers' true feedba
 \begin{enumerate}
 	\item To run sentiment analysis on individual words and quantify them on a numerical scale
 	\item To run sentiment analysis on paragraphs and quantify them on a numerical scale
-	      % to change
 	\item To use sentiment analysis on hotel reviews to determine consumers' overall opinions of hotels
 \end{enumerate}
 
@@ -75,35 +72,36 @@ Therefore, we propose using sentiment analysis to extract customers' true feedba
 Below is a listing of the terminology, mostly pertaining to sentiment
 analysis, used in this report.
 
-\begin{table}[htpb]
-	\caption{Terminology used in this report.}
+\begin{table}[htpb] \caption{Terminology used in this report.}
 	\label{tab:terms}
 	\begin{center}
 		\begin{tabular}[]{|p{.3\textwidth}|p{.7\textwidth}|}
 			\hline
-			\bf{Term}                        & \bf{Definition}                                                                                                                                       \\
+			\bf{Term}                        & \bf{Definition}                                                                                                                                              \\
 			\hline
-			Sentiment analysis               & Process of determining the emotional tone of text                                                                                                     \\
+			Sentiment analysis               & Process of determining the emotional tone of text                                                                                                            \\
 			\hline
-			Token                            & A unit of meaning (usually a word) that carries sentiment                                                                                             \\
+			Token                            & A unit of meaning (usually a word) that carries sentiment                                                                                                    \\
 			\hline
-			Tokenise                         & To split a piece of text up into its constituent tokens, to be used for further analysis.                                                             \\
+			Tokenise                         & To split a piece of text up into its constituent tokens, to be used for further analysis.                                                                    \\
 			\hline
-			Lemmatise                        & To sort, so as to group together, inflected or variant forms of the same word, eg. `watching', `watchful', and `watched'.                             \\
+			Lemmatise                        & To sort, so as to group together, inflected or variant forms of the same word, eg. `watching', `watchful', and `watched'                                     \\
 			\hline
-			Stop words                       & Tokens that carry little meaning during sentiment identification, such as `is', `I', `that', etc.                                                     \\
+			Stop words                       & Tokens that carry little meaning during sentiment identification, such as `is', `I', `that', etc.; that should be filtered out before the processing of text \\
 			\hline
-			Lexicon                          & A dictionary that maps singular tokens to a category of sentiments or sentiment scores                                                                \\
+			Lexicon                          & A dictionary that maps singular tokens to a category of sentiments or sentiment scores                                                                       \\
 			\hline
-			Polarity                         & Whether a piece of text is positive, negative or neutral in sentiment                                                                                 \\
+			Polarity                         & Whether a piece of text is positive, negative or neutral in sentiment                                                                                        \\
 			\hline
-			Bipartite sentiment              & Sentiment which is grouped into two categories, usually positive and negative.                                                                        \\
+			Bipartite sentiment              & Sentiment which is grouped into two categories, usually positive and negative                                                                                \\
 			\hline
-			Tripartite sentiment             & Sentiment which is grouped into three categories, usually positive, negative and neutral.                                                             \\
+			Tripartite sentiment             & Sentiment which is grouped into three categories, usually positive, negative and neutral                                                                     \\
 			\hline
-			Sentiment score                  & A number that shows the overall sentiment of a token or a piece of text                                                                               \\
+			Sentiment score                  & A number that shows the overall sentiment of a token or a piece of text                                                                                      \\
 			\hline
-			Lexicon-based sentiment analysis & A method of sentiment analysis which sorts tokens into categories, aided by a lexicon, then calculates the overall sentiment score of a piece of text \\
+			Lexicon-based sentiment analysis & A method of sentiment analysis which sorts tokens into categories, aided by a lexicon, then calculates the overall sentiment score of a piece of text        \\
+			\hline
+			Corpus-based sentiment analysis  & A method of sentiment analysis which relies on the co-occurrences of tokens within a piece of text itself, rather than relying on an external lexicon        \\
 			\hline
 		\end{tabular}
 	\end{center}
@@ -139,7 +137,7 @@ sentiment into positive, neutral and negative categories. It was concluded that
 sentiment analysis towards COVID-19 vaccines were very accurate, even helping the
 Philippine government better conduct budget planning and coordinate COVID-19 efforts.
 
-Borrajo-Millán et al. (2021) analysed tourism quality in Spain by
+Borrajo-Millán et al. (2021) \cite{spain} analysed tourism quality in Spain by
 extracting sentiment from reviews by Chinese people on the tourism
 social networking sites Baidu Travel, Ctrip, Mafengwo, and Qunar.
 Two sentiment analysis methods, lexicon-matching and corpus-based machine
@@ -176,9 +174,19 @@ rather accurate, generating both positive and negative sentiments with more
 than $60\%$ accuracy (Thelwall et al., 2010). Therefore, the strategies listed % TODO cite!
 above could be adopted or emulated on a smaller scale for this project.
 
-\pagebreak
-
 \section{Methodology}
+\subsection{Research Question 1}
+\subsection{Research Question 2}
+\subsection{Research Question 3}
+
 \section{Results}
-\section{Discussions and Further Extension}
+\subsection{Research Question 1}
+\subsection{Research Question 2}
+\subsection{Research Question 3}
+
+\section{Discussion and Future Work}
+\subsection{Summary}
+\subsection{Limitations}
+\subsection{Future Work}
+\printbibliography
 \end{document}
