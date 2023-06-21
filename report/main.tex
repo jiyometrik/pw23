@@ -1,4 +1,4 @@
-\documentclass[12pt]{scrartcl}
+\documentclass[12pt,bibliography=totocnumbered]{scrartcl}
 \usepackage{pw23}
 \usepackage{scrlayer-scrpage}
 \ihead{\it{Group 8--01}}
@@ -189,4 +189,16 @@ above could be adopted or emulated on a smaller scale for this project.
 \subsection{Limitations}
 \subsection{Future Work}
 \printbibliography
+
+\section{Appendices}
+
+\subsection{Appendix A: Source Code (Research Question 1)}\label{appendix:ap1}
+% \begin{listing}[!ht]
+\inputminted[frame=lines,framesep=2mm,baselinestretch=1.2]{python}{../rq1_main.py}
+% \end{listing}
+
+\subsection{Appendix B: Source Code (Research Question 2)}\label{appendix:ap2}
+% \begin{listing}[!ht]
+\inputminted[frame=lines,framesep=2mm,baselinestretch=1.2]{python}{../rq2_main.py}
+% \end{listing}
 \end{document}

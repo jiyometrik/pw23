@@ -24,20 +24,25 @@ for i in '$-@_.&+#!*\\(),\'"?:%':
 stop.append('n\'t')
 
 # read the data
-data = pd.read_csv('./data/datafiniti_reviews.csv', header=0, sep=',', on_bad_lines='skip')
+data = pd.read_csv('./data/datafiniti_reviews.csv',
+                   header=0, sep=',', on_bad_lines='skip')
 
 # extract the title and body text of each review into a large list
-bodies, titles = data['reviews.text'].astype(str), data['reviews.title'].astype(str)
+bodies = data['reviews.text'].astype(str)
+titles = data['reviews.title'].astype(str)
+
 """
 remove extraneous words that should not be analysed: 
 remove "... More" from reviews (if it exists):
 	"... More" (captured while web-scraping)
-	"Bad", "Good" (those should not be affecting the sentiment calculated later)
+	"Bad", "Good"
 """
 bodies = bodies.str.replace('((Bad|Good):)|(\\.\\.\\. More)', '', regex=True)
 
 # tokenise, remove stop words and puncutation
-bodies_tokens = (bodies.apply(nt.word_tokenize)).apply(lambda x: [token for token in x if token.lower() not in stop])
+bodies_tokens = (bodies.apply(nt.word_tokenize)).apply(
+    lambda x: [token for token in x if token.lower() not in stop]
+)
 
 # get a large array of all tokens to be analysed
 bodies_tokens_raw = []
@@ -54,7 +59,10 @@ afn = Afinn()
 rq1: token-based sentiment analysis.
 """
 
-# loop through the tokens one by one, assign each word a score, then add it to the list.
+"""
+loop through the tokens one by one, assign each word a score,
+then add it to the list.
+"""
 for token in bodies_tokens_raw:
     tokens_sentiments.append(tuple((token, afn.score(token))))
 
@@ -108,7 +116,8 @@ ax_pie_tri.pie(totals_tri, labels=labels_tri, autopct="%1.1f%%", shadow=False)
 plt.savefig("./results/rq1/pie_tripartite.png", dpi=600)
 
 # wordcloud (positive tokens)
-wordcloud = wc.WordCloud(background_color="white", mode="RGB", width=1280, height=720)
+wordcloud = wc.WordCloud(background_color="white",
+                         mode="RGB", width=1280, height=720)
 wordcloud.generate(tokens_pos)
 plt.figure()
 plt.imshow(wordcloud, interpolation="bilinear")
