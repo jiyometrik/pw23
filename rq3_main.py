@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
-'''RQ3
+'''
+[RQ3]
 can we predict the relationship between the:
 - independent: frequency of tokens of a review and its polarity?
 - dependent: polarity (positive / negative)
