@@ -22,19 +22,15 @@
 \usepackage{color} % add some colour to life!
 \usepackage{microtype} % miniature font tweaks
 \usepackage{minted} % code highlighting
-\usemintedstyle{tango}
-\newminted{python}{frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\small}
-
+\usemintedstyle{friendly}
+\newmintedfile[pycode]{python}{frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\small}
 
 % tables
 \usepackage{tabularx}
-% \usepackage{longtable}
-
 
 % bib
 \usepackage[backend=biber,style=apa,sorting=nyt]{biblatex}
 \addbibresource{./main.bib}
-% \bibliographystyle{apalike}
 
 % common shortcuts
 \def\bf#1{\textbf{#1}}
@@ -48,7 +44,7 @@
 \def\bQ{\mbb{Q}}
 \def\bZ{\mbb{Z}}
 
-% Sometimes helpful macros
+% sometimes helpful macros
 \newcommand{\func}[3]{#1\colon#2\to#3}
 \newcommand{\vfunc}[5]{\func{#1}{#2}{#3},\quad#4\longmapsto#5}
 \newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
@@ -63,10 +59,9 @@
 \newtheorem{Definition}[Theorem]{Definition}
 
 % fonts.
-\usepackage[T1]{fontenc}
-\usepackage[charter]{mathdesign}
-\usepackage{tgheros}
-\usepackage[scaled]{DejaVuSansMono}
+\usepackage[charter]{mathdesign} % serif
+\usepackage{tgheros} % sans
+\usepackage[scaled]{beramono} % mono
 
 \usepackage{setspace}
 \doublespace
