@@ -11,25 +11,25 @@ can we predict the relationship between the:
 # In[1]:
 
 # data processing
-from sklearn.metrics import (auc, average_precision_score,
-                             precision_recall_curve, roc_curve)
-from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.ensemble import RandomForestClassifier
-from funcsigs import signature
-from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 import string
-from nltk.stem import WordNetLemmatizer
-from nltk.corpus import stopwords, wordnet
-from nltk import pos_tag
-import pandas as pd
 
 # plotting
 import matplotlib.pyplot as plt
-import seaborn as sns
-
 # natural language processing
 import nltk
+import pandas as pd
+import seaborn as sns
+from funcsigs import signature
+from gensim.models.doc2vec import Doc2Vec, TaggedDocument
+from nltk import pos_tag
+from nltk.corpus import stopwords, wordnet
+from nltk.stem import WordNetLemmatizer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics import (auc, average_precision_score,
+                             precision_recall_curve, roc_curve)
+from sklearn.model_selection import train_test_split
+
 nltk.data.path.append("/usr/share/nltk_data/")
 
 # matplotlib things
@@ -46,23 +46,26 @@ df = pd.read_csv("./data/combined_sentiments.csv",
 # lemmatise
 
 
-def get_wordnet_pos(pos_tag):
-    if pos_tag.startswith("J"):
+def get_wordnet_pos(tag):
+    """identify each word by its part of speech
+    and return that part of speech, for lemmatisation."""
+    if tag.startswith("J"):
         return wordnet.ADJ
-    elif pos_tag.startswith("V"):
+    if tag.startswith("V"):
         return wordnet.VERB
-    elif pos_tag.startswith("N"):
+    if tag.startswith("N"):
         return wordnet.NOUN
-    elif pos_tag.startswith("R"):
+    if tag.startswith("R"):
         return wordnet.ADV
-    else:
-        return wordnet.NOUN
+    return wordnet.NOUN
 
 
 # check whether there is a digit or not
 
 
 def check_digits(text):
+    """check whether a piece of text
+    contains numerical digits."""
     return any(i.isdigit() for i in text)
 
 
@@ -70,6 +73,8 @@ def check_digits(text):
 
 
 def clean_review(review):
+    """removes stop words from each review,
+    then tokensises them."""
     review = str(review)
     review = review.lower() # turn into lowercase
     review = [word.strip(string.punctuation)
@@ -97,7 +102,7 @@ def clean_review(review):
 
 
 # generate a cleaned, tokenised and lemmatised version of the reviews
-df["reviews.clean"] = df["reviews.text"].apply(lambda x: clean_review(x))
+df["reviews.clean"] = df["reviews.text"].apply(clean_review)
 
 # In[3]:
 
@@ -132,10 +137,12 @@ df = pd.concat([df, tfidf_df], axis=1)
 for polar in [-1, 1]: # positive or negative (don't consider neutrals)
     subset = df[df["sent.polarity"] == polar]
     if polar == -1:
-        label = "negative"
+        STATUS = "negative"
     else:
-        label = "positive"
-    sns.distplot(subset["sent.net"], hist=False, label=label)
+        STATUS = "positive"
+    sns.distplot(subset["sent.net"], hist=False, label=STATUS)
+plt.savefig("./results/rq3/distribution.png", dpi=600)
+plt.clf()
 
 # In[6]:
 
@@ -143,16 +150,16 @@ for polar in [-1, 1]: # positive or negative (don't consider neutrals)
 df["review.is_bad"] = df["sent.polarity"].apply(lambda x: x == -1)
 
 # feature selection
-label = "review.is_bad"
+LABEL = "review.is_bad"
 ignore_cols = [
-    label, "sent.polarity", "sent.pos", "sent.neg", "sent.net", "index",
+    LABEL, "sent.polarity", "sent.pos", "sent.neg", "sent.net", "index",
     "reviews.rating", "reviews.clean", "reviews.title", "reviews.text"
 ]
 features = [col for col in df.columns if col not in ignore_cols]
 
 # split the data into train and test
 x_train, x_test, y_train, y_test = train_test_split(df[features],
-                                                    df[label],
+                                                    df[LABEL],
                                                     test_size=0.2,
                                                     random_state=42)
 
@@ -180,23 +187,24 @@ fpr, tpr, thresholds = roc_curve(y_test, y_pred, pos_label=1)
 the higher the curve above the diagonal baseline, the better the preds"""
 roc_auc = auc(fpr, tpr)
 
-# plot the roc curve
-# TODO export this curve.
+# plot the roc curve -- TODO export this curve.
 plt.figure(1, figsize=(15, 10))
-lw = 2
+LW = 2
 plt.plot(fpr,
          tpr,
          color="darkorange",
-         lw=lw,
-         label="ROC Curve (area = %0.2f)" % roc_auc)
-plt.plot([0, 1], [0, 1], lw=lw, linestyle="--")
+         lw=LW,
+         label=f"ROC Curve (Area: {roc_auc:.2f})")
+plt.plot([0, 1], [0, 1], lw=LW, linestyle="--")
 plt.xlim([0.0, 1.0])
 plt.ylim([0.0, 1.0])
 plt.xlabel("False Positive Rate")
 plt.ylabel("True Positive Rate")
 plt.title("Receiver Operating Characteristic of Sentiment Prediction")
 plt.legend(loc="lower right")
-plt.show()
+# plt.show()
+plt.savefig("./results/rq3/roc.png", dpi=600)
+plt.clf()
 
 # In[9]:
 
@@ -217,5 +225,6 @@ plt.ylabel("Precision")
 plt.ylim([0.0, 1.05])
 plt.xlim([0.0, 1.0])
 # TODO export this curve.
-plt.title("2-Class Precision-Recall Curve. Average Precision: {0:0.2f}".format(
-    average_precision))
+plt.title(f"2-Class Precision-Recall Curve. Average Precision: {average_precision:.2f}")
+plt.savefig("./results/rq3/precision_recall.png", dpi=600)
+plt.clf()
