@@ -58,6 +58,7 @@ ax_tri.pie(
     shadow=False)
 ax_tri.set_title("Proportion of Positive, Negative and Neutral Reviews")
 plt.savefig("./results/rq2/pie_chart_3part.png", dpi=600)
+plt.clf()
 
 # bipartite
 fig_bi, ax_bi = plt.subplots()
