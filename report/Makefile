@@ -1,7 +1,7 @@
 FILE=main
 
 pdf:
-	latexmk -bibtex -shell-escape -silent ${FILE}.tex
+	latexmk ${FILE}.tex -silent -pvc
 	make clean 
 
 view:
