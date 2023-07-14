@@ -1,6 +1,7 @@
 # imports
 from afinn import Afinn
 from os import path
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import nltk as nt
 import pandas as pd
@@ -10,8 +11,7 @@ nt.download("punkt")
 nt.download("stopwords")
 
 # matplotlib
-plt.figure(figsize=(3, 6), dpi=60)
-plt.style.use("seaborn-v0_8")
+plt.style.use("seaborn-v0_8-pastel")
 
 # define some stopwords
 stop = nt.corpus.stopwords.words("english")

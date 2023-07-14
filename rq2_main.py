@@ -6,8 +6,7 @@ import pandas as pd
 import wordcloud as wc
 
 # matplotlib things
-plt.figure(figsize=(3, 6), dpi=60)
-plt.style.use("seaborn-v0_8")
+plt.style.use("seaborn-v0_8-pastel")
 
 # nt.download('punkt')
 # nt.download('stopwords')
@@ -57,7 +56,7 @@ ax_tri.pie(
     autopct=lambda pct: f"{pct:.2f}% ({(pct * total_tri / 100):,.0f})",
     shadow=False)
 ax_tri.set_title("Proportion of Positive, Negative and Neutral Reviews")
-plt.savefig("./results/rq2/pie_chart_3part.png", dpi=600)
+plt.savefig("./results/rq2/pie_chart_3part.png", dpi=1200, bbox_inches='tight')
 plt.clf()
 
 # bipartite
@@ -71,4 +70,4 @@ ax_bi.pie(
     autopct=lambda pct: f"{pct:.2f}% ({(pct * total_bi / 100):,.0f})",
     shadow=False)
 ax_bi.set_title("Proportion of Positive and Negative Reviews")
-plt.savefig("./results/rq2/pie_chart_2part.png", dpi=600)
+plt.savefig("./results/rq2/pie_chart_2part.png", dpi=1200, bbox_inches='tight')
