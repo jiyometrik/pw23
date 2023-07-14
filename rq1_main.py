@@ -106,7 +106,8 @@ ax_pie_bi.pie(
     labels=labels_bi,
     autopct=lambda pct: "{:.2f}% ({:,.0f})".format(pct, pct * total_bi / 100),
     shadow=False)
-plt.savefig("./results/rq1/pie_bipartite.png", dpi=600)
+
+plt.savefig("./results/rq1/pie_bipartite.png", dpi=1200, bbox_inches='tight')
 
 fig_pie_tri, ax_pie_tri = plt.subplots()
 ax_pie_tri.set_title("""Proportion of Tokens by Sentiment;
@@ -116,7 +117,7 @@ ax_pie_tri.pie(
     labels=labels_tri,
     autopct=lambda pct: "{:.2f}% ({:,.0f})".format(pct, pct * total_tri / 100),
     shadow=False)
-plt.savefig("./results/rq1/pie_tripartite.png", dpi=600)
+plt.savefig("./results/rq1/pie_tripartite.png", dpi=1200, bbox_inches='tight')
 
 # wordcloud (positive tokens)
 wordcloud = wc.WordCloud(background_color="white",
