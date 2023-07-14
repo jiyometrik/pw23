@@ -6,7 +6,7 @@
 # - independent: token frequency
 # - dependent: polarity (positive / negative)
 
-# In[1]:
+# In[2]:
 
 
 # data processing
@@ -36,7 +36,7 @@ from sklearn.metrics import auc, average_precision_score, precision_recall_curve
 plt.style.use('seaborn-v0_8-poster')
 
 
-# In[2]:
+# In[3]:
 
 
 # import the data
@@ -85,7 +85,7 @@ def clean_review(review):
 df['reviews.clean'] = df['reviews.text'].apply(lambda x: clean_review(x))
 
 
-# In[3]:
+# In[4]:
 
 
 # extract vector representations for each review.
@@ -100,7 +100,7 @@ df_vec.columns = ['vec_' + str(x) for x in df_vec.columns]
 df = pd.concat([df, df_vec], axis=1)
 
 
-# In[4]:
+# In[5]:
 
 
 # add the term frequency - inverse document frequency values for every word
@@ -112,22 +112,25 @@ tfidf_df.index = df.index
 df = pd.concat([df, tfidf_df], axis=1)
 
 
-# In[5]:
+# In[6]:
 
 
 # distribution of sentiments
 # for polar in [-1, 1]: # positive or negative (don't consider neutrals)
+plt.title('Distribution of Reviews by Sentiment Score')
+plt.xlabel('Sentiment Score')
+plt.ylabel('Number of Reviews')
+
 subset_neg = df[df['sent.polarity'] == -1]
 sns.histplot(subset_neg['sent.net'], label='negative', kde=True)
 
 subset_pos = df[df['sent.polarity'] == 1]
 sns.histplot(subset_pos['sent.net'], label='positive', kde=True)
-
 plt.savefig("./results/rq3/distribution.png", dpi=1200, bbox_inches='tight')
 plt.clf()
 
 
-# In[6]:
+# In[7]:
 
 
 # is_bad: True if polarity == -1 else False
@@ -142,7 +145,7 @@ features = [col for col in df.columns if col not in ignore_cols]
 x_train, x_test, y_train, y_test = train_test_split(df[features], df[label], test_size=0.2, random_state=42)
 
 
-# In[7]:
+# In[8]:
 
 
 # train a random forest classifier
@@ -154,7 +157,7 @@ feature_importances_df = pd.DataFrame({'feature': features, 'importance': rf.fea
 # feature_importances_df.head(20)
 
 
-# In[8]:
+# In[9]:
 
 
 y_pred = [pred[1] for pred in rf.predict_proba(x_test)]
@@ -182,7 +185,7 @@ plt.legend(loc="lower right")
 plt.show()
 
 
-# In[9]:
+# In[10]:
 
 
 # area-under-curve precision-recall
