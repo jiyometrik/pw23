@@ -180,9 +180,11 @@ plt.xlim([0.0, 1.0])
 plt.ylim([0.0, 1.0])
 plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
-plt.title('Receiver Operating Characteristic of Sentiment Prediction')
+plt.title('Receiver Operating Characteristic (Random Forest)')
 plt.legend(loc="lower right")
 plt.show()
+plt.savefig("./results/rq3/roc_rf.png", dpi=1200, bbox_inches='tight')
+
 
 
 # In[10]:
@@ -206,5 +208,6 @@ plt.xlabel('Recall')
 plt.ylabel('Precision')
 plt.ylim([0.0, 1.05])
 plt.xlim([0.0, 1.0])
-plt.title('2-Class Precision-Recall Curve. Average Precision: {0:0.2f}'.format(average_precision))
+plt.title('2-Class Precision-Recall Curve (Random Forest) - Average Precision: {0:0.2f}'.format(average_precision))
+plt.savefig("./results/rq3/prec-recall_rf.png", dpi=1200, bbox_inches='tight')
 
