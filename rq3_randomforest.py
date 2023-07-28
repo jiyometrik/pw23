@@ -194,6 +194,7 @@ plt.savefig("./results/rq3/roc_rf.png", dpi=1200, bbox_inches='tight')
 average_precision = average_precision_score(y_test, y_pred)
 
 precision, recall, _ = precision_recall_curve(y_test, y_pred)
+plt.clf()
 
 step_kwargs = ({'step': 'post'}
                if 'step' in signature(plt.fill_between).parameters
