@@ -167,7 +167,7 @@ clf = gridsearch.best_estimator_
 print('accuracy in test: %.3f' % clf.score(X_test, y_test))
 
 
-# In[9]:
+# In[6]:
 
 
 # make some predictions
@@ -201,13 +201,12 @@ plt.ylabel('True Positive Rate')
 plt.title('Receiver Operating Characteristic (Logistic Regression)')
 plt.legend(loc="lower right")
 plt.show()
-plt.savefig("./results/rq3/roc_logreg.png", dpi=1200, bbox_inches='tight')
-plt.clf()
+plt.savefig("./results/rq3/roc_logreg.png", dpi=800, bbox_inches='tight')
 
 # area-under-curve precision-recall
 average_precision = average_precision_score(actuals, preds, pos_label=1)
 precision, recall, _ = precision_recall_curve(actuals, preds)
-
+plt.clf()
 step_kwargs = ({'step': 'post'}
                if 'step' in signature(plt.fill_between).parameters
                else {})
@@ -222,5 +221,5 @@ plt.ylabel('Precision')
 plt.ylim([0.0, 1.05])
 plt.xlim([0.0, 1.0])
 plt.title('2-Class Precision-Recall Curve (Logistic Regression) - Average Precision: {0:0.2f}'.format(average_precision))
-plt.savefig("./results/rq3/prec-recall_logreg.png", dpi=1200, bbox_inches='tight')
+plt.savefig("./results/rq3/prec-recall_logreg.png", dpi=800, bbox_inches='tight')
 
