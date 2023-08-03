@@ -55,8 +55,12 @@ ax_tri.pie(
     labels=labels_tri,
     autopct=lambda pct: f"{pct:.2f}% ({(pct * total_tri / 100):,.0f})",
     shadow=False)
-ax_tri.set_title("Proportion of Positive, Negative and Neutral Reviews")
-plt.savefig("./results/rq2/pie_chart_3part.png", dpi=1200, bbox_inches='tight')
+ax_tri.set_title(
+    "Proportion of Positive, Negative and Neutral Reviews")
+plt.savefig(
+    "./results/rq2/pie_chart_3part.png",
+    dpi=1200,
+    bbox_inches='tight')
 plt.clf()
 
 # bipartite
@@ -70,4 +74,7 @@ ax_bi.pie(
     autopct=lambda pct: f"{pct:.2f}% ({(pct * total_bi / 100):,.0f})",
     shadow=False)
 ax_bi.set_title("Proportion of Positive and Negative Reviews")
-plt.savefig("./results/rq2/pie_chart_2part.png", dpi=1200, bbox_inches='tight')
+plt.savefig(
+    "./results/rq2/pie_chart_2part.png",
+    dpi=1200,
+    bbox_inches='tight')

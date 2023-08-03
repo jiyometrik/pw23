@@ -17,6 +17,7 @@
 
 \begin{document}
 \pagestyle{scrheadings}
+\doublespacing
 
 % title, toc.
 \maketitle
@@ -181,8 +182,57 @@ above could be adopted or emulated on a smaller scale for this project.
 
 \section{Methodology}
 \subsection{Research Question 1}
+\it{How could we quantify the sentiments of individual words on a numerical scale?}
 \subsection{Research Question 2}
+\it{How could we quantify the sentiments of paragraphs on a numerical scale?}
 \subsection{Research Question 3}
+\it{How could we use tokens in hotel reviews to predict the overall sentiment of a review?}
+\subsubsection{Logistic Regression Model}
+A \bf{logistic regression model} was constructed to classify the reviews collected into
+two categories: those with a net positive sentiment and those with a net negative sentiment.
+The reviews were split into training, testing and prediction sets.
+
+Each review was tokenized and lemmatised. A feature vector for each review was
+then constructed, which shows how often each word occurs in the particular review---the
+term frequencies for each word, where $\text{tf}(t,d)$ represents the relative term frequency of
+token $t$ in review $d$:
+
+\begin{equation}
+	\text{tf}(t,d) = \frac{f_{t,d}}{\sum_{t'\in d}^{}f_{t',d}}
+	\label{eq:tf}
+\end{equation}
+
+where $f_{t,d}$ is the raw count of a token $t$ in review $d$. The denominator of the above
+function is simply the total number of tokens in review $d$.
+
+To evaluate the relevance of a token in determining the overall sentiment of the
+review, the \bf{term frequency-inverse document frequency} (\it{tf-idf}) is found, where:
+
+\begin{equation}
+	\text{tfidf}(t,d,D) = \text{tf}(t,d)\cdot\lg\frac{N}{1+\left|\left\{d\in D : t\in d\right\}\right|}
+	\label{eq:tfidf}
+\end{equation}
+
+also where $N$ is the total number of documents in the set of reviews, and
+$\left|\left\{d\in D : t\in d\right\}\right|$ is the number of reviews where
+the token $t$ occurs. $1$ is added to the denominator to prevent a
+division-by-zero scenario, should the token not appear in the review at all.
+
+A conventional \bf{sigmoid function} was used to evaluate the probability
+of a review carrying a net positive sentiment, a value from 0 to 1:
+
+\begin{equation}
+	p(x) = \frac{1}{1+e^{-{\left(\beta_0+\beta_1x\right)}}}
+	\label{eq:sigmoid}
+\end{equation}
+
+where $p(x)$ is the probability of the net sentiment of a review being positive, and
+$\beta_0+\beta_1x$ is a linear function of \it{tf-idf} $x$.
+
+After the model was constructed, predictions were made using the aforementioned
+prediction dataset. Precision-recall and receiver operating characterstic curves
+were plotted to evaluate the precision of the model,
+and how well the model distinguishes between false positive and true positive predictions.
 
 \section{Results}
 \subsection{Research Question 1}
@@ -197,14 +247,16 @@ above could be adopted or emulated on a smaller scale for this project.
 
 \section{Appendices}
 
-\subsection{Source Code (Research Question 1)}\label{appendix:srca}
+\subsection{RQ1 Source Code}\label{appendix:srca}
 \pycode{../rq1_main.py}
 
-\subsection{Source Code (Research Question 2)}\label{appendix:srcb}
+\subsection{RQ2 Source Code}\label{appendix:srcb}
 \pycode{../rq2_main.py}
 
-\subsection{Source Code (Research Question 3)}\label{appendix:srcc}
-\pycode{../rq3_main.py}
+\subsection{RQ3 Source Code: Logistic Regression}\label{appendix:src1}
+\pycode{../rq3_logreg.py}
 
+\subsection{RQ3 Source Code: Random Forest Classifier}\label{appendix:src2}
+\pycode{../rq3_randomforest.py}
 
 \end{document}
