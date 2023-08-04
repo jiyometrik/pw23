@@ -18,13 +18,16 @@
 \begin{document}
 \pagestyle{scrheadings}
 
-{
 \doublespacing
 
 % title, toc.
 \maketitle
 \pagebreak
+
+\begin{singlespace}
 \tableofcontents
+\end{singlespace}
+
 \pagebreak
 
 \section{Introduction and Rationale}
@@ -67,20 +70,19 @@ Therefore, we propose using sentiment analysis to extract customers' true feedba
 
 \subsection{Fields of Math}
 \begin{itemize}
-	\item Data Science
-	\item Machine Learning
-	\item Probability and Statistics
+	\item Statistics and probability theory
 \end{itemize}
 
 \subsection{Terminology}
 Below is a listing of the terminology, mostly pertaining to sentiment
 analysis, used in this report.
 
-% TODO update this!
-\begin{table}[htpb] \caption{Terminology used in this report.}
-	\label{tab:terms}
+% update this!
+% \begin{table}[htpb]
+	% \caption{Terminology used in this report.}
+	% \label{tab:terms}
 	\begin{center}
-		\begin{tabular}[]{|p{.3\textwidth}|p{.7\textwidth}|}
+		\begin{longtable}{|p{.3\textwidth}|p{.7\textwidth}|}
 			\hline
 			\bf{Term}                        & \bf{Definition}                                                                                                                                              \\
 			\hline
@@ -108,11 +110,13 @@ analysis, used in this report.
 			\hline
 			Corpus-based sentiment analysis  & A method of sentiment analysis which relies on the co-occurrences of tokens within a piece of text itself, rather than relying on an external lexicon        \\
 			\hline
-		\end{tabular}
+			True positive & A prediction made by a machine learning model that \bf{correctly} matches up with its intended value, e.g. should a review’s sentiment be positive and a model predicts its sentiment to be positive, the model has made a true positive prediction \\
+			\hline
+			False positive & A prediction made by a machine learning model that \bf{incorrectly} reflects its intended value, e.g. should a review’s sentiment be negative and a model predicts its sentiment to be positive, the model has made a false positive prediction \\
+			\hline
+		\end{longtable}
 	\end{center}
-\end{table}
-
-\pagebreak
+% \end{table}
 
 \section{Literature Review}
 Sentiment analysis is a field of study which utilises computational methods to analyse text,
@@ -253,12 +257,23 @@ A conventional \bf{sigmoid function} was used to evaluate the probability
 of a review carrying a net positive sentiment, a value from 0 to 1:
 
 \begin{equation}
-	p(x) = \frac{1}{1+e^{-{\left(\beta_0+\beta_1x\right)}}}
+	h_\theta(x) = \frac{1}{1+e^{-{\left(\beta_0+\beta_1x\right)}}}
 	\label{eq:sigmoid}
 \end{equation}
 
-where $p(x)$ is the probability of the net sentiment of a review being positive, and
+where $h_\theta(x)$ is the probability of the net sentiment of a review being positive, and
 $\beta_0+\beta_1x$ is a linear function of \it{tf-idf} $x$.
+
+The error in the logistic regression model is given by the cost function:
+\begin{equation}
+	\text{cost}\left(h_\theta\left(x\right),y\right) = \begin{cases}
+		-\log\left(h_\theta\left(x\right)\right) & \text{if } y = 1 \\
+		-\log\left(1-h_\theta\left(x\right)\right) & \text{if } y = 0
+	\end{cases}
+\end{equation}
+where $y$ is the predicted output (a positive or negative outcome) for every $x$.
+
+Lastly, the model used gradient descent to minimise this cost.
 
 After the model was constructed, predictions were made using the aforementioned
 prediction dataset. Precision-recall and receiver operating characterstic curves
@@ -378,8 +393,6 @@ The hotel reviews have been quantified by sentiment into three distinct categori
 positive, neutral and negative. It was observed that, unlike in RQ1, a large proportion
 of the reviews ($70\%$) are positive, with a small number of generally neutral reviews ($17\%$)
 and an even smaller number of negative reviews ($13\%$).
-
-\pagebreak
 
 \subsection{RQ3: Predicting Sentiments By Token Frequency}
 Using the positive and negative scores SentiStrength had generated for
@@ -531,6 +544,7 @@ widely used in analysing sentiment from textual data.
 \printbibliography
 }
 
+\begin{singlespace}
 \section{Appendices}
 
 \subsection{RQ1 Source Code}
@@ -544,5 +558,5 @@ widely used in analysing sentiment from textual data.
 
 \subsection{RQ3 Source Code: Random Forest Classifier}
 \pycode{../rq3_randomforest.py}
-
+\end{singlespace}
 \end{document}
