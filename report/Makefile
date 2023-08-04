@@ -1,7 +1,7 @@
 FILE=main
 
 pdf:
-	latexmk ${FILE}.tex -silent
+	latexmk ${FILE}.tex -silent -pvc
 
 view:
 	open ${FILE}.pdf
