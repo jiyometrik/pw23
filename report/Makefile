@@ -3,6 +3,10 @@ FILE=main
 pdf:
 	latexmk ${FILE}.tex -silent -pvc
 
+once:
+	latexmk ${FILE}.tex -silent
+	make view
+
 view:
 	open ${FILE}.pdf
 
