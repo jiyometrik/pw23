@@ -17,7 +17,6 @@
 
 \begin{document}
 \pagestyle{scrheadings}
-
 \doublespacing
 
 % title, toc.
@@ -25,13 +24,13 @@
 \pagebreak
 
 \begin{singlespace}
-\tableofcontents
+	\tableofcontents
 \end{singlespace}
 
 \pagebreak
 
 \section{Introduction and Rationale}
-After the Singapore government relaxed travel restrictions due to COVID-19,
+After the Singapore government relaxed travel restrictions due to COVID--19,
 there has been a recent increase in the number of tourists travelling in and out of Singapore.
 As such, hotels have seen a rise in the number of prospective tourists to be housed,
 and this may encourage an increase in the number of reviews hotels may receive.
@@ -79,43 +78,43 @@ analysis, used in this report.
 
 % update this!
 % \begin{table}[htpb]
-	% \caption{Terminology used in this report.}
-	% \label{tab:terms}
-	\begin{center}
-		\begin{longtable}{|p{.3\textwidth}|p{.7\textwidth}|}
-			\hline
-			\bf{Term}                        & \bf{Definition}                                                                                                                                              \\
-			\hline
-			Sentiment analysis               & Process of determining the emotional tone of text                                                                                                            \\
-			\hline
-			Token                            & A unit of meaning (usually a word) that carries sentiment                                                                                                    \\
-			\hline
-			Tokenise                         & To split a piece of text up into its constituent tokens, to be used for further analysis.                                                                    \\
-			\hline
-			Lemmatise                        & To sort, so as to group together, inflected or variant forms of the same word, eg. `watching', `watchful', and `watched'                                     \\
-			\hline
-			Stop words                       & Tokens that carry little meaning during sentiment identification, such as `is', `I', `that', etc.; that should be filtered out before the processing of text \\
-			\hline
-			Lexicon                          & A dictionary that maps singular tokens to a category of sentiments or sentiment scores                                                                       \\
-			\hline
-			Polarity                         & Whether a piece of text is positive, negative or neutral in sentiment                                                                                        \\
-			\hline
-			Bipartite sentiment              & Sentiment which is grouped into two categories, usually positive and negative                                                                                \\
-			\hline
-			Tripartite sentiment             & Sentiment which is grouped into three categories, usually positive, negative and neutral                                                                     \\
-			\hline
-			Sentiment score                  & A number that shows the overall sentiment of a token or a piece of text                                                                                      \\
-			\hline
-			Lexicon-based sentiment analysis & A method of sentiment analysis which sorts tokens into categories, aided by a lexicon, then calculates the overall sentiment score of a piece of text        \\
-			\hline
-			Corpus-based sentiment analysis  & A method of sentiment analysis which relies on the co-occurrences of tokens within a piece of text itself, rather than relying on an external lexicon        \\
-			\hline
-			True positive & A prediction made by a machine learning model that \bf{correctly} matches up with its intended value, e.g. should a review’s sentiment be positive and a model predicts its sentiment to be positive, the model has made a true positive prediction \\
-			\hline
-			False positive & A prediction made by a machine learning model that \bf{incorrectly} reflects its intended value, e.g. should a review’s sentiment be negative and a model predicts its sentiment to be positive, the model has made a false positive prediction \\
-			\hline
-		\end{longtable}
-	\end{center}
+% \caption{Terminology used in this report.}
+% \label{tab:terms}
+\begin{center}
+	\begin{longtable}{|p{.3\textwidth}|p{.7\textwidth}|}
+		\hline
+		\bf{Term}                        & \bf{Definition}                                                                                                                                                                                                                                     \\
+		\hline
+		Sentiment analysis               & Process of determining the emotional tone of text                                                                                                                                                                                                   \\
+		\hline
+		Token                            & A unit of meaning (usually a word) that carries sentiment                                                                                                                                                                                           \\
+		\hline
+		Tokenise                         & To split a piece of text up into its constituent tokens, to be used for further analysis.                                                                                                                                                           \\
+		\hline
+		Lemmatise                        & To sort, so as to group together, inflected or variant forms of the same word, eg. `watching', `watchful', and `watched'                                                                                                                            \\
+		\hline
+		Stop words                       & Tokens that carry little meaning during sentiment identification, such as `is', `I', `that', etc.; that should be filtered out before the processing of text                                                                                        \\
+		\hline
+		Lexicon                          & A dictionary that maps singular tokens to a category of sentiments or sentiment scores                                                                                                                                                              \\
+		\hline
+		Polarity                         & Whether a piece of text is positive, negative or neutral in sentiment                                                                                                                                                                               \\
+		\hline
+		Bipartite sentiment              & Sentiment which is grouped into two categories, usually positive and negative                                                                                                                                                                       \\
+		\hline
+		Tripartite sentiment             & Sentiment which is grouped into three categories, usually positive, negative and neutral                                                                                                                                                            \\
+		\hline
+		Sentiment score                  & A number that shows the overall sentiment of a token or a piece of text                                                                                                                                                                             \\
+		\hline
+		Lexicon-based sentiment analysis & A method of sentiment analysis which sorts tokens into categories, aided by a lexicon, then calculates the overall sentiment score of a piece of text                                                                                               \\
+		\hline
+		Corpus-based sentiment analysis  & A method of sentiment analysis which relies on the co-occurrences of tokens within a piece of text itself, rather than relying on an external lexicon                                                                                               \\
+		\hline
+		True positive                    & A prediction made by a machine learning model that \bf{correctly} matches up with its intended value, e.g. should a review’s sentiment be positive and a model predicts its sentiment to be positive, the model has made a true positive prediction \\
+		\hline
+		False positive                   & A prediction made by a machine learning model that \bf{incorrectly} reflects its intended value, e.g. should a review’s sentiment be negative and a model predicts its sentiment to be positive, the model has made a false positive prediction     \\
+		\hline
+	\end{longtable}
+\end{center}
 % \end{table}
 
 \section{Literature Review}
@@ -212,8 +211,8 @@ and $S_+$ and $S_–$ represent the positive and negative sentiment scores of a 
 
 \begin{equation}
 	k = \begin{cases}
-		1 & \text{if } S_+ + S_- > 0 \\
-		0 & \text{if } S_+ = S_- \\ 
+		1  & \text{if } S_+ + S_- > 0 \\
+		0  & \text{if } S_+ = S_-     \\
 		-1 & \text{if } S_+ + S_- < 0 \\
 	\end{cases}
 	\label{eq:polarity}
@@ -267,7 +266,7 @@ $\beta_0+\beta_1x$ is a linear function of \it{tf-idf} $x$.
 The error in the logistic regression model is given by the cost function:
 \begin{equation}
 	\text{cost}\left(h_\theta\left(x\right),y\right) = \begin{cases}
-		-\log\left(h_\theta\left(x\right)\right) & \text{if } y = 1 \\
+		-\log\left(h_\theta\left(x\right)\right)   & \text{if } y = 1 \\
 		-\log\left(1-h_\theta\left(x\right)\right) & \text{if } y = 0
 	\end{cases}
 \end{equation}
@@ -542,21 +541,21 @@ including Naïve-Bayes prediction models or Recurrent Neural Networks (RNN), bot
 widely used in analysing sentiment from textual data.
 
 \printbibliography
-}
 
 \begin{singlespace}
-\section{Appendices}
+	\section{Appendices}
 
-\subsection{RQ1 Source Code}
-\pycode{../rq1_main.py}
+	\subsection{RQ1 Source Code}
+	\pycode{../rq1_main.py}
 
-\subsection{RQ2 Source Code}
-\pycode{../rq2_main.py}
+	\subsection{RQ2 Source Code}
+	\pycode{../rq2_main.py}
 
-\subsection{RQ3 Source Code: Logistic Regression}
-\pycode{../rq3_logreg.py}
+	\subsection{RQ3 Source Code: Logistic Regression}
+	\pycode{../rq3_logreg.py}
 
-\subsection{RQ3 Source Code: Random Forest Classifier}
-\pycode{../rq3_randomforest.py}
+	\subsection{RQ3 Source Code: Random Forest Classifier}
+	\pycode{../rq3_randomforest.py}
 \end{singlespace}
+
 \end{document}
