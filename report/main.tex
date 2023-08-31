@@ -278,6 +278,41 @@ After the model was constructed, predictions were made using the aforementioned
 prediction dataset. Precision-recall and receiver operating characterstic curves
 were plotted to evaluate the precision of the model,
 and how well the model distinguishes between false positive and true positive predictions.
+For the precision-recall curve, precision ($P$) is defined as:
+
+\begin{equation}
+	P = \frac{T_p}{T_p + F_p}
+	\label{eq:prec}
+\end{equation}
+
+where $T_p$ is the number of true positives and $F_p$ is the number of false positives.
+
+Recall ($R$) is defined as:
+
+\begin{equation}
+	R = \frac{T_p}{T_p + F_n}
+	\label{eq:recall}
+\end{equation}
+
+where $F_n$ is the number of false negative predictions.
+
+As for the receiver operating characteristic curve, the rate 
+of true positive predictions ($\text{TPR}$) was plotted over the rate of 
+false positive predictions ($\text{FPR}$), where
+
+\begin{equation}
+	\text{TPR} = \frac{T_p}{T_p + F_n}
+	\label{eq:TPR}
+\end{equation}
+
+and 
+\begin{equation}
+	\text{FPR} = \frac{F_p}{F_p + T_n}
+	\label{eq:FPR}
+\end{equation}
+
+where $F_p$ is the number of false positive predictions
+and $T_n$ is the number of true negative predictions.
 
 \subsubsection{Random Forest Classifier}
 A \bf{random forest classifier} was also constructed
@@ -421,11 +456,7 @@ is a type of statistical model used for binary classification tasks, where the g
 is to predict the probability that an instance (in this case, a review) belongs to one of two classes---in
 this case, net positive sentiment and net negative sentiment ($1$ and $-1$ respectively).
 
-A precision-recall graph was plotted.
-The vertical axis represents the precision of the model,
-defined as the proportion of true positives in all predicted positives, including false positives.
-The horizontal axis represents recall, defined as the proportion of true positives
-out of all actual positives, including false negatives. It illustrates the proportion of positive
+The precision-recall graph was plotted, which illustrates the proportion of positive
 predictions the model can accurately make.
 
 \begin{figure}[htpb]
@@ -440,9 +471,7 @@ The average precision of the model is $0.80$, hence the model is quite accurate
 according to statistical norms.
 
 The receiver operating characteristic (ROC) curve of the logistic regression model
-was also plotted. The vertical axis reflects the rate of true positive predictions
-being made, and the horizontal axis represents the rate of false positive predictions
-being made. The higher the ROC curve is positioned over the straight line, the higher
+was also plotted. The higher the ROC curve is positioned over the straight line, the higher
 the sensitivity of the model---its ability to identify true positive instances---and
 thus the accuracy of the model.
 
