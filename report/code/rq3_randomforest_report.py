@@ -48,7 +48,8 @@ def check_digits(text):
 def clean_review(review):
     review = str(review)
     review = review.lower()
-    review = [word.strip(string.punctuation) for word in review.split(' ')]
+    review = [word.strip(string.punctuation)
+              for word in review.split(' ')]
     review = [word for word in review if not check_digits(word)]
 
     stop = stopwords.words('english')
@@ -192,7 +193,7 @@ plt.ylabel('Precision')
 plt.ylim([0.0, 1.05])
 plt.xlim([0.0, 1.0])
 plt.title(
-    '2-Class Precision-Recall Curve (Random Forest) - Average Precision: {0:0.2f}'
+    'Precision-Recall Curve (Random Forest) / Avg. Precision: {0:0.2f}'
     .format(average_precision))
 plt.savefig(
     "./results/rq3/prec-recall_rf.png",

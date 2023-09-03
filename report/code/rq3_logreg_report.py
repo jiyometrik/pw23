@@ -10,8 +10,8 @@ from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from nltk import pos_tag
 from nltk.corpus import stopwords, wordnet
 from nltk.stem import WordNetLemmatizer
-from sklearn.feature_extraction.text import (CountVectorizer, TfidfTransformer,
-                                             TfidfVectorizer)
+from sklearn.feature_extraction.text import (
+    CountVectorizer, TfidfTransformer, TfidfVectorizer)
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (auc, average_precision_score,
                              precision_recall_curve, roc_curve)
@@ -50,7 +50,8 @@ def check_digits(text):
 def clean_review(review):
     review = str(review)
     review = review.lower()
-    review = [word.strip(string.punctuation) for word in review.split(' ')]
+    review = [word.strip(string.punctuation)
+              for word in review.split(' ')]
     review = [word for word in review if not check_digits(word)]
 
     stop = stopwords.words('english')
@@ -174,7 +175,7 @@ plt.ylabel('Precision')
 plt.ylim([0.0, 1.05])
 plt.xlim([0.0, 1.0])
 plt.title(
-    '2-Class Precision-Recall Curve (Logistic Regression) - Average Precision: {0:0.2f}'
+    'Precision-Recall (Logistic Regression) / Avg. Precision: {0:0.2f}'
     .format(average_precision))
 plt.savefig(
     "./results/rq3/prec-recall_logreg.png",
