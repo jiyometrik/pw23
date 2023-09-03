@@ -1,0 +1,73 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{matplotlib.pyplot} \PYG{k}{as} \PYG{n+nn}{plt}
+\PYG{k+kn}{import} \PYG{n+nn}{nltk} \PYG{k}{as} \PYG{n+nn}{nt}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+\PYG{k+kn}{import} \PYG{n+nn}{pandas} \PYG{k}{as} \PYG{n+nn}{pd}
+\PYG{k+kn}{import} \PYG{n+nn}{wordcloud} \PYG{k}{as} \PYG{n+nn}{wc}
+
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{style}\PYG{o}{.}\PYG{n}{use}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}seaborn\PYGZhy{}v0\PYGZus{}8\PYGZhy{}pastel\PYGZdq{}}\PYG{p}{)}
+
+
+\PYG{n}{df} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{read\PYGZus{}csv}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}./data/sentistrength\PYGZus{}data.csv\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{positives}\PYG{p}{,} \PYG{n}{negatives} \PYG{o}{=} \PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}sent.pos\PYGZdq{}}\PYG{p}{],} \PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}sent.neg\PYGZdq{}}\PYG{p}{]}
+\PYG{n}{nets}\PYG{p}{,} \PYG{n}{polarities} \PYG{o}{=} \PYG{p}{[],} \PYG{p}{[]}
+\PYG{k}{for} \PYG{n}{row} \PYG{o+ow}{in} \PYG{n}{df}\PYG{o}{.}\PYG{n}{index}\PYG{p}{:}
+    \PYG{n}{net\PYGZus{}sentiment} \PYG{o}{=} \PYG{n}{positives}\PYG{p}{[}\PYG{n}{row}\PYG{p}{]} \PYG{o}{+} \PYG{n}{negatives}\PYG{p}{[}\PYG{n}{row}\PYG{p}{]}
+    \PYG{n}{nets}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{net\PYGZus{}sentiment}\PYG{p}{)}
+    \PYG{n}{polarity} \PYG{o}{=} \PYG{l+m+mi}{2}
+    \PYG{k}{if} \PYG{n}{net\PYGZus{}sentiment} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{:}
+        \PYG{n}{polarity} \PYG{o}{=} \PYG{l+m+mi}{1}
+    \PYG{k}{elif} \PYG{n}{net\PYGZus{}sentiment} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{0}\PYG{p}{:}
+        \PYG{n}{polarity} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}
+    \PYG{k}{elif} \PYG{n}{net\PYGZus{}sentiment} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{:}
+        \PYG{n}{polarity} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{n}{polarities}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{polarity}\PYG{p}{)}
+
+\PYG{n}{reviews} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{read\PYGZus{}csv}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}./data/datafiniti\PYGZus{}reviews.csv\PYGZdq{}}\PYG{p}{,}
+                      \PYG{n}{header}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}
+                      \PYG{n}{sep}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{},\PYGZsq{}}\PYG{p}{,}
+                      \PYG{n}{on\PYGZus{}bad\PYGZus{}lines}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}skip\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{combined\PYGZus{}data} \PYG{o}{=} \PYG{n}{reviews}\PYG{p}{[[}\PYG{l+s+s2}{\PYGZdq{}reviews.rating\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}reviews.title\PYGZdq{}}\PYG{p}{,}
+                         \PYG{l+s+s2}{\PYGZdq{}reviews.text\PYGZdq{}}\PYG{p}{]]}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{()}
+\PYG{n}{combined\PYGZus{}data}\PYG{o}{.}\PYG{n}{insert}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{value}\PYG{o}{=}\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}sent.pos\PYGZdq{}}\PYG{p}{],} \PYG{n}{column}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sent.pos\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{combined\PYGZus{}data}\PYG{o}{.}\PYG{n}{insert}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{n}{value}\PYG{o}{=}\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}sent.neg\PYGZdq{}}\PYG{p}{],} \PYG{n}{column}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sent.neg\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{combined\PYGZus{}data}\PYG{o}{.}\PYG{n}{insert}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{n}{value}\PYG{o}{=}\PYG{n}{nets}\PYG{p}{,} \PYG{n}{column}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sent.net\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{combined\PYGZus{}data}\PYG{o}{.}\PYG{n}{insert}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{n}{value}\PYG{o}{=}\PYG{n}{polarities}\PYG{p}{,} \PYG{n}{column}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sent.polarity\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{combined\PYGZus{}data}\PYG{o}{.}\PYG{n}{to\PYGZus{}csv}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}./data/combined\PYGZus{}sentiments.csv\PYGZdq{}}\PYG{p}{)}
+
+\PYG{n}{positive\PYGZus{}no} \PYG{o}{=} \PYG{n+nb}{sum}\PYG{p}{(}\PYG{n}{pol} \PYG{o}{==} \PYG{l+m+mi}{1} \PYG{k}{for} \PYG{n}{pol} \PYG{o+ow}{in} \PYG{n}{polarities}\PYG{p}{)}
+\PYG{n}{neutral\PYGZus{}no} \PYG{o}{=} \PYG{n+nb}{sum}\PYG{p}{(}\PYG{n}{pol} \PYG{o}{==} \PYG{l+m+mi}{0} \PYG{k}{for} \PYG{n}{pol} \PYG{o+ow}{in} \PYG{n}{polarities}\PYG{p}{)}
+\PYG{n}{negative\PYGZus{}no} \PYG{o}{=} \PYG{n+nb}{sum}\PYG{p}{(}\PYG{n}{pol} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{k}{for} \PYG{n}{pol} \PYG{o+ow}{in} \PYG{n}{polarities}\PYG{p}{)}
+
+\PYG{n}{fig\PYGZus{}tri}\PYG{p}{,} \PYG{n}{ax\PYGZus{}tri} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplots}\PYG{p}{()}
+\PYG{n}{labels\PYGZus{}tri} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}Positive\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}Negative\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}Neutral\PYGZdq{}}
+\PYG{n}{fracs\PYGZus{}tri} \PYG{o}{=} \PYG{p}{[}\PYG{n}{positive\PYGZus{}no}\PYG{p}{,} \PYG{n}{negative\PYGZus{}no}\PYG{p}{,} \PYG{n}{neutral\PYGZus{}no}\PYG{p}{]}
+\PYG{n}{total\PYGZus{}tri} \PYG{o}{=} \PYG{n+nb}{sum}\PYG{p}{(}\PYG{n}{fracs\PYGZus{}tri}\PYG{p}{)}
+\PYG{n}{ax\PYGZus{}tri}\PYG{o}{.}\PYG{n}{pie}\PYG{p}{(}
+    \PYG{n}{fracs\PYGZus{}tri}\PYG{p}{,}
+    \PYG{n}{labels}\PYG{o}{=}\PYG{n}{labels\PYGZus{}tri}\PYG{p}{,}
+    \PYG{n}{autopct}\PYG{o}{=}\PYG{k}{lambda} \PYG{n}{pct}\PYG{p}{:} \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{pct}\PYG{l+s+si}{:}\PYG{l+s+s2}{.2f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZpc{} (}\PYG{l+s+si}{\PYGZob{}}\PYG{p}{(}\PYG{n}{pct}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{total\PYGZus{}tri}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{l+m+mi}{100}\PYG{p}{)}\PYG{l+s+si}{:}\PYG{l+s+s2}{,.0f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{)\PYGZdq{}}\PYG{p}{,}
+    \PYG{n}{shadow}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{)}
+\PYG{n}{ax\PYGZus{}tri}\PYG{o}{.}\PYG{n}{set\PYGZus{}title}\PYG{p}{(}
+    \PYG{l+s+s2}{\PYGZdq{}Proportion of Positive, Negative and Neutral Reviews\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{savefig}\PYG{p}{(}
+    \PYG{l+s+s2}{\PYGZdq{}./results/rq2/pie\PYGZus{}chart\PYGZus{}3part.png\PYGZdq{}}\PYG{p}{,}
+    \PYG{n}{dpi}\PYG{o}{=}\PYG{l+m+mi}{1200}\PYG{p}{,}
+    \PYG{n}{bbox\PYGZus{}inches}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}tight\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{clf}\PYG{p}{()}
+
+\PYG{n}{fig\PYGZus{}bi}\PYG{p}{,} \PYG{n}{ax\PYGZus{}bi} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplots}\PYG{p}{()}
+\PYG{n}{labels\PYGZus{}bi} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}Positive\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}Negative\PYGZdq{}}
+\PYG{n}{fracs\PYGZus{}bi} \PYG{o}{=} \PYG{p}{[}\PYG{n}{positive\PYGZus{}no}\PYG{p}{,} \PYG{n}{negative\PYGZus{}no}\PYG{p}{]}
+\PYG{n}{total\PYGZus{}bi} \PYG{o}{=} \PYG{n}{positive\PYGZus{}no} \PYG{o}{+} \PYG{n}{negative\PYGZus{}no}
+\PYG{n}{ax\PYGZus{}bi}\PYG{o}{.}\PYG{n}{pie}\PYG{p}{(}
+    \PYG{n}{fracs\PYGZus{}bi}\PYG{p}{,}
+    \PYG{n}{labels}\PYG{o}{=}\PYG{n}{labels\PYGZus{}bi}\PYG{p}{,}
+    \PYG{n}{autopct}\PYG{o}{=}\PYG{k}{lambda} \PYG{n}{pct}\PYG{p}{:} \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{pct}\PYG{l+s+si}{:}\PYG{l+s+s2}{.2f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZpc{} (}\PYG{l+s+si}{\PYGZob{}}\PYG{p}{(}\PYG{n}{pct}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{total\PYGZus{}bi}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{l+m+mi}{100}\PYG{p}{)}\PYG{l+s+si}{:}\PYG{l+s+s2}{,.0f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{)\PYGZdq{}}\PYG{p}{,}
+    \PYG{n}{shadow}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{)}
+\PYG{n}{ax\PYGZus{}bi}\PYG{o}{.}\PYG{n}{set\PYGZus{}title}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Proportion of Positive and Negative Reviews\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{savefig}\PYG{p}{(}
+    \PYG{l+s+s2}{\PYGZdq{}./results/rq2/pie\PYGZus{}chart\PYGZus{}2part.png\PYGZdq{}}\PYG{p}{,}
+    \PYG{n}{dpi}\PYG{o}{=}\PYG{l+m+mi}{1200}\PYG{p}{,}
+    \PYG{n}{bbox\PYGZus{}inches}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}tight\PYGZsq{}}\PYG{p}{)}
+\end{Verbatim}

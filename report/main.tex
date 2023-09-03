@@ -1,8 +1,33 @@
 \documentclass[12pt,bibliography=totocnumbered]{scrartcl}
-\usepackage{pw23}
+\usepackage{amsfonts, amsthm, amsmath}
+\usepackage{mathtools} % extension to amsmath
+\usepackage{siunitx}
+\usepackage{minted} % code highlighting
+\usemintedstyle{friendly}
+\newmintedfile[pycode]{python}{frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\small}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage[backend=biber,style=apa,sorting=nyt]{biblatex}
+\addbibresource{./main.bib}
+\def\bf#1{\textbf{#1}}
+\def\it#1{\textit{#1}}
+\def\bN{\mbb{N}}
+\def\bC{\mbb{C}}
+\def\bR{\mbb{R}}
+\def\bQ{\mbb{Q}}
+\def\bZ{\mbb{Z}}
+\usepackage{fourier-otf}
+\usepackage[scale=1.2]{sourcesanspro}
+\usepackage[scale=0.8]{sourcecodepro}
+\usepackage{microtype}
+
 \usepackage{scrlayer-scrpage}
 \ihead{\it{Group 8--01}}
 \ohead{\it{Sorting sentiments of hotel reviews through machine learning}}
+
+\usepackage{setspace}
+\usepackage[skip=15pt plus1pt, indent=40pt]{parskip}
+\usepackage{hyperref}
 
 \subject{SMTP (Mathematics) Written Report}
 \title{Sorting sentiments of hotel reviews through machine learning}
@@ -22,11 +47,7 @@
 % title, toc.
 \maketitle
 \pagebreak
-
-\begin{singlespace}
-	\tableofcontents
-\end{singlespace}
-
+\tableofcontents
 \pagebreak
 
 \section{Introduction and Rationale}
