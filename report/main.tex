@@ -1,33 +1,65 @@
-\documentclass[12pt,bibliography=totocnumbered]{scrartcl}
-\usepackage{amsfonts, amsthm, amsmath}
-\usepackage{mathtools}
-\usepackage{siunitx}
+\documentclass[12pt, bibliography=totocnumbered, a4paper]{scrartcl}
+
+% math tools
+\usepackage{mathtools, amssymb}
+
+% code syntax highlighting
 \usepackage{minted}
 \usemintedstyle{friendly}
-\newmintedfile[pycode]{python}{frame=single,framesep=2mm,baselinestretch=1}
-\usepackage{tabularx}
+\newmintedfile[pycode]{python}{
+	frame=single,
+	framesep=2mm,
+	baselinestretch=1,
+	fontsize=\footnotesize
+}
+
+% tables
 \usepackage{longtable}
-\usepackage[backend=biber,style=apa,sorting=nyt]{biblatex}
+
+% citations
+\usepackage[
+	backend=biber,
+	style=apa,
+	sorting=nyt
+]{biblatex}
+
 \addbibresource{./main.bib}
+
 \def\bf#1{\textbf{#1}}
 \def\it#1{\textit{#1}}
-\def\bN{\mbb{N}}
-\def\bC{\mbb{C}}
-\def\bR{\mbb{R}}
-\def\bQ{\mbb{Q}}
-\def\bZ{\mbb{Z}}
-\usepackage{fourier-otf}
-\usepackage[scale=1.1]{sourcesanspro}
-\usepackage[scale=0.85]{sourcecodepro}
-\usepackage{microtype}
 
+% fonts
+\usepackage{microtype}
+\usepackage[math-style=upright]{unicode-math}
+\setmainfont{TeX Gyre Pagella}
+\setmathfont{Euler Math}
+\setmonofont{DejaVu Sans Mono}
+\setsansfont{Libertinus Sans}
+
+\usepackage{indentfirst} % also tab the first paragraph of each section
+
+% headings
 \usepackage{scrlayer-scrpage}
 \ihead{\it{Group 8--01}}
 \ohead{\it{Sorting sentiments of hotel reviews through machine learning}}
 
 \usepackage{setspace}
-\usepackage[skip=15pt plus1pt, indent=40pt]{parskip}
+
+\usepackage{xcolor}
+\definecolor{color1}{RGB}{0, 0, 90} % article title; sections
+\definecolor{color2}{RGB}{0, 20, 20} % background boxes
 \usepackage{hyperref}
+\hypersetup{
+	hidelinks,
+	colorlinks,
+	breaklinks=true,
+	urlcolor=color2,
+	citecolor=color1,
+	linkcolor=color1,
+	bookmarksopen=false,
+	pdftitle={Sorting sentiments of hotel reviews through machine learning},
+	pdfauthor={Group 8--01},
+}
 
 \subject{SMTP (Mathematics) Written Report}
 \title{Sorting sentiments of hotel reviews through machine learning}
@@ -41,15 +73,18 @@
 \publishers{Hwa Chong Institution (High School)}
 
 \begin{document}
-\pagestyle{scrheadings}
 \onehalfspacing
 
 % title, toc.
+\pagestyle{empty}
 \maketitle
 \pagebreak
+
 \tableofcontents
 \pagebreak
 
+\pagestyle{scrheadings}
+\setcounter{page}{1}
 \section{Introduction and Rationale}
 After the Singapore government relaxed travel restrictions due to COVID--19,
 there has been a recent increase in the number of tourists travelling in and out of Singapore.
@@ -70,7 +105,7 @@ the Philippines, or the European Hotelstars Union system,
 these are given by customers subjectively and do not reflect the reasons for customers giving the rating.
 There is also evidence of manipulation of ratings by hotel management itself, where hotels may be
 compelled to forge positive or negative ratings to bias the overall rating.
-This made up $2.1\%$ of the $66$ million reviews submitted to TripAdvisor (\cite{tripadvisor}).
+This made up \(2.1\%\) of the \(66\) million reviews submitted to TripAdvisor (\cite{tripadvisor}).
 Therefore, we propose using sentiment analysis to extract customers' true feedback on hotels instead.
 
 \section{Objectives and Research Questions}
@@ -97,12 +132,8 @@ Therefore, we propose using sentiment analysis to extract customers' true feedba
 Below is a listing of the terminology, mostly pertaining to sentiment
 analysis, used in this report.
 
-% update this!
-% \begin{table}[htpb]
-% \caption{Terminology used in this report.}
-% \label{tab:terms}
 \begin{center}
-	\begin{longtable}{|p{.3\textwidth}|p{.7\textwidth}|}
+	\begin{longtable}{|p{.25\textwidth}|p{.75\textwidth}|}
 		\hline
 		\bf{Term}                        & \bf{Definition}                                                                                                                                                                                                                                     \\
 		\hline
@@ -151,7 +182,7 @@ The stock market opinion of StockTwits communities
 of expert investors was predicted. Sentiment analysis was used in a Deep Learning model to extract
 sentiment from Big Data. A Pearson Correlation Coefficient combined the linear correlation
 between users' sentiment and future stock prices, which
-proved the accuracy of user sentiment to be $53\%$.
+proved the accuracy of user sentiment to be \(53\%\).
 It was concluded that convolutional neural networks (CNN), a type of Deep Learning
 artificial neural network, was able to predict stock market movement based on sentiment (\cite{stock}).
 
@@ -161,7 +192,7 @@ at tackling COVID--19 was determined (\cite{twitter}), specifically the implemen
 Language Processing (NLP) techniques such as sentiment analysis were used to
 extract sentiment from text in the English and Filipino languages, which was used to
 train a Naïve-Bayes model. A confusion matrix was produced, representing the
-prediction accuracy of the Naïve-Bayes model ($81.77\%$) at classifying
+prediction accuracy of the Naïve-Bayes model (\(81.77\%\)) at classifying
 sentiment into positive, neutral and negative categories. It was concluded that
 sentiment analysis towards COVID-19 vaccines were very accurate, even helping the
 Philippine government better conduct budget planning and coordinate COVID-19 efforts.
@@ -196,12 +227,12 @@ word a sentiment, then calculates a sentence's total sentiment score, can
 be used, due to its simplicity in implementation, and the availability of
 many open-source sentiment lexicons. In addition, sentiment categorisation
 using lexicon-based sentiment analysis makes accurate predictions upwards of
-$70\%$ of the time (\cite{khoo}). SentiStrength would also be useful for
+\(70\%\) of the time (\cite{khoo}). SentiStrength would also be useful for
 detecting sentiment from hotel reviews which are usually short in length quickly
 and efficiently, optimising the process of extracting sentiment from tourists'
 reviews of hotels. Using SentiStrength for sentiment generation is also
 rather accurate, generating both positive and negative sentiments with more
-than $60\%$ accuracy (\cite{thelwall}). Therefore, the strategies listed % TODO cite!
+than \(60\%\) accuracy (\cite{thelwall}). Therefore, the strategies listed
 above could be adopted or emulated on a smaller scale for this project.
 
 \section{Methodology}
@@ -221,14 +252,14 @@ negative tokens in the dataset.
 
 SentiStrength was used (Guzman et al., 2014b) to evaluate the total positive % TODO cite!
 and negative sentiments of each review. Two scores for each review were expected:
-the total positive sentiment score (in the range $[1, 5]$) and the total negative
-sentiment (in the range $[-5, -1]$). This is similar to how GitHub commit
+the total positive sentiment score (in the range \([1, 5]\)) and the total negative
+sentiment (in the range \([-5, -1]\)). This is similar to how GitHub commit
 messages were classified.
 
 To classify the sentiments of each review into one of three categories:
-positive ($1$), neutral ($0$) and negative ($-1$), the two scores of each review
-were added. We define the following, where $k$ represents the polarity of a review,
-and $S_+$ and $S_-$ represent the positive and negative sentiment scores of a review:
+positive (\(1\)), neutral (\(0\)) and negative (\(-1\)), the two scores of each review
+were added. We define the following, where \(k\) represents the polarity of a review,
+and \(S_+\) and \(S_-\) represent the positive and negative sentiment scores of a review:
 
 \begin{equation}
 	k = \begin{cases}
@@ -249,16 +280,16 @@ The reviews were split into training, testing and prediction sets.
 
 Each review was tokenised and lemmatised. A feature vector for each review was
 then constructed, which shows how often each word occurs in the particular review---the
-term frequencies for each word, where $\text{tf}(t,d)$ represents the relative term frequency of
-token $t$ in review $d$:
+term frequencies for each word, where \(\text{tf}(t,d)\) represents the relative term frequency of
+token \(t\) in review \(d\):
 
 \begin{equation}
 	\text{tf}(t,d) = \frac{f_{t,d}}{\sum_{t'\in d}^{}f_{t',d}}
 	\label{eq:tf}
 \end{equation}
 
-where $f_{t,d}$ is the raw count of a token $t$ in review $d$. The denominator of the above
-function is simply the total number of tokens in review $d$.
+where \(f_{t,d}\) is the raw count of a token \(t\) in review \(d\). The denominator of the above
+function is simply the total number of tokens in review \(d\).
 
 To evaluate the relevance of a token in determining the overall sentiment of the
 review, the \bf{term frequency-inverse document frequency} (\it{tf-idf}) is found, where:
@@ -268,9 +299,9 @@ review, the \bf{term frequency-inverse document frequency} (\it{tf-idf}) is foun
 	\label{eq:tfidf}
 \end{equation}
 
-also where $N$ is the total number of documents in the set of reviews, and
-$\left|\left\{d\in D : t\in d\right\}\right|$ is the number of reviews where
-the token $t$ occurs. $1$ is added to the denominator to prevent a
+also where \(N\) is the total number of documents in the set of reviews, and
+\(\left|\left\{d\in D : t\in d\right\}\right|\) is the number of reviews where
+the token \(t\) occurs. \(1\) is added to the denominator to prevent a
 division-by-zero scenario, should the token not appear in the review at all.
 
 A conventional \bf{sigmoid function} was used to evaluate the probability
@@ -281,8 +312,8 @@ of a review carrying a net positive sentiment, a value from 0 to 1:
 	\label{eq:sigmoid}
 \end{equation}
 
-where $h_\theta(x)$ is the probability of the net sentiment of a review being positive, and
-$\beta_0+\beta_1x$ is a linear function of \it{tf-idf} $x$.
+where \(h_\theta(x)\) is the probability of the net sentiment of a review being positive, and
+\(\beta_0+\beta_1x\) is a linear function of \it{tf-idf} \(x\).
 
 The error in the logistic regression model is given by the cost function:
 \begin{equation}
@@ -291,7 +322,7 @@ The error in the logistic regression model is given by the cost function:
 		-\log\left(1-h_\theta\left(x\right)\right) & \text{if } y = 0
 	\end{cases}
 \end{equation}
-where $y$ is the predicted output (a positive or negative outcome) for every $x$.
+where \(y\) is the predicted output (a positive or negative outcome) for every \(x\).
 
 Lastly, the model used gradient descent to minimise this cost.
 
@@ -299,27 +330,27 @@ After the model was constructed, predictions were made using the aforementioned
 prediction dataset. Precision-recall and receiver operating characterstic curves
 were plotted to evaluate the precision of the model,
 and how well the model distinguishes between false positive and true positive predictions.
-For the precision-recall curve, precision ($P$) is defined as:
+For the precision-recall curve, precision (\(P\)) is defined as:
 
 \begin{equation}
 	P = \frac{T_p}{T_p + F_p}
 	\label{eq:prec}
 \end{equation}
 
-where $T_p$ is the number of true positives and $F_p$ is the number of false positives.
+where \(T_p\) is the number of true positives and \(F_p\) is the number of false positives.
 
-Recall ($R$) is defined as:
+Recall (\(R\)) is defined as:
 
 \begin{equation}
 	R = \frac{T_p}{T_p + F_n}
 	\label{eq:recall}
 \end{equation}
 
-where $F_n$ is the number of false negative predictions.
+where \(F_n\) is the number of false negative predictions.
 
 As for the receiver operating characteristic curve, the rate 
-of true positive predictions ($\text{TPR}$) was plotted over the rate of 
-false positive predictions ($\text{FPR}$), where
+of true positive predictions (\(\text{TPR}\)) was plotted over the rate of 
+false positive predictions (\(\text{FPR}\)), where
 
 \begin{equation}
 	\text{TPR} = \frac{T_p}{T_p + F_n}
@@ -332,8 +363,8 @@ and
 	\label{eq:FPR}
 \end{equation}
 
-where $F_p$ is the number of false positive predictions
-and $T_n$ is the number of true negative predictions.
+where \(F_p\) is the number of false positive predictions
+and \(T_n\) is the number of true negative predictions.
 
 \subsubsection{Random Forest Classifier}
 A \bf{random forest classifier} was also constructed
@@ -359,9 +390,9 @@ positive and false positive predictions.
 \subsection{RQ1: Token-Based Sentiment Analysis}
 After tokenising English hotel reviews from the dataset of international hotel reviews,
 the \it{Afinn} lexicon was used to assign each token a single numerical score. This
-score ranges from $[-5, -1]$ for negative tokens, and $[1, 5]$ for positive tokens,
+score ranges from \([-5, -1]\) for negative tokens, and \([1, 5]\) for positive tokens,
 with the magnitude representing the degree of negativity or positivity the token holds.
-Tokens with a sentiment score of $0$ carry neutral sentiment.
+Tokens with a sentiment score of \(0\) carry neutral sentiment.
 
 \begin{figure}[htpb]
 	\begin{center}
@@ -381,7 +412,7 @@ Tokens with a sentiment score of $0$ carry neutral sentiment.
 
 While it is observed that there are more tokens with positive sentiment than
 their negative counterparts, the vast majority of tokens in
-Figure~\ref{fig:reviews-pie1} hold a neutral sentiment ($84\%$),
+Figure~\ref{fig:reviews-pie1} hold a neutral sentiment (\(84\%\)),
 due to the presence of many standalone tokens that do not express opinion,
 eg. \it{hotel}, \it{food}, and \it{visit}.
 
@@ -415,18 +446,18 @@ and \it{bad}, are more common among customers with dissatisfaction towards their
 
 \subsection{RQ2: Review-Based Sentiment Analysis}
 SentiStrength was used to generate two scores for each review: a positive and
-negative score, initialised to $1$ and $-1$ respectively. As the reviews were analysed
+negative score, initialised to \(1\) and \(-1\) respectively. As the reviews were analysed
 on a token-by-token basis, the polarity of the token determined which score it contributed
 to. The individual score of the token would then be added to either the net positive or
 net negative score of the review. To illustrate, the token \it{friendly} would contribute
-a positive score of $1$, while the token \it{amazing} would contribute a positive score of $2$,
+a positive score of \(1\), while the token \it{amazing} would contribute a positive score of \(2\),
 because it holds a stronger positive connotation. In addition, the use of punctuation was
 considered as well---exclamation marks for emphasis contributed to either the positive or
 negative score, depending on the sentiments of the tokens before and after them.
 
 The positive and negative scores determined the extent to which the review was positive
-or negative. All positive scores were in the range $[1, 5]$, and the negative scores were
-in the range $[-5, -1]$.
+or negative. All positive scores were in the range \([1, 5]\), and the negative scores were
+in the range \([-5, -1]\).
 
 \begin{figure}[htpb]
 	\begin{center}
@@ -446,8 +477,8 @@ in the range $[-5, -1]$.
 
 The hotel reviews have been quantified by sentiment into three distinct categories:
 positive, neutral and negative. It was observed that, unlike in RQ1, a large proportion
-of the reviews ($70\%$) are positive, with a small number of generally neutral reviews ($17\%$)
-and an even smaller number of negative reviews ($13\%$).
+of the reviews (\(70\%\)) are positive, with a small number of generally neutral reviews (\(17\%\))
+and an even smaller number of negative reviews (\(13\%\)).
 
 \subsection{RQ3: Predicting Sentiments By Token Frequency}
 Using the positive and negative scores SentiStrength had generated for
@@ -459,7 +490,7 @@ A frequency table for each token was generated, which shows
 how often a token of each net score appears in the entire dataset
 of hotel reviews. The distribution of reviews (based on score and
 polarity) is represented in the graph below. The horizontal axis represents
-the overall sentiment score (a whole number, from $-5$ to $5$) of a review,
+the overall sentiment score (a whole number, from \(-5\) to \(5\)) of a review,
 and the vertical axis represents the count of tokens of that sentiment score.
 
 \begin{figure}[htpb]
@@ -475,7 +506,7 @@ A \bf{logistic regression model} was constructed to predict whether the sentimen
 of a hotel review was either positive or negative. A logistic regression model
 is a type of statistical model used for binary classification tasks, where the goal
 is to predict the probability that an instance (in this case, a review) belongs to one of two classes---in
-this case, net positive sentiment and net negative sentiment ($1$ and $-1$ respectively).
+this case, net positive sentiment and net negative sentiment (\(1\) and \(-1\) respectively).
 
 The precision-recall graph was plotted, which illustrates the proportion of positive
 predictions the model can accurately make.
@@ -488,7 +519,7 @@ predictions the model can accurately make.
 	\label{fig:lg-prcurve}
 \end{figure}
 
-The average precision of the model is $0.80$, hence the model is quite accurate
+The average precision of the model is \(0.80\), hence the model is quite accurate
 according to statistical norms.
 
 The receiver operating characteristic (ROC) curve of the logistic regression model
@@ -506,11 +537,11 @@ thus the accuracy of the model.
 
 The area under the ROC curve (AUC) measures the ability of the model to
 distinguish between true positive and false positive instances. It ranges
-from $0$ to $1$, where $1$ indicates the perfect separation of the two classes
-(true positive and false positive predictions), while $0$ indicates that the two classes
+from \(0\) to \(1\), where \(1\) indicates the perfect separation of the two classes
+(true positive and false positive predictions), while \(0\) indicates that the two classes
 are indistinguishable for the model. A higher AUC value indicates more accurate model
 performance; it is able to distinguish between positive and negative instances to a
-larger extent. For this ROC curve, the AUC is $0$.70, hence the logistic regression model
+larger extent. For this ROC curve, the AUC is \(0\).70, hence the logistic regression model
 performs well at distinguishing true positive and false positive predictions.
 
 \subsubsection{Random Forest Classifier}
@@ -532,7 +563,7 @@ determined.
 \end{figure}
 
 From the precision-recall curve that was plotted, the average precision
-of this model is $0.68$, thus the model can be said to be quite accurate.
+of this model is \(0.68\), thus the model can be said to be quite accurate.
 
 \begin{figure}[htpb]
 	\begin{center}
@@ -542,7 +573,7 @@ of this model is $0.68$, thus the model can be said to be quite accurate.
 	\label{fig:rf-roc}
 \end{figure}
 
-For the ROC curve of the random forest classifier, the AUC is $0.91$, hence
+For the ROC curve of the random forest classifier, the AUC is \(0.91\), hence
 the random forest classifier performs well at distinguishing true and false
 positive predictions.
 
@@ -560,7 +591,7 @@ regression model, which relies on a sigmoid function to evaluate the probability
 of a review being positive, and a random forest classifier, which relies on multiple
 decision trees created using different random subsets of the data---in this case, the
 frequency of each token, were created to predict the sentiments of hotel reviews. Upon
-making predictions, the models were found to have average precisions of $0.80$ and $0.68$
+making predictions, the models were found to have average precisions of \(0.80\) and \(0.68\)
 respectively, and a high rate of success in distinguishing false positive
 and true positive predictions.
 

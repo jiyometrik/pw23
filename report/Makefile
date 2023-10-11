@@ -1,19 +1,19 @@
 FILE=main
 
-pdf:
-	latexmk ${FILE}.tex -silent -pvc
+pdf .:
+	latexmk ${FILE}.tex -silent
 
-once:
+once 1: 
 	latexmk ${FILE}.tex -silent
 	make view
 
-view:
+view v:
 	open ${FILE}.pdf
 
-clean:
+clean c:
 	latexmk -c
 	rm -rf _minted-main .auctex-auto *.log *.run.xml *.auxlock *.synctex.gz
 
-nuke:
+nuke n:
 	latexmk -C
 	rm -rf _minted-main .auctex-auto *.log *.run.xml *.txt *.auxlock
