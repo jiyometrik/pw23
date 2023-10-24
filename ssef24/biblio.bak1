@@ -1,0 +1,91 @@
+@Article{spain,
+author = {Borrajo-Millán, Fernando and Alonso-Almeida, María-del-Mar and Escat-Cortes, María and Yi, Liu},
+title = {Sentiment Analysis to Measure Quality and Build Sustainability in Tourism Destinations},
+journal = {Sustainability},
+volume = {13},
+year = {2021},
+number = {11},
+article-number = {6015},
+url = {https://www.mdpi.com/2071-1050/13/11/6015},
+issn = {2071-1050},
+doi = {10.3390/su13116015}
+}
+
+@article{github,
+	author = {Guzman, Emitza and Azócar, David and Li, Yang},
+	year = {2014},
+	month = {05},
+	pages = {},
+	title = {Sentiment analysis of commit comments in GitHub: An empirical study},
+	isbn = {978-1-4503-2863-0},
+	journal = {11th Working Conference on Mining Software Repositories, MSR 2014 - Proceedings},
+	doi = {10.1145/2597073.2597118},
+}
+
+@article{khoo,
+	title = {Lexicon-based sentiment analysis: Comparative evaluation of six
+			sentiment lexicons},
+	author = {Khoo, Christopher S. G. and Johnkhan, Sathik Basha},
+	url = {https://hdl.handle.net/10356/83570},
+	date = {2017},
+	journal = {Journal of Information Science},
+	volume = {44},
+	issue = {4},
+}
+
+@article{stock,
+	author = {Sohangir, Sahar and Wang, Dinding and Pomeranets, Anna and
+			Khoshgoftaar, Taghi M.},
+	title = {{Big Data}: Deep learning for financial sentiment analysis},
+	url = {https://doi.org/10.1186/s40537-017-0111-6},
+	date = {2018},
+	journal = {Journal of Big Data},
+	volume = {5},
+	number = {3},
+}
+
+@article{thelwall,
+	title = {Sentiment strength detection in short informal text},
+	author = {Thelwall, Mike and Buckley, Kevan and Paltoglou, Georgios and Cai,
+			Di and Kappas, Arvid},
+	date = {2010},
+	journal = {Journal of the American Society for Information Science and
+			Technology},
+	url = {https://www.researchgate.net/publication/220433889_Sentiment_Strength_Detection_in_Short_Informal_Text},
+	volume = {61},
+	number = {12},
+	pages = {2544--2558},
+}
+
+@article{dekay,
+	author = {Toh, Rex S. and Raven, Peter and DeKay, Charles F.},
+	title = {Travel planning: Searching for and booking hotels on the {Internet}},
+	url = {https://doi.org/10.1177/1938965511418779},
+	journal = {Cornell Hospitality Quarterly},
+	volume = {52},
+	number = {4},
+	pages = {388-398},
+	date = {2011},
+}
+
+@report{tripadvisor,
+	date = {2019},
+	author = {TripAdvisor},
+	url = {
+			https://www.tripadvisor.co.id/TripAdvisorInsights/wp-content/uploads/2019/09/2147_PR_Content_Transparency_Report_6SEP19_US.pdf
+		},
+	title = {{2019 TripAdvisor Review Transparency Report}},
+}
+
+@article{twitter,
+	url = {https://doi.org/10.3390/info12050204},
+	journal = {Information},
+	volume = {12},
+	number = {5},
+	pages = {204},
+	date = {2021},
+	title = {Twitter Sentiment Analysis towards {COVID--19} Vaccines in the {
+					Philippines} using {Na{\"i}ve--Bayes}},
+	author = {Villavicencio, Charlyn and Macrohon, Julio Jerison and Inbaraj, X.
+			Alphonse and Jeng, Jyh-Horng and Hsieh, Jer-Guang},
+}

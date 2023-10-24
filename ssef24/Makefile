@@ -1,10 +1,10 @@
 FILE=researchplan
 
 pdf .:
-	latexmk ${FILE}.tex -silent
+	latexmk ${FILE}.tex -silent -lualatex
 
 once 1: 
-	latexmk ${FILE}.tex
+	latexmk ${FILE}.tex -lualatex
 	make view
 
 view v:

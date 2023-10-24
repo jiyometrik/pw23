@@ -4,7 +4,7 @@
 	bibliography=totocnumbered, 
 ]{scrartcl}
 
-\usepackage[top=4cm, left=2.5cm, right=2.5cm, bottom=4cm]{geometry}
+\usepackage[head=97.64764pt, left=2.5cm, right=2.5cm, bottom=3.5cm]{geometry}
 
 \usepackage[
 	backend=biber,
@@ -19,13 +19,10 @@
 \adjustspacing = 2
 \newfontfeature{Microtypography}{protrusion = default; expansion = default}
 \directlua{fonts.protrusions.setups.default.factor = 0.5}
-\setmainfont[Microtypography, Ligatures=TeX]{STIX Two Text}
-\setmathfont[Microtypography, Ligatures=TeX]{STIX Two Math}
+\setmainfont[Microtypography, Ligatures=TeX]{erewhon}
+\setmathfont[Microtypography, Ligatures=TeX]{Erewhon Math}
 \setmonofont[Microtypography, Ligatures=TeX, SizeFeatures={Size=10}]{DejaVu Sans Mono}
-% \setsansfont[Microtypography, Ligatures=TeX]{XCharter}
-
-\addtokomafont{section}{\rmfamily}
-\addtokomafont{subsection}{\rmfamily}
+\setsansfont[Microtypography, Ligatures=TeX]{Clear Sans}
 
 \usepackage{siunitx}
 
@@ -35,7 +32,7 @@
   \begin{singlespace}
   GROUP\_NO \\
   Sorting sentiments of hotel reviews through machine learning \\
-  Yap Hao Ming Darren, Tan Jia He, Fu Jinghang
+    \scshape Yap Hao Ming Darren, Tan Jia He, Fu Jinghang
   \end{singlespace}
 }
 
@@ -44,7 +41,7 @@
 \setlength\parskip{0.25cm}
 
 \usepackage{xcolor}
-\definecolor{links}{RGB}{243, 102, 25} % article title; sections
+\definecolor{links}{RGB}{0, 0, 90} % article title; sections
 \usepackage{hyperref}
 \urlstyle{tt}
 \hypersetup{
@@ -56,7 +53,7 @@
 	linkcolor=links,
 	bookmarksopen=false,
 	pdftitle={Research Plan},
-	pdfauthor={Yap Hao Ming Darren, Tan Jia He and Fu Jinghang},
+	pdfauthor={idk},
 }
 
 \renewcommand\thesection{\alph{section}}
@@ -67,7 +64,7 @@
 
 \begin{document}
 \pagestyle{scrheadings}
-\onehalfspacing
+\doublespacing
 
 {
 	\noindent
@@ -87,7 +84,7 @@ to receive data from customer opinions. This is especially true for hotels,
 where occupants may evaluate the hotel based on several factors through their
 reviews, \eg cleanliness, facilities, location and convenience, etc.
 Reviews come in two broad forms: quantitative reviews, based on stars, diamonds, hearts, etc., and
-qualitative reviews through short, continuous text.
+qualitatives review through short, continuous text.
 
 Quantitative reviews do not always paint the full picture of customers'
 opinions towards a certain hotel. Though it is helpful to have a more
@@ -116,7 +113,6 @@ alternative approach.
 	\item To use sentiment analysis on hotel reviews to determine consumers' overall opinions of hotels
 \end{enumerate}
 
-% --- Literature ---
 \section{Literature Review}
 
 \subsection{Sentiment Analysis}
@@ -134,7 +130,7 @@ of expert investors was predicted. Sentiment analysis was used in a Deep Learnin
 sentiment from Big Data. A Pearson Correlation Coefficient combined the linear correlation
 between users' sentiment and future stock prices, which
 proved the accuracy of user sentiment to be \qty{53}{\percent}.
-It was concluded that convolutional neural networks, a type of Deep Learning
+It was concluded that convolutional neural networks (CNN), a type of Deep Learning
 artificial neural network, was able to predict stock market movement based on sentiment (\cite{stock}).
 
 Using the social networking site Twitter,
@@ -184,7 +180,6 @@ rather accurate, generating both positive and negative sentiments with more
 than \qty{60}{\percent} accuracy (\cite{thelwall}). Therefore, the strategies listed
 above could be adopted or emulated on a smaller scale for this project.
 
-% --- Methodology ---
 \section{Methodology}
 \subsection{Research Question 1}
 \textit{How could we quantify the sentiments of individual words on a numerical scale?}
@@ -206,9 +201,9 @@ above could be adopted or emulated on a smaller scale for this project.
 \textit{How could we use tokens in hotel reviews to predict the overall sentiment of a review?}
 \begin{enumerate}
 	\item Determine relative token frequency in review dataset
-	\item Build logistic regression and random forest classifier machine learning models
-	      fed with dataset obtained above
-	\item Evaluate accuracy of models by using receiver operating characteristic curve and precision-recall graph
+	\item Build logistic regression and random forest classifier machine learning models 
+		fed with dataset obtained above
+	\item Evaluate accuracy of models by using receiver operating characteristic curve and precision-recall graph 
 \end{enumerate}
 
 \subsection{Data Sources}
@@ -217,7 +212,6 @@ The hotel reviews used in this project were sourced from DataInfiniti's Business
 (\url{https://datafiniti.co/products/business-data/}) via the open-source database sharing
 site Kaggle (\url{https://www.kaggle.com/datasets/datafiniti/hotel-reviews?resource=download}).
 
-% --- Bibliography ---
 \printbibliography
 
 \end{document}
