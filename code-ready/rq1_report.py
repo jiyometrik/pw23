@@ -1,6 +1,3 @@
-from os import path
-
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 import nltk as nt
 import pandas as pd

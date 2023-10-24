@@ -1,7 +1,6 @@
 \documentclass[
 	fontsize=12pt,
 	paper=a4,
-	% numbers=noenddot,
 	bibliography=totocnumbered
 ]{scrartcl}
 
@@ -14,19 +13,22 @@
 \addbibresource{./biblio.bib}
 
 \usepackage{unicode-math}
-\setmainfont{XITS}
-\setmathfont{XITS Math}
-\setmonofont{DejaVu Sans Mono}
-\setsansfont{XITS}
+\protrudechars = 2
+\adjustspacing = 2
+\newfontfeature{Microtypography}{protrusion = default; expansion = default}
+\directlua{fonts.protrusions.setups.default.factor = 0.5}
+\setmainfont[Microtypography, Ligatures=TeX]{STIX Two Text}
+\setmathfont[Microtypography, Ligatures=TeX]{STIX Two Math}
+\setmonofont[Microtypography, Ligatures=TeX]{Source Code Pro}
+\setsansfont[Microtypography, Ligatures=TeX]{STIX Two Text}
 \usepackage{microtype}
 
 \usepackage{siunitx}
 
 \usepackage{scrlayer-scrpage}
-\ohead{\normalfont GROUP\_NO \\ Sorting sentiments of hotel reviews through machine learning}
+\ohead{\small\normalfont GROUP\_NO \\ Sorting sentiments of hotel reviews through machine learning}
 
-\usepackage{setspace}
-\onehalfspacing
+% \usepackage{setspace}
 \usepackage{indentfirst}
 \setlength\parskip{0.25cm}
 
@@ -48,12 +50,12 @@
 \renewcommand\thesection{\alph{section}}
 \renewcommand\thesubsection{\thesection.\roman{subsection}}
 
-\newcommand{\eg}{e.\,g.\space}
-\newcommand{\ie}{i.\,e.\space}
+\newcommand{\eg}{e.~g.\space}
+\newcommand{\ie}{i.~e.\space}
 
 \begin{document}
 \pagestyle{scrheadings}
-\onehalfspacing
+% \doublespacing
 
 {
 	\noindent
@@ -182,7 +184,7 @@ above could be adopted or emulated on a smaller scale for this project.
 \subsection{Research Question 2}
 \textit{How could we quantify the sentiments of paragraphs on a numerical scale?}
 \begin{enumerate}
-	\item Make use of SentiStrengthh to evaluate positive and negative sentiments
+	\item Make use of SentiStrength to evaluate positive and negative sentiments
 	\item Determine the overall polarity (positive, negative or neutral) of each review
 \end{enumerate}
 
@@ -200,7 +202,6 @@ above could be adopted or emulated on a smaller scale for this project.
 The hotel reviews used in this project were sourced from DataInfiniti's Business Database
 (\url{https://datafiniti.co/products/business-data/}) via the open-source database sharing
 site Kaggle (\url{https://www.kaggle.com/datasets/datafiniti/hotel-reviews?resource=download}).
-
 
 \printbibliography
 
