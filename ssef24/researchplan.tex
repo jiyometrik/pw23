@@ -19,13 +19,9 @@
 \adjustspacing = 2
 \newfontfeature{Microtypography}{protrusion = default; expansion = default}
 \directlua{fonts.protrusions.setups.default.factor = 0.5}
-\setmainfont[Microtypography, Ligatures=TeX]{STIX Two Text}
-\setmathfont[Microtypography, Ligatures=TeX]{STIX Two Math}
+\setmainfont[Microtypography, Ligatures=TeX]{erewhon}
+\setmathfont[Microtypography, Ligatures=TeX]{Erewhon Math}
 \setmonofont[Microtypography, Ligatures=TeX, SizeFeatures={Size=10}]{DejaVu Sans Mono}
-% \setsansfont[Microtypography, Ligatures=TeX]{XCharter}
-
-\addtokomafont{section}{\rmfamily}
-\addtokomafont{subsection}{\rmfamily}
 
 \usepackage{siunitx}
 
@@ -58,6 +54,9 @@
 	pdftitle={Research Plan},
 	pdfauthor={Yap Hao Ming Darren, Tan Jia He and Fu Jinghang},
 }
+
+\addtokomafont{section}{\color{links}\rmfamily}
+\addtokomafont{subsection}{\color{links}\rmfamily}
 
 \renewcommand\thesection{\alph{section}}
 \renewcommand\thesubsection{\thesection.\roman{subsection}}
