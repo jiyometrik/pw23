@@ -19,8 +19,8 @@
 \adjustspacing = 2
 \newfontfeature{Microtypography}{protrusion = default; expansion = default}
 \directlua{fonts.protrusions.setups.default.factor = 0.5}
-\setmainfont[Microtypography, Ligatures=TeX]{erewhon}
-\setmathfont[Microtypography, Ligatures=TeX]{Erewhon Math}
+\setmainfont[Microtypography, Ligatures=TeX]{TeX Gyre Termes}
+\setmathfont[Microtypography, Ligatures=TeX]{TeX Gyre Termes Math}
 \setmonofont[Microtypography, Ligatures=TeX, SizeFeatures={Size=10}]{DejaVu Sans Mono}
 
 \usepackage{siunitx}
@@ -29,7 +29,7 @@
 \ohead{
   \small \normalfont
   \begin{singlespace}
-  GROUP\_NO \\
+  RO--- \\
   Sorting sentiments of hotel reviews through machine learning \\
   Yap Hao Ming Darren, Tan Jia He, Fu Jinghang
   \end{singlespace}
@@ -55,8 +55,8 @@
 	pdfauthor={Yap Hao Ming Darren, Tan Jia He and Fu Jinghang},
 }
 
-\addtokomafont{section}{\color{links}\rmfamily}
-\addtokomafont{subsection}{\color{links}\rmfamily}
+\addtokomafont{section}{\rmfamily}
+\addtokomafont{subsection}{\rmfamily}
 
 \renewcommand\thesection{\alph{section}}
 \renewcommand\thesubsection{\thesection.\roman{subsection}}
