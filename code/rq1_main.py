@@ -1,167 +1,161 @@
-# imports
-from afinn import Afinn
-from os import path
-import matplotlib as mpl
+"""imports."""
+import os
+import string
+
 import matplotlib.pyplot as plt
-import nltk as nt
+import nltk
+import numpy as np
 import pandas as pd
-import wordcloud as wc
+import wordcloud
+from afinn import Afinn
+from matplotlib import colormaps
 
-nt.download("punkt")
-nt.download("stopwords")
-
-# matplotlib
-plt.style.use("seaborn-v0_8-pastel")
-
-# define some stopwords
-stop = nt.corpus.stopwords.words("english")
-for i in "$-@_.&+#!*\\(),'\"?:%":
-    stop.append(i)
-stop.append("n\'t")
-
-# read the data
-data = pd.read_csv("./data/datafiniti_reviews.csv",
-                   header=0,
-                   sep=',',
-                   on_bad_lines="skip")
-
-# extract the title and body text of each review into a large list
-bodies = data["reviews.text"].astype(str)
-titles = data["reviews.title"].astype(str)
+plt.rcParams["figure.autolayout"] = True
+plt.rcParams["figure.dpi"] = 600
+plt.rcParams["savefig.pad_inches"] = 1
+plt.rcParams["text.usetex"] = True
+plt.rcParams[
+    "text.latex.preamble"
+] = """
+\\usepackage{txfonts}
 """
-remove extraneous words that should not be analysed:
-remove '... More' from reviews (if it exists):
-	'... More' (captured while web-scraping)
-	'Bad', 'Good'
-"""
-bodies = bodies.str.replace(
-    "((Bad|Good):)|(\\.\\.\\. More)",
-    "",
-    regex=True)
+sns.set_style("whitegrid")
+sns.set_context("paper")
 
-# tokenise, remove stop words and puncutation
-bodies_tokens = (bodies.apply(nt.word_tokenize)).apply(
-    lambda x: [token for token in x if token.lower() not in stop])
 
-# get a large array of all tokens to be analysed
-bodies_tokens_raw = []
-for bodies_sentence in bodies_tokens:
-    for bodies_token in bodies_sentence:
-        bodies_tokens_raw.append(bodies_token)
+# make a collection of stop words to exclude during tokenisation.
+# we add "bad" and "good" because they are often left in during webscraping.
+STOPWORDS = (
+    nltk.corpus.stopwords.words("english")
+    + ["...more", "bad", "good"]
+    + list(string.punctuation)
+)
 
-# create a list of tuples (token, sentiment)
-tokens_sentiments = []
+# receive the data
+DATA = pd.read_csv(
+    os.path.join(os.path.dirname(__file__), "../data/datafiniti_reviews.csv"),
+    header=0,
+    sep=",",
+    on_bad_lines="skip",
+)
 
-# sentiment analysis starts here.
-afn = Afinn()
+# extract the titles and bodies of all of the reviews
+TITLES, BODIES = DATA["reviews.title"].astype(str), DATA["reviews.text"].astype(
+    str
+).str.replace("((Bad|Good):)|(\\.\\.\\. More)", "", regex=True)
 
-# rq1: token-based sentiment analysis.
-"""loop through the tokens one by one,
-assign each word a score, then add it to the list."""
-for token in bodies_tokens_raw:
-    tokens_sentiments.append(tuple((token, afn.score(token))))
-"""filter the sentiment data into three categories:
-positive, neutral and negative."""
-sentiments_pos, sentiments_neg, sentiments_neu = [], [], []
-for token_sentiment in tokens_sentiments:
-    if token_sentiment[1] > 0:
-        sentiments_pos.append(token_sentiment)
-    elif token_sentiment[1] < 0:
-        sentiments_neg.append(token_sentiment)
-    else:
-        sentiments_neu.append(token_sentiment)
+# tokenise each review and remove stop words
+DATA["reviews.tokens"] = BODIES.apply(nltk.wordpunct_tokenize).apply(
+    lambda review: [token.lower() for token in review if token.lower() not in STOPWORDS]
+)
 
-# generate a string of positive and negative tokens ---
-# these will be used for generating the wordclouds.
-tokens_pos = "".join(
-    token_pos[0] +
-    " " for token_pos in sentiments_pos)
-tokens_neg = "".join(
-    token_neg[0] +
-    " " for token_neg in sentiments_neg)
+# start an Afinn instance to begin sentiment scoring
+AFINN = Afinn()
 
-totals_bi = [len(sentiments_pos), len(sentiments_neg)]
-totals_tri = [
-    len(sentiments_pos),
-    len(sentiments_neg),
-    len(sentiments_neu)]
-total_bi = sum(totals_bi)
-total_tri = sum(totals_tri)
-labels_bi = ["Positive", "Negative"]
-labels_tri = ["Positive", "Negative", "Neutral"]
+# score each token and save scores in a new column
+DATA["reviews.scores"] = DATA["reviews.tokens"].apply(
+    lambda review: [(token, AFINN.score(token)) for token in review]
+)
 
-# plot a bar graph for bipartite sentiments (+ve, -ve)
-figure, axes = plt.subplots()
-bars_container = axes.bar(labels_bi, totals_bi)
-axes.set_title("Sentiments (Token-Based, Bipartite)")
-axes.set_xlabel("Sentiment (Bipartite)")
-axes.set_ylabel("Number of Tokens")
-axes.bar_label(bars_container, fmt="{:,.0f}")
-plt.savefig("./results/rq1/bar_bipartite.png", dpi=600)
+# save all this new data into another CSV file for future reference
+DATA.to_csv(os.path.join(os.path.dirname(__file__), "../data/afinn_scores.csv"))
 
-# plot a bar graph for tripartite sentiments (+ve, -ve)
-figure, axes = plt.subplots()
-bars_container = axes.bar(labels_tri, totals_tri)
-axes.set_title("Sentiments (Token-Based, Tripartite)")
-axes.set_xlabel("Sentiment (Tripartite)")
-axes.set_ylabel("Number of Tokens")
-axes.bar_label(bars_container, fmt="{:,.0f}")
-plt.savefig("./results/rq1/bar_tripartite.png", dpi=600)
+# loop through all the tokens and create lists
+TOKENS_BY_POLARITY = {
+    "Positive": [],
+    "Negative": [],
+    "Neutral": [],
+}
+for _, pairs in DATA["reviews.scores"].items():
+    TOKENS_BY_POLARITY["Positive"] += list(filter(lambda pair: pair[1] > 0.0, pairs))
+    TOKENS_BY_POLARITY["Negative"] += list(filter(lambda pair: pair[1] < 0.0, pairs))
+    TOKENS_BY_POLARITY["Neutral"] += list(filter(lambda pair: pair[1] == 0.0, pairs))
 
-# pie chart for bipartite sentiments
-fig_pie_bi, ax_pie_bi = plt.subplots()
-ax_pie_bi.set_title(
-    "Proportion of Tokens by Sentiment; Positive v. Negative")
-ax_pie_bi.pie(
-    totals_bi,
-    labels=labels_bi,
-    autopct=lambda pct: "{:.2f}% ({:,.0f})".format(
-        pct,
-        pct *
-        total_bi /
-        100),
-    shadow=False)
+FIG, AX = plt.subplots()
+LABELS = list(TOKENS_BY_POLARITY.keys())
+HEIGHTS = [len(TOKENS_BY_POLARITY[l]) for l in LABELS]
 
+# plot graphs for positive/negative sentiment
+container = AX.bar(LABELS[:2], HEIGHTS[:2], align="center")
+AX.set_title("Token polarities (bipartite)")
+AX.set_xlabel("Polarity")
+AX.set_ylabel("Number of tokens")
+AX.bar_label(container, fmt="{:,.0f}")
+plt.ticklabel_format(
+    style="sci", axis="y", scilimits=(0, 0), useMathText=True, useOffset=False
+)
+plt.savefig(os.path.join(os.path.dirname(__file__), "../results/rq1/bar_bipartite.png"))
+plt.clf()
+
+# plot bar graph for positive/negative/neutral sentiment
+FIG, AX = plt.subplots()
+container = AX.bar(LABELS, HEIGHTS, align="center")
+AX.set_title("Token polarities (tripartite)")
+AX.set_xlabel("Polarity")
+AX.set_ylabel("Number of tokens")
+AX.bar_label(container, fmt="{:,.0f}")
+plt.ticklabel_format(
+    style="sci", axis="y", scilimits=(0, 0), useMathText=True, useOffset=False
+)
 plt.savefig(
-    "./results/rq1/pie_bipartite.png",
-    dpi=1200,
-    bbox_inches='tight')
+    os.path.join(os.path.dirname(__file__), "../results/rq1/bar_tripartite.png")
+)
+plt.clf()
 
-fig_pie_tri, ax_pie_tri = plt.subplots()
-ax_pie_tri.set_title("""Proportion of Tokens by Sentiment;
-                     Positive v. Negative v. Neutral""")
-ax_pie_tri.pie(
-    totals_tri,
-    labels=labels_tri,
-    autopct=lambda pct: "{:.2f}% ({:,.0f})".format(
-        pct,
-        pct *
-        total_tri /
-        100),
-    shadow=False)
+# pie chart for positive/negative
+FIG, AX = plt.subplots()
+AX.set_title("Proportion of tokens by sentiment (bipartite)")
+AX.pie(
+    HEIGHTS[:2],
+    labels=None,
+    autopct=lambda percent: f"{percent:.2f}\% [{percent * sum(HEIGHTS[:2]) / 100:,.0f}]",
+)
+AX.legend(loc="best", labels=LABELS[:2])
+plt.savefig(os.path.join(os.path.dirname(__file__), "../results/rq1/pie_bipartite.png"))
+plt.clf()
+
+# pie chart for positive/negative/neutral
+FIG, AX = plt.subplots()
+AX.set_title("Proportion of tokens by sentiment (tripartite)")
+wedges, texts, autotexts = AX.pie(
+    HEIGHTS,
+    labels=None,
+    autopct=lambda percent: f"{percent:.2f}\% [{percent * sum(HEIGHTS) / 100:,.0f}]",
+)
+AX.legend(loc="best", labels=LABELS)
 plt.savefig(
-    "./results/rq1/pie_tripartite.png",
-    dpi=1200,
-    bbox_inches='tight')
+    os.path.join(os.path.dirname(__file__), "../results/rq1/pie_tripartite.png")
+)
+plt.clf()
+
 
 # wordcloud (positive tokens)
-wordcloud = wc.WordCloud(background_color="white",
-                         mode="RGB",
-                         width=1280,
-                         height=720)
-wordcloud.generate(tokens_pos)
+WORDCLOUD = wordcloud.WordCloud(
+    font_path="/usr/share/texmf/fonts/opentype/public/tex-gyre/texgyreheros-regular.otf",
+    background_color="white",
+    colormap="tab10",
+    width=1280,
+    height=720,
+)
+POSITIVE_TOKENS = "".join(
+    np.unique([pair[0] + " " for pair in TOKENS_BY_POLARITY["Positive"]])
+)
+WORDCLOUD.generate(POSITIVE_TOKENS)
 plt.figure()
-plt.imshow(wordcloud, interpolation="bilinear")
+plt.imshow(WORDCLOUD, interpolation="bilinear")
 plt.axis("off")
-# plt.title("Word Cloud: Positive Tokens")
-# plt.show()
-wordcloud.to_file("./results/rq1/wordcloud_pos.png")
+plt.title("Word cloud (positive tokens)")
+WORDCLOUD.to_file("./results/rq1/wordcloud_pos.png")
+plt.clf()
 
 # wordcloud (negative tokens)
-wordcloud.generate(tokens_neg)
+NEGATIVE_TOKENS = "".join(
+    np.unique([pair[0] + " " for pair in TOKENS_BY_POLARITY["Negative"]])
+)
+WORDCLOUD.generate(NEGATIVE_TOKENS)
 plt.figure()
-plt.imshow(wordcloud, interpolation="bilinear")
+plt.imshow(WORDCLOUD, interpolation="bilinear")
 plt.axis("off")
-# plt.title("Word Cloud: Negative Tokens")
-# plt.show()
-wordcloud.to_file("./results/rq1/wordcloud_neg.png")
+plt.title("Word cloud (negative tokens)")
+WORDCLOUD.to_file("./results/rq1/wordcloud_neg.png")
+plt.clf()
