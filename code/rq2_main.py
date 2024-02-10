@@ -3,10 +3,20 @@ import matplotlib.pyplot as plt
 import nltk as nt
 import numpy as np
 import pandas as pd
+import seaborn as sns
 import wordcloud as wc
 
-# matplotlib things
-plt.style.use("seaborn-v0_8-pastel")
+plt.rcParams["figure.autolayout"] = True
+plt.rcParams["figure.dpi"] = 600
+plt.rcParams["savefig.pad_inches"] = 1
+plt.rcParams["text.usetex"] = True
+plt.rcParams[
+    "text.latex.preamble"
+] = """
+\\usepackage{txfonts}
+"""
+sns.set_style("whitegrid")
+sns.set_context("paper")
 
 # nt.download('punkt')
 # nt.download('stopwords')
@@ -28,12 +38,10 @@ for row in df.index:
     polarities.append(polarity)
 
 # write the sentiments to a new csv
-reviews = pd.read_csv("./data/datafiniti_reviews.csv",
-                      header=0,
-                      sep=',',
-                      on_bad_lines="skip")
-combined_data = reviews[["reviews.rating", "reviews.title",
-                         "reviews.text"]].copy()
+reviews = pd.read_csv(
+    "./data/datafiniti_reviews.csv", header=0, sep=",", on_bad_lines="skip"
+)
+combined_data = reviews[["reviews.rating", "reviews.title", "reviews.text"]].copy()
 combined_data.insert(1, value=df["sent.pos"], column="sent.pos")
 combined_data.insert(2, value=df["sent.neg"], column="sent.neg")
 combined_data.insert(3, value=nets, column="sent.net")
@@ -54,13 +62,10 @@ ax_tri.pie(
     fracs_tri,
     labels=labels_tri,
     autopct=lambda pct: f"{pct:.2f}% ({(pct * total_tri / 100):,.0f})",
-    shadow=False)
-ax_tri.set_title(
-    "Proportion of Positive, Negative and Neutral Reviews")
-plt.savefig(
-    "./results/rq2/pie_chart_3part.png",
-    dpi=1200,
-    bbox_inches='tight')
+    shadow=False,
+)
+ax_tri.set_title("Proportion of Positive, Negative and Neutral Reviews")
+plt.savefig("./results/rq2/pie_chart_3part.png", dpi=1200, bbox_inches="tight")
 plt.clf()
 
 # bipartite
@@ -70,11 +75,9 @@ fracs_bi = [positive_no, negative_no]
 total_bi = positive_no + negative_no
 ax_bi.pie(
     fracs_bi,
-    labels=labels_bi,
+    labels=[*labels_bi],
     autopct=lambda pct: f"{pct:.2f}% ({(pct * total_bi / 100):,.0f})",
-    shadow=False)
+    shadow=False,
+)
 ax_bi.set_title("Proportion of Positive and Negative Reviews")
-plt.savefig(
-    "./results/rq2/pie_chart_2part.png",
-    dpi=1200,
-    bbox_inches='tight')
+plt.savefig("./results/rq2/pie_chart_2part.png", dpi=1200, bbox_inches="tight")

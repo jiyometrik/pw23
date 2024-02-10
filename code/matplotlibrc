@@ -1,0 +1,5 @@
+figure.dpi: 600
+figure.autolayout: True
+text.usetex: True
+savefig.bbox: tight
+# text.latex.preamble: "\\usepackage{txfonts}"
