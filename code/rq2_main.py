@@ -1,83 +1,102 @@
-# imports
-import matplotlib.pyplot as plt
-import nltk as nt
-import numpy as np
-import pandas as pd
-import seaborn as sns
-import wordcloud as wc
-
-plt.rcParams["figure.autolayout"] = True
-plt.rcParams["figure.dpi"] = 600
-plt.rcParams["savefig.pad_inches"] = 1
-plt.rcParams["text.usetex"] = True
-plt.rcParams[
-    "text.latex.preamble"
-] = """
-\\usepackage{txfonts}
 """
-sns.set_style("whitegrid")
-sns.set_context("paper")
+*** rq2_main.py ***
+The driver code for answering RQ2 of this project.
+"""
 
-# nt.download('punkt')
-# nt.download('stopwords')
+import os
 
-# open the file.
-df = pd.read_csv("./data/sentistrength_data.csv")
-positives, negatives = df["sent.pos"], df["sent.neg"]
-nets, polarities = [], []
+import matplotlib.pyplot as plt
+import pandas as pd
+
+plt.style.use(
+    [
+        "seaborn-v0_8-whitegrid",
+        "seaborn-v0_8-paper",
+        "seaborn-v0_8-colorblind",
+    ]
+)
+
+# open the sentistrength data file.
+DATAPATH = os.path.join(
+    os.path.dirname(__file__), "../data/"
+)
+
+df = pd.read_csv(
+    os.path.join(DATAPATH, "sentistrength_data.csv")
+)
+
+SENT_POS, SENT_NEG = df["sent.pos"], df["sent.neg"]
+sent_nets, polarities = [], []
+
 for row in df.index:
-    net_sentiment = positives[row] + negatives[row]
-    nets.append(net_sentiment)
-    polarity = 2
-    if net_sentiment > 0:
-        polarity = 1
-    elif net_sentiment < 0:
-        polarity = -1
-    elif net_sentiment == 0:
-        polarity = 0
+    sent_net = SENT_POS[row] + SENT_NEG[row]
+    sent_nets.append(sent_net)
+    polarity = (
+        1 if sent_net > 0 else -1 if sent_net < 0 else 0
+    )
     polarities.append(polarity)
+df["sent.net"] = sent_nets
+df["sent.polarity"] = polarities
 
-# write the sentiments to a new csv
-reviews = pd.read_csv(
-    "./data/datafiniti_reviews.csv", header=0, sep=",", on_bad_lines="skip"
+# write the sentiments to a new csv file
+REVIEWS = pd.read_csv(
+    os.path.join(DATAPATH, "datafiniti_reviews.csv"),
+    header=0,
+    sep=",",
+    on_bad_lines="skip",
 )
-combined_data = reviews[["reviews.rating", "reviews.title", "reviews.text"]].copy()
-combined_data.insert(1, value=df["sent.pos"], column="sent.pos")
-combined_data.insert(2, value=df["sent.neg"], column="sent.neg")
-combined_data.insert(3, value=nets, column="sent.net")
-combined_data.insert(4, value=polarities, column="sent.polarity")
-combined_data.to_csv("./data/combined_sentiments.csv")
+combined_data = REVIEWS[
+    ["reviews.rating", "reviews.title", "reviews.text"]
+].copy()
 
-positive_no = sum(pol == 1 for pol in polarities)
-neutral_no = sum(pol == 0 for pol in polarities)
-negative_no = sum(pol == -1 for pol in polarities)
-
-# print charts and stuff
-# tripartite
-fig_tri, ax_tri = plt.subplots()
-labels_tri = "Positive", "Negative", "Neutral"
-fracs_tri = [positive_no, negative_no, neutral_no]
-total_tri = sum(fracs_tri)
-ax_tri.pie(
-    fracs_tri,
-    labels=labels_tri,
-    autopct=lambda pct: f"{pct:.2f}% ({(pct * total_tri / 100):,.0f})",
-    shadow=False,
+column_names = [
+    "sent.pos",
+    "sent.neg",
+    "sent.net",
+    "sent.polarity",
+]
+for idx, name in enumerate(column_names):
+    combined_data.insert(
+        idx + 1, value=df[name], column=name
+    )
+combined_data.to_csv(
+    os.path.join(DATAPATH, "combined_sentiments.csv")
 )
-ax_tri.set_title("Proportion of Positive, Negative and Neutral Reviews")
-plt.savefig("./results/rq2/pie_chart_3part.png", dpi=1200, bbox_inches="tight")
+
+# NOTE ** plotting **
+
+fig, ax = plt.subplots()
+LABELS_COUNTS = {
+    "Positive": sum(pol == 1 for pol in polarities),
+    "Negative": sum(pol == -1 for pol in polarities),
+    "Neutral": sum(pol == 0 for pol in polarities),
+}
+
+SAVEPATH = os.path.join(
+    os.path.dirname(__file__), "../results/rq2/"
+)
+
+# pie chart: number of positive and negative reviews
+ax.pie(
+    list(LABELS_COUNTS.values())[:2],
+    labels=list(LABELS_COUNTS.keys())[:2],
+    autopct=lambda p: f"{p:.2f}\%",
+    # autopct=lambda pct: f"{pct:.2f}% ({(pct * sum(COUNTS[:2]) / 100):,.0f})",
+    # shadow=False,
+)
+ax.set_title("Proportion of positive and negative reviews")
+plt.savefig(os.path.join(SAVEPATH, "pie_bipartite.png"))
 plt.clf()
 
-# bipartite
-fig_bi, ax_bi = plt.subplots()
-labels_bi = "Positive", "Negative"
-fracs_bi = [positive_no, negative_no]
-total_bi = positive_no + negative_no
-ax_bi.pie(
-    fracs_bi,
-    labels=[*labels_bi],
-    autopct=lambda pct: f"{pct:.2f}% ({(pct * total_bi / 100):,.0f})",
-    shadow=False,
+# pie chart: number of positive, negative and neutral reviews
+fig, ax = plt.subplots()
+ax.pie(
+    list(LABELS_COUNTS.values()),
+    labels=list(LABELS_COUNTS.keys()),
+    autopct=lambda p: f"{p:.2f}\%",
+    # autopct=lambda pct: f"{pct:.2f}% ({(pct * sum(COUNTS) / 100):,.0f})",
 )
-ax_bi.set_title("Proportion of Positive and Negative Reviews")
-plt.savefig("./results/rq2/pie_chart_2part.png", dpi=1200, bbox_inches="tight")
+ax.set_title(
+    "Proportion of positive, negative and neutral reviews"
+)
+plt.savefig(os.path.join(SAVEPATH, "pie_tripartite.png"))
