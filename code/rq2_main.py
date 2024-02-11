@@ -7,14 +7,9 @@ import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import seaborn as sns
 
-plt.style.use(
-    [
-        "seaborn-v0_8-whitegrid",
-        "seaborn-v0_8-paper",
-        "seaborn-v0_8-colorblind",
-    ]
-)
+sns.set_theme(context="paper")
 
 # open the sentistrength data file.
 DATAPATH = os.path.join(
@@ -80,7 +75,7 @@ SAVEPATH = os.path.join(
 ax.pie(
     list(LABELS_COUNTS.values())[:2],
     labels=list(LABELS_COUNTS.keys())[:2],
-    autopct=lambda p: f"{p:.2f}\%",
+    autopct=lambda p: f"{p:.2f}%",
     # autopct=lambda pct: f"{pct:.2f}% ({(pct * sum(COUNTS[:2]) / 100):,.0f})",
     # shadow=False,
 )
@@ -93,7 +88,7 @@ fig, ax = plt.subplots()
 ax.pie(
     list(LABELS_COUNTS.values()),
     labels=list(LABELS_COUNTS.keys()),
-    autopct=lambda p: f"{p:.2f}\%",
+    autopct=lambda p: f"{p:.2f}%",
     # autopct=lambda pct: f"{pct:.2f}% ({(pct * sum(COUNTS) / 100):,.0f})",
 )
 ax.set_title(

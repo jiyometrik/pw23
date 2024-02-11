@@ -9,16 +9,11 @@ import string
 import matplotlib.pyplot as plt
 import nltk
 import pandas as pd
+import seaborn as sns
 import wordcloud
 from afinn import Afinn
 
-plt.style.use(
-    [
-        "seaborn-v0_8-whitegrid",
-        "seaborn-v0_8-paper",
-        "seaborn-v0_8-colorblind",
-    ]
-)
+sns.set_theme(context="paper")
 
 # make a collection of stop words to exclude during tokenisation.
 STOP = (
@@ -147,48 +142,9 @@ plt.savefig(
 )
 plt.clf()
 
-# pie chart for positive/negative
-FIG, AX = plt.subplots()
-AX.set_title(
-    "Proportion of tokens by sentiment (bipartite)"
-)
-AX.pie(
-    HEIGHTS[:2],
-    labels=None,
-    autopct=lambda pct: f"{pct:.2f}\% [{pct * sum(HEIGHTS[:2]) / 100:,.0f}]",
-)
-AX.legend(loc="best", labels=LABELS[:2])
-plt.savefig(
-    os.path.join(
-        SAVEPATH,
-        "pie_bipartite.png",
-    )
-)
-plt.clf()
-
-# pie chart for positive/negative/neutral
-FIG, AX = plt.subplots()
-AX.set_title(
-    "Proportion of tokens by sentiment (tripartite)"
-)
-wedges, texts, autotexts = AX.pie(
-    HEIGHTS,
-    labels=None,
-    autopct=lambda pct: f"{pct:.2f}\% [{pct * sum(HEIGHTS) / 100:,.0f}]",
-)
-AX.legend(loc="best", labels=LABELS)
-plt.savefig(
-    os.path.join(
-        SAVEPATH,
-        "pie_tripartite.png",
-    )
-)
-plt.clf()
-
-
 # wordcloud (positive tokens)
 WORDCLOUD = wordcloud.WordCloud(
-    font_path="/usr/share/texmf/fonts/opentype/public/lm/lmsans12-regular.otf",
+    font_path="arial",
     background_color="white",
     colormap="viridis",
     width=1280,
