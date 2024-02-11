@@ -14,7 +14,6 @@
 *.dvi
 *.xdv
 *-converted-to.*
-*.pdf
 .pdf
 *.bbl
 *.bcf
