@@ -1,10 +1,10 @@
 FILE=main
 
 pdf .:
-	latexmk ${FILE}.tex -silent -bibtex -xelatex -shell-escape
+	latexmk ${FILE}.tex -silent -bibtex -lualatex -shell-escape
 
 once 1: 
-	latexmk ${FILE}.tex -bibtex -xelatex -shell-escape
+	latexmk ${FILE}.tex -bibtex -lualatex -shell-escape
 	make view
 
 view v:

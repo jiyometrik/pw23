@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{pancake-book}[2021/09/09 Annotated book class]
+\ProvidesClass{pancake-article}[2021/09/09 Annotated article class based on Pancake's annotated book class]
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions\relax
 \LoadClass{article}
@@ -7,9 +7,11 @@
 %* Headings
 \RequirePackage{titlesec}
 % \titleformat{\chapter}[hang]{\normalfont\Huge}{\chaptertitlename\ \thechapter\hspace{.5em}\vrule width .7pt}{.5em}{}
-\titleformat{\section}[hang]{\normalfont\Large}{\color{Maroon}\thesection}{0.5em}{}
+\titleformat{\section}[hang]{\bfseries\normalfont\Large}{\color{Maroon}\thesection}{0.5em}{}
 \titleformat{\subsection}[hang]{\normalfont\large\itshape}{\color{Maroon}\thesubsection}{0.5em}{}
-\titleformat{\subsubsection}[hang]{\normalfont\normalsize}{\color{darkgray}\thesubsubsection}{0.5em}{}
+\titleformat{\subsubsection}[hang]{\normalfont\normalsize\itshape}{\color{Maroon}\thesubsubsection}{0.5em}{\color{gray}}
+
+\setcounter{tocdepth}{2} % don't show subsubsections in the table of contents
 
 %* Header/footer
 \RequirePackage{emptypage}
@@ -21,21 +23,23 @@
 \fancyhf{}
 \renewcommand{\headrulewidth}{0.8pt}
 \renewcommand{\footrulewidth}{0.8pt}
-\fancyfoot[LO,RE]{\thepage}
-\fancyhead[LE,RO]{\color{gray}\thetitle}
+\fancyhead[L]{\@title}
+\fancyhead[R]{Group XX}
+\fancyfoot[C]{\thepage}
 
 \fancypagestyle{plain}{
 	\fancyhf{}
 	\renewcommand{\headrulewidth}{0pt}
 	\renewcommand{\footrulewidth}{0pt}
-	\fancyfoot[LE,RO]{\thepage}
+	\fancyfoot[C]{\thepage}
 }
 
 %* Side notes
 \RequirePackage{sidenotes}
 \RequirePackage{marginfix}
 
-\setlength{\marginparsep}{2em}
+\setlength{\marginparwidth}{4em}
+\setlength{\marginparsep}{1em}
 \setlength{\marginparpush}{1em}
 
 \newcommand{\smartragged}{\checkoddpage \ifoddpage\raggedright \else \raggedleft\fi}
@@ -54,7 +58,7 @@
 \newcommand{\ifdraft}[2][]{\ifdim\overfullrule>\z@
 		\expandafter#2\else\expandafter#1\fi}
 \makeatother
-\newcommand{\notetoself}[1]{\ifdraft{\sidenote{\color{gray}#1}}}
+\newcommand{\notetoself}[1]{\sidenote{\color{gray}\itshape#1}}
 
 %* Structure enhancements
 \RequirePackage{parskip}
