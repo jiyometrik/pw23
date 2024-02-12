@@ -7,9 +7,9 @@
 %* Headings
 \RequirePackage{titlesec}
 % \titleformat{\chapter}[hang]{\normalfont\Huge}{\chaptertitlename\ \thechapter\hspace{.5em}\vrule width .7pt}{.5em}{}
-\titleformat{\section}[hang]{\bfseries\normalfont\Large}{\color{Maroon}\thesection}{0.5em}{}
-\titleformat{\subsection}[hang]{\normalfont\large\itshape}{\color{Maroon}\thesubsection}{0.5em}{}
-\titleformat{\subsubsection}[hang]{\normalfont\normalsize\itshape}{\color{Maroon}\thesubsubsection}{0.5em}{\color{gray}}
+\titleformat{\section}[hang]{\bfseries\normalfont\Large}{\color{Blue}\thesection}{0.5em}{}
+\titleformat{\subsection}[hang]{\normalfont\large\itshape}{\color{Blue}\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}[hang]{\normalfont\normalsize\itshape}{\color{Blue}\thesubsubsection}{0.5em}{\color{gray}}
 
 \setcounter{tocdepth}{2} % don't show subsubsections in the table of contents
 
@@ -38,7 +38,7 @@
 \RequirePackage{sidenotes}
 \RequirePackage{marginfix}
 
-\setlength{\marginparwidth}{4em}
+\setlength{\marginparwidth}{5em}
 \setlength{\marginparsep}{1em}
 \setlength{\marginparpush}{1em}
 
