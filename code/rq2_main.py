@@ -11,7 +11,7 @@ import seaborn as sns
 
 sns.set_theme(context="paper")
 
-# open the sentistrength data file.
+# open the sentistrength data file
 DATAPATH = os.path.join(
     os.path.dirname(__file__), "../data/"
 )
@@ -33,7 +33,7 @@ for row in df.index:
 df["sent.net"] = sent_nets
 df["sent.polarity"] = polarities
 
-# write the sentiments to a new csv file
+# write the sentiments to a new CSV file
 REVIEWS = pd.read_csv(
     os.path.join(DATAPATH, "datafiniti_reviews.csv"),
     header=0,
@@ -71,25 +71,22 @@ SAVEPATH = os.path.join(
     os.path.dirname(__file__), "../results/rq2/"
 )
 
-# pie chart: number of positive and negative reviews
+# pie chart: positive/negative reviews
 ax.pie(
     list(LABELS_COUNTS.values())[:2],
     labels=list(LABELS_COUNTS.keys())[:2],
     autopct=lambda p: f"{p:.2f}%",
-    # autopct=lambda pct: f"{pct:.2f}% ({(pct * sum(COUNTS[:2]) / 100):,.0f})",
-    # shadow=False,
 )
 ax.set_title("Proportion of positive and negative reviews")
 plt.savefig(os.path.join(SAVEPATH, "pie_bipartite.png"))
 plt.clf()
 
-# pie chart: number of positive, negative and neutral reviews
+# pie chart: positive/negative/neutral reviews
 fig, ax = plt.subplots()
 ax.pie(
     list(LABELS_COUNTS.values()),
     labels=list(LABELS_COUNTS.keys()),
     autopct=lambda p: f"{p:.2f}%",
-    # autopct=lambda pct: f"{pct:.2f}% ({(pct * sum(COUNTS) / 100):,.0f})",
 )
 ax.set_title(
     "Proportion of positive, negative and neutral reviews"

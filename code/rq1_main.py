@@ -15,7 +15,7 @@ from afinn import Afinn
 
 sns.set_theme(context="paper")
 
-# make a collection of stop words to exclude during tokenisation.
+# words to be excluded
 STOP = (
     nltk.corpus.stopwords.words("english")
     + [
@@ -26,7 +26,7 @@ STOP = (
     + list(string.punctuation)
 )
 
-# receive the data
+# load the data
 DATA = pd.read_csv(
     os.path.join(
         os.path.dirname(__file__),
@@ -38,9 +38,9 @@ DATA = pd.read_csv(
 )
 
 # extract the titles and bodies of all of the reviews
-TITLES, BODIES = DATA["reviews.title"].astype(str), DATA[
-    "reviews.text"
-].astype(str).str.replace(
+TITLES, BODIES = DATA["reviews.title"].astype(
+    str
+), DATA["reviews.text"].astype(str).str.replace(
     "((Bad|Good):)|(\\.\\.\\. More)", "", regex=True
 )
 
@@ -65,7 +65,7 @@ DATA["reviews.scores"] = DATA["reviews.tokens"].apply(
     ]
 )
 
-# save all this new data into another CSV file for future reference
+# save all data into another CSV file for future use
 DATA.to_csv(
     os.path.join(
         os.path.dirname(__file__),
@@ -99,8 +99,10 @@ HEIGHTS = [
     len(TOKENS_BY_POLARITY[label]) for label in LABELS
 ]
 
-# plot graphs for positive/negative sentiment
-container = AX.bar(LABELS[:2], HEIGHTS[:2], align="center")
+# bar graph: positive/negative sentiment
+container = AX.bar(
+    LABELS[:2], HEIGHTS[:2], align="center"
+)
 AX.set_title("Token polarities (bipartite)")
 AX.set_xlabel("Polarity")
 AX.set_ylabel("Number of tokens")
@@ -120,7 +122,7 @@ plt.savefig(
 )
 plt.clf()
 
-# plot bar graph for positive/negative/neutral sentiment
+# bar graph: positive/negative/neutral sentiment
 FIG, AX = plt.subplots()
 container = AX.bar(LABELS, HEIGHTS, align="center")
 AX.set_title("Token polarities (tripartite)")
@@ -142,7 +144,7 @@ plt.savefig(
 )
 plt.clf()
 
-# wordcloud (positive tokens)
+# wordcloud (positive)
 WORDCLOUD = wordcloud.WordCloud(
     font_path="arial",
     background_color="white",
@@ -166,7 +168,7 @@ WORDCLOUD.to_file(
 )
 plt.clf()
 
-# wordcloud (negative tokens)
+# wordcloud (negative)
 NEGATIVE_TOKENS = " ".join(
     pair[0] for pair in TOKENS_BY_POLARITY["Negative"]
 )

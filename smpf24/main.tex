@@ -1,43 +1,63 @@
-% \documentclass[11pt, paper=a4, oneside]{scrartcl}
-\documentclass{article}
+\documentclass[12pt, twoside, a4paper, draft]{pancake-article}
 
-% \usepackage{mathtools}
-
-\usepackage{arsclassica}
+\usepackage{mathspec}
+\setmathsfont{Asana Math}
+\setmainfont{TeX Gyre Pagella}[Numbers=OldStyle, Ligatures=TeX]
+\setsansfont{TeX Gyre Heros}[Ligatures=TeX]
+\setmonofont{DejaVu Sans Mono}[Ligatures=TeX]
 
 \usepackage{minted}
-\usemintedstyle{friendly}
-\newmintedfile[pycode]{python}{
-	frame=single,
-	framesep=2mm,
-	baselinestretch=1,
-	fontsize=\footnotesize
-}
 
 \usepackage{graphicx}
 \graphicspath{{gfx/}}
 
+\usepackage[
+	backend=biber,
+	style=apa
+]{biblatex}
 \addbibresource{Bibliography.bib}
 
 \usepackage{setspace}
 \usepackage{siunitx}
-% \onehalfspacing
+\sisetup{
+	mode=math,
+	propagate-math-font=true,
+	text-family-to-math=true,
+	text-series-to-math=true
+}
+\doublespacing
 
-\title{Sorting sentiments of hotel reviews through machine learning}
+% colors!
+\usepackage[usenames, dvipsnames]{xcolor}
+% \definecolor{accent}{RGB}{0, 0, 90} % article title and sections
+% \definecolor{accent}{Maroon}
+\newcommand{\accc}[1]{{\color{Maroon}#1}}
+
+\usepackage{hyperref}
+\hypersetup{
+	hidelinks,
+	colorlinks,
+	breaklinks=true,
+	urlcolor=Maroon,
+	citecolor=Maroon,
+	linkcolor=Maroon,
+	bookmarksopen=false,
+	pdftitle={Sorting sentiments of hotel reviews through machine learning},
+	pdfauthor={Darren Yap},
+}
+
+\title{Sorting \accc{sentiments} of hotel reviews through \accc{machine learning}}
 \author{Darren Yap \and Tan Jia He \and Fu Jinghang}
 \date{2024}
 
 % start the document!
 \begin{document}
-\pagestyle{scrheadings}
-% \renewcommand{\sectionmark}[1]{\markright{\spacedlowsmallcaps{#1}}}
 
 \maketitle
 \tableofcontents
 
 % ** abstract **
 \begin{abstract}
-	\noindent
 	Hotels depend on tourists to survive. They gather consumer opinions via customer
 	reviews to improve their services. This project used sentiment analysis---the
 	process of determining the emotional tone of text---to quantify consumers'
@@ -70,145 +90,94 @@ hearts, etc.) and a more qualitative review through text.
 However, quantitative reviews do not always paint the full picture of customers'
 opinions towards a certain hotel. Though it is certainly helpful to have a more
 objective rating system using numerical scores, eg. the Department of Tourism
-grading system in the Philippines, or the European Hotelstars Union system,
+grading system in the Philippines, or the European \textit{Hotelstars} Union system,
 these are given by customers subjectively and do not reflect the reasons for
 customers giving the rating. There is also evidence of manipulation of ratings
 by hotel management itself, where hotels may be compelled to forge positive or
 negative ratings to bias the overall rating. This made up \qty{2.1}{\percent}
-of the 66 million reviews submitted to TripAdvisor in \citeyear{tripadvisor}.
+of the 66 million reviews submitted to TripAdvisor in 2019 (\cite{tripadvisor}).
 Therefore, we propose using sentiment analysis to extract customers' true
 feedback on hotels instead.
 
-% \section{Objectives and Research Questions}
-% \subsection{Objectives}
-% \begin{enumerate}
-% 	\item To run sentiment analysis on individual words and quantify them on a numerical scale
-% 	\item To run sentiment analysis on paragraphs and quantify them on a numerical scale
-% 	\item To use sentiment analysis on hotel reviews to determine consumers' overall opinions of hotels
-% \end{enumerate}
+\section{Research Questions and Hypotheses}
+The following were investigated, in increasing order of difficulty:
+\begin{enumerate}
+	\item How could the sentiments of individual words be quantified on a numerical scale?
+	\item How could the sentiments of paragraphs be quantified on a numerical scale?
+	\item How could tokens in hotel reviews be used to predict the overall sentiment of the review?
+\end{enumerate}
 
-% \subsection{Research Questions}
-% \begin{enumerate}
-% 	\item How could we quantify the sentiments of individual words on a numerical scale?
-% 	\item How could we quantify the sentiments of paragraphs on a numerical scale?
-% 	\item How could we use tokens in hotel reviews to predict the overall sentiment of the review?
-% \end{enumerate}
+The objectives of this research were as such:
+\begin{enumerate}
+	\item To run sentiment analysis on individual words and quantify them on a numerical scale
+	\item To run sentiment analysis on paragraphs and quantify them on a numerical scale
+	\item To use sentiment analysis on hotel reviews to determine consumers' overall opinions of hotels
+\end{enumerate}
 
-% \subsection{Fields of Math}
-% \begin{itemize}
-% 	\item Statistics and probability theory
-% \end{itemize}
+\section{Literature Review}
 
-% \subsection{Terminology}
-% Below is a listing of the terminology, mostly pertaining to sentiment
-% analysis, used in this report.
+\subsection{Terminology}
 
-% % update this!
-% % \begin{table}[htpb]
-% % \caption{Terminology used in this report.}
-% % \label{tab:terms}
-% \begin{center}
-% 	\begin{longtable}{|p{.3\textwidth}|p{.7\textwidth}|}
-% 		\hline
-% 		\bf{Term}                        & \bf{Definition}                                                                                                                                                                                                                                     \\
-% 		\hline
-% 		Sentiment analysis               & Process of determining the emotional tone of text                                                                                                                                                                                                   \\
-% 		\hline
-% 		Token                            & A unit of meaning (usually a word) that carries sentiment                                                                                                                                                                                           \\
-% 		\hline
-% 		Tokenise                         & To split a piece of text up into its constituent tokens, to be used for further analysis.                                                                                                                                                           \\
-% 		\hline
-% 		Lemmatise                        & To sort, so as to group together, inflected or variant forms of the same word, eg. `watching', `watchful', and `watched'                                                                                                                            \\
-% 		\hline
-% 		Stop words                       & Tokens that carry little meaning during sentiment identification, such as `is', `I', `that', etc.; that should be filtered out before the processing of text                                                                                        \\
-% 		\hline
-% 		Lexicon                          & A dictionary that maps singular tokens to a category of sentiments or sentiment scores                                                                                                                                                              \\
-% 		\hline
-% 		Polarity                         & Whether a piece of text is positive, negative or neutral in sentiment                                                                                                                                                                               \\
-% 		\hline
-% 		Bipartite sentiment              & Sentiment which is grouped into two categories, usually positive and negative                                                                                                                                                                       \\
-% 		\hline
-% 		Tripartite sentiment             & Sentiment which is grouped into three categories, usually positive, negative and neutral                                                                                                                                                            \\
-% 		\hline
-% 		Sentiment score                  & A number that shows the overall sentiment of a token or a piece of text                                                                                                                                                                             \\
-% 		\hline
-% 		Lexicon-based sentiment analysis & A method of sentiment analysis which sorts tokens into categories, aided by a lexicon, then calculates the overall sentiment score of a piece of text                                                                                               \\
-% 		\hline
-% 		Corpus-based sentiment analysis  & A method of sentiment analysis which relies on the co-occurrences of tokens within a piece of text itself, rather than relying on an external lexicon                                                                                               \\
-% 		\hline
-% 		True positive                    & A prediction made by a machine learning model that \bf{correctly} matches up with its intended value, e.g. should a review’s sentiment be positive and a model predicts its sentiment to be positive, the model has made a true positive prediction \\
-% 		\hline
-% 		False positive                   & A prediction made by a machine learning model that \bf{incorrectly} reflects its intended value, e.g. should a review’s sentiment be negative and a model predicts its sentiment to be positive, the model has made a false positive prediction     \\
-% 		\hline
-% 	\end{longtable}
-% \end{center}
-% % \end{table}
+\subsection{Prior Work}
+Sentiment analysis is a field of study which utilises computational methods to analyse text,
+and then categorise the text into three main polarities---positive, neutral and negative. It
+has broad applications which range from determining consumers' opinions in sales and product
+analysis to competitor research in marketing, and even detecting public opinion in social media
+monitoring. Sentiment analysis will be used in this research to analyse hotel occupants' reviews
+and determine their sentiments towards them, without interference from human bias.
 
-% \section{Literature Review}
-% Sentiment analysis is a field of study which utilises computational methods to analyse text,
-% and then categorises the text, usually into three main polarities---positive, neutral
-% and negative. It has broad applications which range from determining consumers' opinion in
-% sales and product analysis, to competitor research in marketing, and even detecting public
-% opinion in social media monitoring. Sentiment analysis will be used in this project to
-% analyse hotel occupants' reviews, and also determine the most significant upsides
-% and downsides of each hotel, without interference from human bias.
+\citeauthor{stock} (\citeyear{stock}) predicted the stock market opinion of StockTwits communities of expert
+investors. Sentiment analysis was used in a deep learning model to extract sentiment from Big Data.
+A Pearson Correlation Coefficient combined the linear correlation between users' sentiment and
+future stock prices, which proved the accuracy of user sentiment to \qty{53}{\percent}. It was
+concluded that convolutional neural networks (CNN) could predict stock market movement based on
+sentiment.
 
-% The stock market opinion of StockTwits communities
-% of expert investors was predicted. Sentiment analysis was used in a Deep Learning model to extract
-% sentiment from Big Data. A Pearson Correlation Coefficient combined the linear correlation
-% between users' sentiment and future stock prices, which
-% proved the accuracy of user sentiment to be \qty{53}{\percent}.
-% It was concluded that convolutional neural networks (CNN), a type of Deep Learning
-% artificial neural network, was able to predict stock market movement based on sentiment (\cite{stock}).
+Using the social networking site Twitter, \citeauthor{twitter} (\citeyear{twitter}) determined
+Filipinos' sentiment in response to the Philippine government's efforts at tackling COVID-19,
+specifically the implementation of vaccination. Sentiment analysis was used to extract sentiment
+from text in the English and Tagalog languages, the results from which were used to train a Naïve
+Bayes model. A confusion matrix was produced, representing the model's prediction accuracy
+in classifying sentiment into positive, neutral and negative categories---\qty{81.77}{\percent}.
+It was concluded that sentiment analysis was sufficiently accurate to aid the Philippine government
+better conduct budget planning and coordinate COVID-19 efforts.
 
-% Using the social networking site Twitter,
-% Filipinos' sentiment in response to the Philippine government's efforts
-% at tackling COVID--19 was determined (\cite{twitter}), specifically the implementation of vaccination. Natural
-% Language Processing (NLP) techniques such as sentiment analysis were used to
-% extract sentiment from text in the English and Filipino languages, which was used to
-% train a Naïve-Bayes model. A confusion matrix was produced, representing the
-% prediction accuracy of the Naïve-Bayes model (\qty{81.77}{\percent}) at classifying
-% sentiment into positive, neutral and negative categories. It was concluded that
-% sentiment analysis towards COVID-19 vaccines were very accurate, even helping the
-% Philippine government better conduct budget planning and coordinate COVID-19 efforts.
+\citeauthor{spain} (\citeyear{spain}) analysed tourism quality in Spain
+by extracting sentiment from reviews by Chinese tourists on the tourism
+social networking sites Baidu Travel, Ctrip, Mafengwo, and Qunar.
+Two sentiment analysis methods, lexicon-matching and corpus-based machine
+learning methods, were used. These methods allow for the processing of
+unstructured text of comparatively longer lengths. Clustered data
+visualisation categorised aspects of Spanish tourism into positive
+and negative groups, with the majority residing within positive sentiment.
+It was concluded that sentiment analysis can be used to improve tourism
+quality and sustainability decision-making.
 
-% % cite
-% Tourism quality in Spain was analysed (\cite{spain}) by
-% extracting sentiment from reviews by Chinese people on the tourism
-% social networking sites Baidu Travel, Ctrip, Mafengwo, and Qunar.
-% Two sentiment analysis methods, lexicon-matching and corpus-based machine
-% learning methods, were used. These methods allow the processing of
-% unstructured text of comparatively longer lengths. Clustered data
-% visualisation categorised aspects of Spanish tourism into positive
-% and negative groups, with the majority residing with positive sentiment.
-% It was concluded that sentiment analysis can be used to improve tourism
-% quality and sustainability decision-making.
+SentiStrength, a tool for lexical sentiment analysis---sentiment analysis
+done on short, low quality texts---was used to study emotions expressed
+in GitHub commit comments of different open-source projects (\cite{github}).
+Each word was assigned a score, then the net score for each comment was calculated.
+Eacch comment was split into snippets using SentiStrength, then assigned a score by
+computing the maximum and minimum scores of the sentences it contains.
+Following which, the average of the positive and negative scores was taken as the
+sentiment score of the entire commit. This study showed that Java projects warranted
+more negative comments, and projects which had more distributed teams tended
+to warrant higher positive sentiments.
 
-% SentiStrength, a tool for lexical sentiment analysis---sentiment analysis done
-% on short, low quality texts---was used to study emotions expressed in GitHub
-% commit comments of different open-source projects (\cite{github}).
-% Their method involved assigning scores to each word, then calculating the net
-% score for each comment. SentiStrength splits each comment into snippets, assigns
-% each a score by computing the maximum and minimum scores of the sentences it contains.
-% Following which, the average of the positive and negative scores is taken as the
-% sentiment score of the entire commit. This study showed that Java projects warranted
-% more negative comments, and projects which had more distributed teams tended
-% to have a higher positive sentiment.
-
-% In conclusion, the literature reviewed showed many possible applications
-% of sentiment analysis in quantifying the underlying emotion of feedback
-% on online platforms. Lexicon-based sentiment analysis, which assigns each
-% word a sentiment, then calculates a sentence's total sentiment score, can
-% be used, due to its simplicity in implementation, and the availability of
-% many open-source sentiment lexicons. In addition, sentiment categorisation
-% using lexicon-based sentiment analysis makes accurate predictions upwards of
-% \qty{70}{\percent} of the time (\cite{khoo}). SentiStrength would also be useful for
-% detecting sentiment from hotel reviews which are usually short in length quickly
-% and efficiently, optimising the process of extracting sentiment from tourists'
-% reviews of hotels. Using SentiStrength for sentiment generation is also
-% rather accurate, generating both positive and negative sentiments with more
-% than \qty{60}{\percent} accuracy (\cite{thelwall}). Therefore, the strategies listed % TODO cite!
-% above could be adopted or emulated on a smaller scale for this project.
+In conclusion, the literature reviewed showed many possible applications
+of sentiment analysis in quantifying the underlying emotion of feedback
+on online platforms. Lexicon-based sentiment analysis, which assigns each
+word a sentiment, then calculates a sentence's total sentiment score, can
+be used, due to its simplicity in implementation, and the availability of
+many open-source sentiment lexicons. In addition, sentiment categorisation
+using lexicon-based sentiment analysis makes accurate predictions upwards of
+\qty{70}{\percent} of the time (\cite{khoo}). SentiStrength would also be useful for
+detecting sentiment from hotel reviews which are usually short in length quickly
+and efficiently, facilitating the process of extracting sentiment from tourists'
+reviews of hotels. Using SentiStrength for sentiment calculation is also
+rather accurate, generating both positive and negative sentiments with a more
+than \qty{60}{\percent} accuracy (\cite{thelwall}). Therefore, the strategies listed
+above could be adopted or emulated on a smaller scale for this project.
 
 % \section{Methodology}
 
@@ -596,22 +565,15 @@ feedback on hotels instead.
 % including Naïve-Bayes prediction models or Recurrent Neural Networks (RNN), both of which are
 % widely used in analysing sentiment from textual data.
 
-% \printbibliography
 
-% \begin{singlespace}
-% 	\section{Appendices}
+\section{Source Code}
 
-% 	\subsection{RQ1 Source Code}
-% 	\pycode{../../code-ready/rq1_report.py}
+\subsection{Sentiment scoring of tokens}
+\inputminted{python}{../code/rq1_main.py}
 
-% 	\subsection{RQ2 Source Code}
-% 	\pycode{../../code-ready/rq2_report.py}
+% \subsection{Sentiment scoring of reviews}
+% \pycode{../code/rq2_main.py}
 
-% 	\subsection{RQ3 Source Code: Logistic Regression}
-% 	\pycode{../../code-ready/rq3_logreg_report.py}
 
-% 	\subsection{RQ3 Source Code: Random Forest Classifier}
-% 	\pycode{../../code-ready/rq3_randomforest_report.py}
-% \end{singlespace}
-
+\printbibliography[heading=bibintoc]
 \end{document}

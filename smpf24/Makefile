@@ -1,10 +1,10 @@
 FILE=main
 
 pdf .:
-	latexmk ${FILE}.tex -silent -bibtex
+	latexmk ${FILE}.tex -silent -bibtex -xelatex -shell-escape
 
 once 1: 
-	latexmk ${FILE}.tex -bibtex
+	latexmk ${FILE}.tex -bibtex -xelatex -shell-escape
 	make view
 
 view v:
@@ -12,8 +12,6 @@ view v:
 
 clean c:
 	latexmk -c
-	rm -rf _minted-main .auctex-auto *.log *.run.xml *.auxlock *.synctex.gz
 
 nuke n:
 	latexmk -C
-	rm -rf _minted-main .auctex-auto *.log *.run.xml *.txt *.auxlock
