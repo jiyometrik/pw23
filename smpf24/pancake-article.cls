@@ -6,12 +6,14 @@
 
 %* Headings
 \RequirePackage{titlesec}
-% \titleformat{\chapter}[hang]{\normalfont\Huge}{\chaptertitlename\ \thechapter\hspace{.5em}\vrule width .7pt}{.5em}{}
-\titleformat{\section}[hang]{\bfseries\normalfont\Large}{\color{Blue}\thesection}{0.5em}{}
-\titleformat{\subsection}[hang]{\normalfont\large\itshape}{\color{Blue}\thesubsection}{0.5em}{}
-\titleformat{\subsubsection}[hang]{\normalfont\normalsize\itshape}{\color{Blue}\thesubsubsection}{0.5em}{\color{gray}}
 
-\setcounter{tocdepth}{2} % don't show subsubsections in the table of contents
+\RequirePackage{xcolor}
+\PassOptionsToPackage{usenames, dvipsnames}{xcolor}
+\definecolor{accent}{RGB}{0, 0, 90}
+
+\titleformat{\section}[hang]{\bfseries\normalfont\Large}{\color{accent}\thesection}{0.5em}{}
+\titleformat{\subsection}[hang]{\normalfont\large\itshape}{\color{accent}\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}[hang]{\normalfont\normalsize\itshape}{\color{accent}\thesubsubsection}{0.5em}{\color{gray}}
 
 %* Header/footer
 \RequirePackage{emptypage}
@@ -21,17 +23,17 @@
 \pagestyle{fancy}
 
 \fancyhf{}
-\renewcommand{\headrulewidth}{0.8pt}
-\renewcommand{\footrulewidth}{0.8pt}
-\fancyhead[L]{\@title}
-\fancyhead[R]{Group XX}
-\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.75pt}
+\renewcommand{\footrulewidth}{0.75pt}
+\fancyhead[C]{\@title}
+\fancyfoot[L]{\scshape Singapore Mathematics Project Festival 2024}
+\fancyfoot[R]{\thepage}
 
 \fancypagestyle{plain}{
 	\fancyhf{}
 	\renewcommand{\headrulewidth}{0pt}
 	\renewcommand{\footrulewidth}{0pt}
-	\fancyfoot[C]{\thepage}
+	\fancyfoot[LO, RE]{\thepage}
 }
 
 %* Side notes

@@ -7,12 +7,9 @@
 \setmathfont{TeX Gyre Termes Math}
 \setmainfont{TeX Gyre Termes}[Ligatures=TeX]
 \setsansfont{TeX Gyre Heros}[Ligatures=TeX]
-\setmonofont{TeX Gyre Cursor}[Ligatures=TeX]
-
-% \usepackage{minted}
+\setmonofont{DejaVu Sans Mono}[Ligatures=TeX]
 
 \usepackage{graphicx}
-\graphicspath{{../results/}}
 
 \usepackage[
 	style=apa
@@ -20,42 +17,39 @@
 \addbibresource{Bibliography.bib}
 
 \usepackage{setspace}
-\usepackage{siunitx}
-\sisetup{
-	mode=math,
-}
 \doublespacing
+
+\usepackage{siunitx}
+\sisetup{mode=math}
 
 % colors!
 \usepackage[usenames, dvipsnames]{xcolor}
-\newcommand{\tint}[1]{{\color{Blue}#1}}
+\newcommand{\tint}[1]{{\color{accent}#1}}
 
 \usepackage{hyperref}
 \hypersetup{
 	hidelinks,
 	colorlinks,
 	breaklinks=true,
-	urlcolor=Blue,
-	citecolor=Blue,
-	linkcolor=Blue,
+	urlcolor=accent,
+	citecolor=accent,
+	linkcolor=accent,
 	bookmarksopen=false,
 	pdftitle={Sorting sentiments of hotel reviews through machine learning},
 	pdfauthor={Darren Yap},
 }
 
 \title{Sorting \tint{sentiments} of hotel reviews through \tint{machine learning}}
-% \subtitle{Group XX}
 \author{\tint{Yap} Hao Ming Darren \and \tint{Tan} Jia He \and \tint{Fu} Jinghang}
-\date{2024}
+\date{\scshape Singapore Mathematics Project Festival 2024}
 
 % start the document!
 \begin{document}
 
 \maketitle
 \thispagestyle{empty}
-
 \pagebreak
-
+\setcounter{page}{1}
 \tableofcontents
 
 % ** abstract **
@@ -76,7 +70,7 @@
 	the dishonest practice of manipulating false reviews to boost a hotel's ratings.
 \end{abstract}
 
-\section{Introduction}%\label{sec:intro}
+\section{Introduction}
 After the Singapore government relaxed travel restrictions due to COVID-19,
 there has been a recent increase in the number of tourists travelling in and out of Singapore.
 As such, hotels have seen a rise in the number of prospective tourists to be housed,
@@ -118,7 +112,9 @@ The objectives of this research were as such:
 
 \section{Literature Review}
 Sentiment analysis is a field of study which utilises computational methods to analyse text,
-and then categorise the text into three main polarities---positive, neutral and negative. It
+and then determine the underlying emotion it contains; at simple levels, text can be classified
+into positive and negative polarities; at more complex levels, more specific emotions, such as
+\textit{happy}, \textit{sad} and \textit{angry}, can be determined. It
 has broad applications which range from determining consumers' opinions in sales and product
 analysis to competitor research in marketing, and even detecting public opinion in social media
 monitoring. Sentiment analysis will be used in this research to analyse hotel occupants' reviews
@@ -127,8 +123,8 @@ and determine their sentiments towards them, without interference from human bia
 \citeauthor{stock} (\citeyear{stock}) predicted the stock market opinion of StockTwits communities of expert
 investors. Sentiment analysis was used in a deep learning model to extract sentiment from Big Data.
 A Pearson Correlation Coefficient combined the linear correlation between users' sentiment and
-future stock prices, which proved the accuracy of user sentiment to \qty{53}{\percent}. It was
-concluded that convolutional neural networks (CNN) could predict stock market movement based on
+future stock prices, which showed that the accuracy of user sentiment was \qty{53}{\percent}. It was
+concluded that convolutional neural networks could predict stock market movement based on
 sentiment.
 
 Using the social networking site Twitter, \citeauthor{twitter} (\citeyear{twitter}) determined
@@ -137,7 +133,7 @@ specifically the implementation of vaccination. Sentiment analysis was used to e
 from text in the English and Tagalog languages, the results from which were used to train a Naïve
 Bayes model. A confusion matrix was produced, representing the model's prediction accuracy
 in classifying sentiment into positive, neutral and negative categories---\qty{81.77}{\percent}.
-It was concluded that sentiment analysis was sufficiently accurate to aid the Philippine government
+It was concluded that sentiment analysis was sufficiently accurate to help the Philippine government
 better conduct budget planning and coordinate COVID-19 efforts.
 
 \citeauthor{spain} (\citeyear{spain}) analysed tourism quality in Spain
@@ -180,14 +176,13 @@ above could be adopted or emulated on a smaller scale for this project.
 \section{Methods and Results}
 
 \subsection{Token-based sentiment analysis}\label{sec:tokens}
-After collecting an open-source dataset of international hotel reviews in English from \textit{Datafiniti},
-the reviews were tokenised and split into individual tokens. The \textit{Afinn} lexicon was then obtained,
+After collecting an open-source dataset of international hotel reviews in English from Datafiniti,
+the reviews were tokenised and split into individual tokens. The Afinn lexicon was then obtained,
 which was used to assign each token a single integer score, ranging from \(\left[-5, -1\right]\) for
 negative tokens, and \(\left[1, 5\right]\) for positive ones. It was found that the vast majority
 of tokens in the dataset held a positive sentiment  after a large number of neutral tokens were disregarded
 (Figure~\ref{fig:bars}). The high number of neutral tokens can be attributed to nouns
-describing the hotel, like \textit{food},
-\textit{hotel} and \textit{pool}.
+describing the hotel, like \textit{food}, \textit{hotel} and \textit{pool}.
 
 \begin{figure}[htpb]
 	\centering
@@ -201,7 +196,7 @@ describing the hotel, like \textit{food},
 		\includegraphics[width=\textwidth]{./gfx/rq1/bar_tripartite.png}
 		\caption*{Tripartite sentiment}
 	\end{minipage}
-	\caption{Proportion of tokens by sentiment}
+	\caption{Proportion of tokens by polarity}
 	\label{fig:bars}
 \end{figure}
 
@@ -223,7 +218,7 @@ describe the hotel in detail when criticising it, citing traits like
 		\includegraphics[width=0.9\textwidth]{./gfx/rq1/wordcloud_0.png}
 		\caption*{Negative tokens}
 	\end{minipage}
-	\caption{Wordclouds for tokens by sentiment}
+	\caption{Wordclouds of tokens by polarity}
 	\label{fig:wordclouds}
 \end{figure}
 
@@ -233,15 +228,14 @@ The software SentiStrength was used to generate two scores for each review:
 a positive one in the range \(\left[1, 5\right]\) and a negative one in the range \(\left[–5, –1\right]\).
 The greater the tonal intensity of a word, the greater the magnitude of the sentiment score
 it would contribute to the overall positive or negative score of the review. Punctuation marks for
-emphasis were also considered. After this, the reviews were classified into three categories: overall
-positive (polarity \(1\)), neutral (polarity \(0\)) and negative (polarity \(-1\)). Where \(p\) is the polarity
+emphasis were also considered. After this, the reviews were classified into two categories: overall
+positive (polarity \(1\)), and negative (polarity \(0\)). Where \(y\) is the polarity
 of a review, and \(s_+\) and \(s_-\) are the positive and negative sentiment scores (Equation~\ref{eq:polarity}):
 
 \begin{equation}
-	p = \begin{cases}
-		1  & s_+ + s_- > 0          \\
-		0  & s_+ = \left|s_-\right| \\
-		-1 & s_+ + s_- < 0          \\
+	y = \begin{cases}
+		1 & s_+ + s_- \geq 0 \\
+		0 & s_+ + s_- < 0    \\
 	\end{cases}
 	\label{eq:polarity}
 \end{equation}
@@ -249,8 +243,7 @@ of a review, and \(s_+\) and \(s_-\) are the positive and negative sentiment sco
 It is observed that a large proportion of reviews were overall positive (\qty{70}{\percent})
 and only a handful of negative reviews were present (\qty{13}{\percent}) in the dataset.
 Though neutral reviews may seem to make up a sizeable proportion of the reviews, this merely
-shows that the magnitude of the positive and negative sentiment scores is equal (Figure~\ref{fig:pies})
-\notetoself{A better way to classify reviews from their sentiment scores may be required in future work.}.
+shows that the magnitude of the positive and negative sentiment scores is equal (Figure~\ref{fig:pies}).
 
 \begin{figure}[htpb]
 	\centering
@@ -264,7 +257,7 @@ shows that the magnitude of the positive and negative sentiment scores is equal 
 		\includegraphics[width=0.9\textwidth]{./gfx/rq2/pie_tripartite.png}
 		\caption*{Tripartite sentiment}
 	\end{minipage}
-	\caption{Proportion of reviews in dataset by sentiment}
+	\caption{Proportion of reviews in dataset by polarity}
 	\label{fig:pies}
 \end{figure}
 
@@ -279,7 +272,7 @@ where positive reviews of a moderate overall score made up the majority (Figure~
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=0.95\textwidth]{./gfx/rq3/distribution.png}
-	\caption{Distribution of tokens in dataset}
+	\caption{Distribution of reviews by sentiment score}
 	\label{fig:distribution}
 \end{figure}
 
@@ -302,7 +295,7 @@ review \(d\) in a corpus of reviews \(D\) of size \(N\), the term frequency-inve
 (tf--idf value) is found (Equation~\ref{eq:tf-idf}), where
 
 \begin{equation}
-	\text{tfidf}\left(t, d, D\right) = \text{tf}\left(t, d\right)\times\log\frac{N}{1 + \left|\left\{d \in D : t\in d\right\}\right|}
+	\text{tfidf}\left(t, d, D\right) = \text{tf}\left(t, d\right)\log\frac{N}{1 + \left|\left\{d \in D : t\in d\right\}\right|}
 	\label{eq:tf-idf}
 \end{equation}
 
@@ -312,7 +305,9 @@ to avoid a division-by-zero.
 
 \subsubsection{Logistic regression}
 
-A logistic regression model was constructed to predict whether a review carries a positive or negative sentiment.
+A logistic regression model was constructed to predict whether a review carries a positive or negative sentiment,
+with tf--idf values ($x$) being the independent variable and the polarity of a review ($y$) being the
+dependent variable.
 A conventional sigmoid function was used to evaluate the probability of a review being positive, in the range
 \(\left[0, 1\right]\) (Equation~\ref{eq:sigmoid}), where \(x_i\) is the tf--idf value of token \(t_i\) in
 review \(d_i\):
@@ -322,10 +317,11 @@ review \(d_i\):
 	\label{eq:sigmoid}
 \end{equation}
 
-Here, \(\beta_0 + \beta_1 T_i\) is an arbitrary linear function of tf--idf \(T_i\), chosen
-such that the loss, \(l_i\), is minimised. Let \(y_i\) be the actual polarity of the review.
+Here, \(\beta_0 + \beta_1 x_i\) is an arbitrary linear function of tf--idf \(x_i\), chosen
+such that the loss, \(l_i\), is minimised. Let \(y_i\) be the actual polarity of review \(i\),
+determined through Equation~\ref{eq:polarity}.
 
-The loss function for the \(i\)-th tf--idf value is given as (Equation~\ref{eq:logloss}):
+The loss, \(l_i\), for the \(i\)-th tf--idf value is given as (Equation~\ref{eq:logloss}):
 \begin{equation}
 	l_i = \begin{cases}
 		- \ln h_i                  & y_i = 1 \\
@@ -362,7 +358,10 @@ Recall (\(R\)) is defined as (Equation~\ref{eq:recall}):
 where \(F_n\) is the raw number of false negative predictions
 the model made.
 
-Plotting \(P\) against \(R\), we obtain (Figure~\ref{fig:prc-logreg}):
+Plotting \(P\) against \(R\), we obtain Figure~\ref{fig:prc-logreg}.
+The average precision of the model is \(0.80\), which means it fares well
+according to statistical norms.
+
 \begin{figure}
 	\begin{center}
 		\includegraphics[width=0.95\textwidth]{./gfx/rq3/logistic_prc.png}
@@ -371,9 +370,7 @@ Plotting \(P\) against \(R\), we obtain (Figure~\ref{fig:prc-logreg}):
 	\label{fig:prc-logreg}
 \end{figure}
 
-The average precision of the model is $0.80$ (Figure~\ref{fig:prc-logreg}),
-which means it fares well according to statistical norms. The receiver
-operating characteristic curve for this model was also plotted.
+The receiver operating characteristic curve for this model was also plotted.
 It illustrates the rate of true positive predictions made by the model (Equation~\ref{eq:tpr}):
 
 \begin{equation}
@@ -476,8 +473,8 @@ of its decision trees instead, predicting a value always within the maximum and 
 A review that carries an overly positive or negative sentiment would produce unreliable results.
 
 A logistic regression model, on the other hand, assumes that the tf--idf values of tokens
-and the overall sentiment of a review are linearly related (because of the linear component $\beta_0 + \beta_1x_i$,
-Equation~\ref{eq:sigmoid}), which may hinder the accuracy of the predictions it makes.
+and the overall sentiment of a review are linearly related (because of the linear component $\beta_0 + \beta_1x_i$
+in Equation~\ref{eq:sigmoid}), which may hinder the accuracy of the predictions it makes.
 
 \subsection{Future Work}
 
@@ -490,9 +487,9 @@ Furthermore, more prediction models could be constructed. This would create a la
 variation in the predictions made, enabling the precision of the models used in this project to be
 compared with those of other models to evaluate the model with the highest accuracy. Constructing a
 wider range of prediction models also allows for the possibility of more advanced techniques,
-including Naïve Bayes prediction models or Recurrent Neural Networks, both of which are
-widely used in analysing sentiment from textual data. In particular, Recurrent Neural
-Networks perform better at analysing tokens in context, avoiding the issue
+including Naïve Bayes prediction models or recurrent neural networks, both of which are
+widely used in analysing sentiment from textual data. In particular, recurrent neural
+networks perform better at analysing tokens in context, avoiding the issue
 of unreliable sentiment scores described above.
 
 % ** bibliography **
