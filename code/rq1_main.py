@@ -13,7 +13,7 @@ import seaborn as sns
 import wordcloud
 from afinn import Afinn
 
-sns.set_theme(context="paper")
+sns.set_theme(context="poster")
 
 # words to be excluded
 STOP = (
@@ -38,9 +38,9 @@ DATA = pd.read_csv(
 )
 
 # extract the titles and bodies of all of the reviews
-TITLES, BODIES = DATA["reviews.title"].astype(
-    str
-), DATA["reviews.text"].astype(str).str.replace(
+TITLES, BODIES = DATA["reviews.title"].astype(str), DATA[
+    "reviews.text"
+].astype(str).str.replace(
     "((Bad|Good):)|(\\.\\.\\. More)", "", regex=True
 )
 
@@ -92,7 +92,7 @@ for _, pairs in DATA["reviews.scores"].items():
 
 FIG, AX = plt.subplots()
 SAVEPATH = os.path.join(
-    os.path.dirname(__file__), "../results/rq1/"
+    os.path.dirname(__file__), "../results/poster/"
 )
 LABELS = list(TOKENS_BY_POLARITY.keys())
 HEIGHTS = [
@@ -100,9 +100,7 @@ HEIGHTS = [
 ]
 
 # bar graph: positive/negative sentiment
-container = AX.bar(
-    LABELS[:2], HEIGHTS[:2], align="center"
-)
+container = AX.bar(LABELS[:2], HEIGHTS[:2], align="center")
 AX.set_title("Token polarities (bipartite)")
 AX.set_xlabel("Polarity")
 AX.set_ylabel("Number of tokens")
