@@ -68,7 +68,7 @@ LABELS_COUNTS = {
 }
 
 SAVEPATH = os.path.join(
-    os.path.dirname(__file__), "../results/poster/"
+    os.path.dirname(__file__), "../results/"
 )
 
 # pie chart: positive/negative reviews

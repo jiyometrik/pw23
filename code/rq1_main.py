@@ -92,7 +92,7 @@ for _, pairs in DATA["reviews.scores"].items():
 
 FIG, AX = plt.subplots()
 SAVEPATH = os.path.join(
-    os.path.dirname(__file__), "../results/poster/"
+    os.path.dirname(__file__), "../results/"
 )
 LABELS = list(TOKENS_BY_POLARITY.keys())
 HEIGHTS = [
