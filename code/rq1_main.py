@@ -13,7 +13,7 @@ import seaborn as sns
 import wordcloud
 from afinn import Afinn
 
-sns.set_theme(context="poster")
+sns.set_theme(context="poster", font="TeX Gyre Heros")
 
 # words to be excluded
 STOP = (
@@ -112,6 +112,7 @@ plt.ticklabel_format(
     useMathText=True,
     useOffset=False,
 )
+plt.tight_layout()
 plt.savefig(
     os.path.join(
         SAVEPATH,
@@ -134,6 +135,7 @@ plt.ticklabel_format(
     useMathText=True,
     useOffset=False,
 )
+plt.tight_layout()
 plt.savefig(
     os.path.join(
         SAVEPATH,

@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-sns.set_theme(context="paper")
+sns.set_theme(context="poster", font="TeX Gyre Heros")
 
 # open the sentistrength data file
 DATAPATH = os.path.join(
@@ -68,7 +68,7 @@ LABELS_COUNTS = {
 }
 
 SAVEPATH = os.path.join(
-    os.path.dirname(__file__), "../results/rq2/"
+    os.path.dirname(__file__), "../results/poster/"
 )
 
 # pie chart: positive/negative reviews
