@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-sns.set_theme(context="poster", font="TeX Gyre Heros")
+sns.set_theme(context="talk")  # , font="TeX Gyre Heros")
 
 # open the sentistrength data file
 DATAPATH = os.path.join(
@@ -78,6 +78,7 @@ ax.pie(
     autopct=lambda p: f"{p:.2f}%",
 )
 ax.set_title("Proportion of positive and negative reviews")
+plt.tight_layout()
 plt.savefig(os.path.join(SAVEPATH, "pie_bipartite.png"))
 plt.clf()
 
@@ -91,4 +92,5 @@ ax.pie(
 ax.set_title(
     "Proportion of positive, negative and neutral reviews"
 )
+plt.tight_layout()
 plt.savefig(os.path.join(SAVEPATH, "pie_tripartite.png"))
