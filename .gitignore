@@ -237,5 +237,6 @@ cython_debug/
 .idea/
 
 # ignore all the large datafiles
+data/
 !data/datafiniti_reviews.csv
 !data/sentistrength_data.csv
