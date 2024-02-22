@@ -13,7 +13,9 @@ import seaborn as sns
 import wordcloud
 from afinn import Afinn
 
-sns.set_theme(context="talk")  # , font="TeX Gyre Heros")
+sns.set_theme(
+    context="talk", style="white"
+)  # , font="TeX Gyre Heros")
 
 # words to be excluded
 STOP = (

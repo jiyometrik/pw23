@@ -9,7 +9,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-sns.set_theme(context="talk")  # , font="TeX Gyre Heros")
+sns.set_theme(
+    context="talk", style="white"
+)  # , font="serif")
 
 # open the sentistrength data file
 DATAPATH = os.path.join(
