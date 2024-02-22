@@ -106,7 +106,7 @@ container = AX.bar(LABELS[:2], HEIGHTS[:2], align="center")
 AX.set_title("Token polarities (bipartite)")
 AX.set_xlabel("Polarity")
 AX.set_ylabel("Number of tokens")
-AX.bar_label(container, fmt="{:,.0f}")
+# AX.bar_label(container, fmt="{:,.0f}")
 plt.ticklabel_format(
     style="sci",
     axis="y",
@@ -129,7 +129,7 @@ container = AX.bar(LABELS, HEIGHTS, align="center")
 AX.set_title("Token polarities (tripartite)")
 AX.set_xlabel("Polarity")
 AX.set_ylabel("Number of tokens")
-AX.bar_label(container, fmt="{:,.0f}")
+# AX.bar_label(container, fmt="{:,.0f}")
 plt.ticklabel_format(
     style="sci",
     axis="y",
