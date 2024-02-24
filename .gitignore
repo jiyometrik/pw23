@@ -241,3 +241,5 @@ cython_debug/
 data/*
 !data/datafiniti_reviews.csv
 !data/sentistrength_data.csv
+
+_*

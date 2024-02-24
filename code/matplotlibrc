@@ -1,3 +1,3 @@
 figure.dpi: 1200
-# savefig.bbox: tight
+savefig.bbox: tight
 figure.size: 12.0, 9.0
