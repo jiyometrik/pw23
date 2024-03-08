@@ -1,3 +1,2 @@
-figure.dpi: 1200
+figure.dpi: 720
 savefig.bbox: tight
-figure.size: 12.0, 9.0
