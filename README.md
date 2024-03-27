@@ -1,5 +1,11 @@
-# pw23 · sorting sentiments of hotel reviews through machine learning
-> smtp (math) project 2023 · 8-01 sorting sentiments of hotel reviews through machine learning
+# sorting sentiments of hotel reviews through machine learning
 
-welcome! this is a repository containing the source code
-for a high-school mathematics project — **sorting sentiments**.
+welcome! this is a repository containing the source code and a few other things
+for a high-school mathematics project —
+**sorting sentiments of hotel reviews through machine learning**.
+
+## contributors
+
+the main contributors to this source code are:
+* [@jiyometrik](https://github.com/jiyometrik), the leader of this project group
+* [@Darryl-Shi](https://github.com/Darryl-Shi), fondly called "assistant researcher"
