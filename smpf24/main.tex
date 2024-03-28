@@ -1,4 +1,4 @@
-\documentclass[12pt, a4paper]{pancake-article}
+\documentclass[11pt, a4paper]{pancake-article}
 
 \usepackage{mathtools}
 
@@ -17,11 +17,11 @@
 ]{biblatex}
 \addbibresource{Bibliography.bib}
 
-\usepackage{setspace}
-\onehalfspacing
-
 \usepackage{siunitx}
 \sisetup{mode=math}
+
+\usepackage{setspace}
+\onehalfspacing
 
 % colors!
 \usepackage[usenames, dvipsnames]{xcolor}
@@ -50,8 +50,11 @@
 \maketitle
 \thispagestyle{empty}
 \pagebreak
-\setcounter{page}{1}
 \tableofcontents
+\thispagestyle{empty}
+
+\pagebreak
+\thispagestyle{empty}
 
 % ** abstract **
 \begin{abstract}
@@ -70,6 +73,11 @@
 	understand the perceived quality of a hotel and potentially combat review fraud---the
 	the dishonest practice of manipulating false reviews to boost a hotel's ratings.
 \end{abstract}
+
+\pagebreak
+
+\pagestyle{fancy}
+\setcounter{page}{1}
 
 \section{Introduction}
 After the Singapore government relaxed travel restrictions due to COVID-19,
@@ -288,7 +296,7 @@ represents the relative term frequency of token \(t\) in review (or \textit{docu
 	\label{eq:term-frequency}
 \end{equation}
 
-It is noted that the denominator is simply the total number of token in document \(d\),
+It is noted that the denominator is simply the total number of tokens in document \(d\),
 counting each occurrence of the same token separately.
 
 To evaluate the relevance of a token \(t\) in determining the overall sentiment of the
@@ -311,11 +319,11 @@ the classification models trained would likely perform better at identifying pos
 negative counterparts. To counteract this, class weights for both the negative and positive classes of reviews
 were found to ensure that positive and negative reviews receive equal emphasis during the training process.
 
-A logistic regression model was constructed to maximise the F1 score (Equation~\ref{eq:f1}) when
+A logistic regression model was constructed to maximise the $F_1$ score (Equation~\ref{eq:f1}) when
 predicting the polarity of a review from its token frequencies.
 
 \begin{equation}
-	\frac{2 T_p}{2 T_p + F_p + F_n}
+	F_1 = \frac{2 T_p}{2 T_p + F_p + F_n}
 	\label{eq:f1}
 \end{equation}
 
@@ -354,7 +362,7 @@ $w_0$ was set to $1 - w_1 \approx 0.56$.
 	\begin{center}
 		\includegraphics[width=0.75\textwidth]{../results/logistic_f1.png}
 	\end{center}
-	\caption{Variation of F1 score against positive class weight}\label{fig:f1-variation}
+	\caption{Variation of $F_1$ score against positive class weight}\label{fig:f1-variation}
 \end{figure}
 
 A confusion matrix was used to evaluate the performance of the logistic regression model. In
@@ -401,7 +409,7 @@ curve (AUROC) and their average precisions (Table~\ref{tab:metrics}).
 	\label{tab:metrics}
 	\begin{tabular}{lrrr}
 		\toprule
-		\textbf{Model} & \textbf{F1} & \textbf{AUROC} & \textbf{Avg. precision} \\
+		\textbf{Model} & $F_1$ & AUROC & Avg. precision \\
 		\midrule
 		\csvreader[head to column names, late after line=\\]{../results/model_metrics_27032024.csv}{
 			name=\name,

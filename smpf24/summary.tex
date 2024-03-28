@@ -1,6 +1,6 @@
 \documentclass[11pt, a4paper]{pancake-article}
 
-\usepackage[margin=1.2in]{geometry}
+\usepackage[margin=1.25in]{geometry}
 
 \usepackage{mathtools}
 
@@ -107,17 +107,17 @@ relevant each token in a review is in determining the sentiment of the review
 where \(t\), \(d\) and \(D\) represent a token, a review and the collection of reviews we have. This function is vital
 in normalising textual inputs to numerical values that can be modelled mathematically.
 
-Since positive reivews greatly outnumbered negative ones within the dataset, a logistic regression model was used to
-determine optimal class weights for both the \textit{positive} and \textit{negative} classes. Its performance was then evaluated using its F1 score (Equation~\ref{eq:f1}), which measures both the relevance of the prediction models made and its sensitivity to false positive predictions.
+Since positive reviews greatly outnumbered negative ones within the dataset, a logistic regression model was used to
+determine optimal class weights for both the \textit{positive} and \textit{negative} classes. Its performance was then evaluated using its $F_1$ score (Equation~\ref{eq:f1}), which measures both the relevance of the prediction models made and its sensitivity to false positive predictions.
 
 \begin{equation}
-	\frac{2 T_p}{2 T_p + F_p + F_n}
+	F_1 = \frac{2 T_p}{2 T_p + F_p + F_n}
 	\label{eq:f1}
 \end{equation}
 
 A large variety of machine learning models were constructed
 to predict the sentiment polarity of a review (its positive or negative nature) given the aforementioned tf--idf vectors, with
-the class weights obtained taken into consideration. Their F1 scores were evaluated.
+the class weights obtained taken into consideration. Their $F_1$ scores were evaluated.
 
 It was shown that all constructed models performed well in all three metrics, being
 able to make true positive predictions much of the time, distinguish true and false

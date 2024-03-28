@@ -11,9 +11,9 @@
 \PassOptionsToPackage{usenames, dvipsnames}{xcolor}
 \definecolor{accent}{RGB}{0, 0, 90}
 
-\titleformat{\section}[hang]{\bfseries\normalfont\Large}{\color{accent}\thesection}{0.5em}{}
-\titleformat{\subsection}[hang]{\normalfont\large\itshape}{\color{accent}\thesubsection}{0.5em}{}
-\titleformat{\subsubsection}[hang]{\normalfont\normalsize\itshape}{\color{accent}\thesubsubsection}{0.5em}{\color{gray}}
+\titleformat{\section}[hang]{\normalfont\Large}{\color{accent}\thesection}{0.5em}{}
+\titleformat{\subsection}[hang]{\normalfont\large}{\color{accent}\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}[hang]{\normalfont\normalsize}{\color{accent}\thesubsubsection}{0.5em}{\color{gray}}
 
 %* Header/footer
 \RequirePackage{emptypage}
@@ -40,9 +40,9 @@
 \RequirePackage{sidenotes}
 \RequirePackage{marginfix}
 
-\setlength{\marginparwidth}{5em}
-\setlength{\marginparsep}{1em}
-\setlength{\marginparpush}{1em}
+\setlength{\marginparwidth}{1.5in}
+\setlength{\marginparsep}{0.5in}
+\setlength{\marginparpush}{0.5in}
 
 \newcommand{\smartragged}{\checkoddpage \ifoddpage\raggedright \else \raggedleft\fi}
 
