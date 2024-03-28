@@ -4,6 +4,14 @@
 \ProcessOptions\relax
 \LoadClass{article}
 
+% Font
+\RequirePackage{fontspec}
+\RequirePackage{unicode-math}
+\setmathfont{STIX Two Math}
+\setmainfont{STIX Two Text}[Ligatures=TeX]
+\setsansfont{TeX Gyre Heros}[Ligatures=TeX]
+\setmonofont{DejaVu Sans Mono}[Ligatures=TeX]
+
 %* Headings
 \RequirePackage{titlesec}
 

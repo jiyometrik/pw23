@@ -2,13 +2,6 @@
 
 \usepackage{mathtools}
 
-\usepackage{fontspec}
-\usepackage{unicode-math}
-\setmathfont{TeX Gyre Termes Math}
-\setmainfont{TeX Gyre Termes}[Ligatures=TeX]
-\setsansfont{TeX Gyre Heros}[Ligatures=TeX]
-\setmonofont{DejaVu Sans Mono}[Ligatures=TeX]
-
 \usepackage{graphicx}
 \usepackage{booktabs, csvsimple}
 
@@ -380,7 +373,7 @@ better at making predictions.
 Figure~\ref{fig:logistic-confuse} indicates that $\qty{72}{\percent}$ of reviews were correctly predicted as positive, a large proportion.
 Furthermore, the proportion of incorrect predictions---false negatives and false positives, only made up
 $\qty{13}{\percent}$ of the entire set of predictions. Therefore, the logistic regression model performs
-well at reducing bias 
+well at reducing bias.
 
 \subsection{Predicting review polarity from token frequency}
 
@@ -400,7 +393,7 @@ dataset of hotel reviews. These include:
   \label{eq:nb}
 \end{equation}
 
-Their performances were evaluated using three metrics: F1 score, the area under receiver operating characteristic
+Their performances were evaluated using three metrics: $F_1$ score, the area under receiver operating characteristic
 curve (AUROC) and their average precisions (Table~\ref{tab:metrics}).
 
 \begin{table}
