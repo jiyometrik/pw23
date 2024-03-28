@@ -10,6 +10,7 @@
 \setmonofont{DejaVu Sans Mono}[Ligatures=TeX]
 
 \usepackage{graphicx}
+\usepackage{booktabs, csvsimple}
 
 \usepackage[
 	style=apa
@@ -17,7 +18,7 @@
 \addbibresource{Bibliography.bib}
 
 \usepackage{setspace}
-\doublespacing
+\onehalfspacing
 
 \usepackage{siunitx}
 \sisetup{mode=math}
@@ -188,12 +189,12 @@ describing the hotel, like \textit{food}, \textit{hotel} and \textit{pool}.
 	\centering
 	\begin{minipage}{0.5\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{./gfx/rq1/bar_bipartite.png}
+		\includegraphics[width=\textwidth]{../results/old/bar_bipartite.png}
 		\caption*{Bipartite sentiment}
 	\end{minipage}\hfill
 	\begin{minipage}{0.5\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{./gfx/rq1/bar_tripartite.png}
+		\includegraphics[width=\textwidth]{../results/old/bar_tripartite.png}
 		\caption*{Tripartite sentiment}
 	\end{minipage}
 	\caption{Proportion of tokens by polarity}
@@ -210,12 +211,12 @@ describe the hotel in detail when criticising it, citing traits like
 	\centering
 	\begin{minipage}{0.5\textwidth}
 		\centering
-		\includegraphics[width=0.9\textwidth]{./gfx/rq1/wordcloud_1.png}
+		\includegraphics[width=0.9\textwidth]{../results/old/wordcloud_1.png}
 		\caption*{Positive tokens}
 	\end{minipage}\hfill
 	\begin{minipage}{0.5\textwidth}
 		\centering
-		\includegraphics[width=0.9\textwidth]{./gfx/rq1/wordcloud_0.png}
+		\includegraphics[width=0.9\textwidth]{../results/old/wordcloud_0.png}
 		\caption*{Negative tokens}
 	\end{minipage}
 	\caption{Wordclouds of tokens by polarity}
@@ -249,19 +250,19 @@ shows that the magnitude of the positive and negative sentiment scores is equal 
 	\centering
 	\begin{minipage}{0.5\textwidth}
 		\centering
-		\includegraphics[width=0.9\textwidth]{./gfx/rq2/pie_bipartite.png}
+		\includegraphics[width=0.9\textwidth]{../results/old/pie_bipartite.png}
 		\caption*{Bipartite sentiment}
 	\end{minipage}\hfill
 	\begin{minipage}{0.5\textwidth}
 		\centering
-		\includegraphics[width=0.9\textwidth]{./gfx/rq2/pie_tripartite.png}
+		\includegraphics[width=0.9\textwidth]{../results/old/pie_tripartite.png}
 		\caption*{Tripartite sentiment}
 	\end{minipage}
 	\caption{Proportion of reviews in dataset by polarity}
 	\label{fig:pies}
 \end{figure}
 
-\subsection{Predicting sentiment via token frequency}
+\subsection{Quantifying text}
 
 A frequency table for all reviews was generated, showing how
 often a review (with a overall score, \(s_+ + s_-\), between \(\left[-5, 5\right]\))
@@ -271,7 +272,7 @@ where positive reviews of a moderate overall score made up the majority (Figure~
 
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.95\textwidth]{./gfx/rq3/distribution.png}
+	\includegraphics[width=0.75\textwidth]{../results/old/distribution.png}
 	\caption{Distribution of reviews by sentiment score}
 	\label{fig:distribution}
 \end{figure}
@@ -292,7 +293,7 @@ counting each occurrence of the same token separately.
 
 To evaluate the relevance of a token \(t\) in determining the overall sentiment of the
 review \(d\) in a corpus of reviews \(D\) of size \(N\), the term frequency-inverse document frequency
-(tf--idf value) is found (Equation~\ref{eq:tf-idf}), where
+(tf--idf value) is found (Equation~\ref{eq:tf-idf}).
 
 \begin{equation}
 	\text{tfidf}\left(t, d, D\right) = \text{tf}\left(t, d\right)\log\frac{N}{1 + \left|\left\{d \in D : t\in d\right\}\right|}
@@ -303,12 +304,26 @@ review \(d\) in a corpus of reviews \(D\) of size \(N\), the term frequency-inve
 Since the denominator will be \(0\) if the token does not appear in the review at all, \(1\) is added
 to avoid a division-by-zero.
 
-\subsubsection{Logistic regression}
+\subsection{Reducing bias using logistic regression}
 
-A logistic regression model was constructed to predict whether a review carries a positive or negative sentiment,
-with tf--idf values ($x$) being the independent variable and the polarity of a review ($y$) being the
-dependent variable.
-A conventional sigmoid function was used to evaluate the probability of a review being positive, in the range
+Since the number of positive reviews greatly exceeds the number of negative reviews Figure~\ref{fig:pies},
+the classification models trained would likely perform better at identifying positive reviews than their
+negative counterparts. To counteract this, class weights for both the negative and positive classes of reviews
+were found to ensure that positive and negative reviews receive equal emphasis during the training process.
+
+A logistic regression model was constructed to maximise the F1 score (Equation~\ref{eq:f1}) when
+predicting the polarity of a review from its token frequencies.
+
+\begin{equation}
+	\frac{2 T_p}{2 T_p + F_p + F_n}
+	\label{eq:f1}
+\end{equation}
+
+where $T_p$ is the number of true positive predictions, $F_p$ is the number of false positive predictions,
+and $F_n$ is the number of false negative predictions.
+
+Each review's tf--idf values ($x$) were used as the independent variable and the polarity of a review ($y$) was set
+as the dependent variable. A conventional sigmoid function was used to evaluate the probability of a review being positive, in the range
 \(\left(0, 1\right)\) (Equation~\ref{eq:sigmoid}), where \(x_i\) is the tf--idf value of token \(t_i\) in
 review \(d_i\):
 
@@ -323,116 +338,130 @@ determined through Equation~\ref{eq:polarity}.
 
 The loss, \(l_i\), for the \(i\)-th tf--idf value is given as (Equation~\ref{eq:logloss}):
 \begin{equation}
-	l_i = \begin{cases}
-		- \ln h_i                  & y_i = 1 \\
-		- \ln \left(1 - h_i\right) & y_i = 0 \\
-	\end{cases}
+	l_i = \frac{1}{N} \sum^{N}_{i = 1}\left[-w_0 y_i \log h_i + w_1\left(1 - y_i\right) \log \left(1 - h_i\right)\right]
 	\label{eq:logloss}
 \end{equation}
 
 The loss measures how ``surprising'' the outcome ($y_i$) is to the predicted
-value ($h_i$); a perfect prediction warrants a loss of $0$.
+value ($h_i$); perfect predictions warrant a loss of $0$. We define $w_0$ and $w_1$
+to be the class weights for the negative ($0$) and positive ($1$) review classes
+respectively.
 
-After the model was constructed, predictions were made using the aforementioned
-dataset of hotel reviews. Precision-recall and receiver operating characterstic curves
-were plotted to evaluate the precision of the model,
-and how well the model distinguishes between false positive and true positive predictions.
-
-For the precision-recall curve, precision (\(P\)) is defined as (Equation~\ref{eq:precision}):
-
-\begin{equation}
-	P = \frac{T_p}{T_p + F_p}
-	\label{eq:precision}
-\end{equation}
-
-where \(T_p\) is the raw number of true positive predictions
-and \(F_p\) is the raw number of false positive predictions the model made.
-
-Recall (\(R\)) is defined as (Equation~\ref{eq:recall}):
-
-\begin{equation}
-	R = \frac{T_p}{T_p + F_n}
-	\label{eq:recall}
-\end{equation}
-
-where \(F_n\) is the raw number of false negative predictions
-the model made.
-
-Plotting \(P\) against \(R\), we obtain Figure~\ref{fig:prc-logreg}.
-The average precision of the model is \(0.80\), which means it fares well
-according to statistical norms.
+It was determined that $w_1 \approx 0.44$ was the most optimal positive class weight (Figure~\ref{fig:f1-variation}).
+$w_0$ was set to $1 - w_1 \approx 0.56$.
 
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=0.95\textwidth]{./gfx/rq3/logistic_prc.png}
+		\includegraphics[width=0.75\textwidth]{../results/logistic_f1.png}
 	\end{center}
-	\caption{Precision-recall curve for logistic regression model}
-	\label{fig:prc-logreg}
+	\caption{Variation of F1 score against positive class weight}\label{fig:f1-variation}
 \end{figure}
 
-The receiver operating characteristic curve for this model was also plotted.
-It illustrates the rate of true positive predictions made by the model (Equation~\ref{eq:tpr}):
+A confusion matrix was used to evaluate the performance of the logistic regression model. In
+four quadrants, the confusion matrix shows the relative proportions of $T_p$, $T_n$ (true negative
+predictions), $F_p$ and $F_n$. Higher proportions of $T_p$ and $T_n$ indicate that the model performs
+better at making predictions.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.75\textwidth]{../results/logistic_confuse.png}
+	\end{center}
+	\caption{Confusion matrix (logistic regression model)}\label{fig:logistic-confuse}
+\end{figure}
+
+Figure~\ref{fig:logistic-confuse} indicates that $\qty{72}{\percent}$ of reviews were correctly predicted as positive, a large proportion.
+Furthermore, the proportion of incorrect predictions---false negatives and false positives, only made up
+$\qty{13}{\percent}$ of the entire set of predictions. Therefore, the logistic regression model performs
+well at reducing bias 
+
+\subsection{Predicting review polarity from token frequency}
+
+A large variety of classification models were constructed to make predictions using the aforementioned
+dataset of hotel reviews. These include:
+
+\begin{itemize}
+  \item a \textit{random forest classifier} (RandomForestClassifier), which makes predictions based on the average of the results from multiple decision trees,
+  \item a regularised linear model with \textit{stochastic gradient descent} (SGDClassifier): the gradient of the loss function is estimated one review at a time and the model's learning rate is updated accordingly,
+  \item a $k$-\textit{nearest neighbours} algorithm (KNeighborsClassifier), which predicts the polarities of new reviews based on its proximity to other reviews' tf--idf vectors in vector space,
+  \item a \textit{naive Bayes classifier} (BernoulliNB), which uses the rule in Equation~\ref{eq:nb} to make predictions, and
+  \item $k$-\textit{means clustering} (KMeans), which unsupervisedly classifies tf--idf vectors into two classes such that each vector belongs to the cluster with the mean of that cluster being the closest to it.
+\end{itemize}
 
 \begin{equation}
-	\text{TPR} = \frac{T_p}{T_p + F_n}
-	\label{eq:tpr}
+  P\left(x_i|y \right) = P\left(x_i = 1 | y\right)x_i + \left(1 - x_i\right)\left[1 - P\left(x_i=1|y\right)\right]
+  \label{eq:nb}
 \end{equation}
 
-against the rate of false positive predictions made by the model (Equation~\ref{eq:fpr}):
+Their performances were evaluated using three metrics: F1 score, the area under receiver operating characteristic
+curve (AUROC) and their average precisions (Table~\ref{tab:metrics}).
+
+\begin{table}
+	\centering
+	\caption{Performance metrics for classification models}
+	\label{tab:metrics}
+	\begin{tabular}{lrrr}
+		\toprule
+		\textbf{Model} & \textbf{F1} & \textbf{AUROC} & \textbf{Avg. precision} \\
+		\midrule
+		\csvreader[head to column names, late after line=\\]{../results/model_metrics_27032024.csv}{
+			name=\name,
+			f1=\fone,
+			auroc=\auroc,
+			averageprecision=\avgprecision
+		}{
+		\name          & \fone       & \auroc         & \averageprecision
+		}
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+It is shown that all constructed models performed well in all three metrics, being
+able to make true positive predictions much of the time, distinguish true and false
+positive predictions with great success and return relevant results. Notably, the KMeans
+model performs the worst out of all models: due to the unsupervised nature of the prediction
+model, the target class of each review (either negative or positive) was not revealed to it,
+leading it to make more incorrect predictions.
+
+The receiver operating characteristic curves (ROC) (Figure~\ref{fig:roc-all}) and precision-recall curves (PRC)
+(Figure~\ref{fig:prc-all}) of each model were plotted to better examine the latter two metrics.
+
+The receiver operating characteristic curve (ROC) plots the rate of true positive predictions ($\text{TPR}$) made against the
+rate of false positive predictions ($\text{FPR}$) made. A model's ability to distinguish
+true positive and false positive predictions may be inferred from the height at which the ROC curve
+lies over that of a hypothetical classifier which chooses each outcome randomly. It is noted that
+the KMeans algorithm's ROC curve lies below the baseline denoted by the random classifier.
+Due to the absence of target classes during the training process, it falls short in distinguishing
+true and false positive predictions reliably. Other models perform significantly better in this aspect.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.95\textwidth]{../results/all_roc.png}
+  \end{center}
+  \caption{Receiver operating characteristic curves for all models}\label{fig:roc-all}
+\end{figure}
+
+The precision-recall curve (PRC) plots a model's precision ($p$, Equation~\ref{eq:precision})
+against its recall ($r$, Equation~\ref{eq:recall}). A high area under the curve represents both high recall and high precision, where high precision relates to a low false positive rate, and high recall relates to a low false negative rate. High scores for both show that the classifier is returning accurate results (high precision), as well as returning a majority of all positive results (high recall). It is noted that all models perform well in this regard,
+except the KMeans algorithm, for similar reasons as above.
 
 \begin{equation}
-	\text{FPR} = \frac{F_p}{F_p + T_n}
-	\label{eq:fpr}
+  p = \frac{T_p}{T_p + F_p}
+  \label{eq:precision}
 \end{equation}
 
-where $F_p$ is the raw number of false positive predictions and
-$T_n$ is the number of true negative predictions the model made.
+\begin{equation}
+  r = \frac{T_p}{T_p + F_n} 
+  \label{eq:recall}
+\end{equation}
 
 \begin{figure}
-	\centering
-	\includegraphics[width=0.95\textwidth]{./gfx/rq3/logistic_roc.png}
-	\caption{Receiver operating characteristic curve for logistic regression model}
-	\label{fig:roc-logreg}
+  \begin{center}
+    \includegraphics[width=0.95\textwidth]{../results/all_prc.png}
+  \end{center}
+  \caption{Precision-recall curves for all models}\label{fig:prc-all}
 \end{figure}
 
-Comparing the performance of this model with a hypothetical
-model that makes predictions randomly, the area under the receiver
-operating characteristic (Figure~\ref{fig:roc-logreg}) curve is $0.70$,
-thus the model model performs well at distinguishing positive and negative predictions.
-
-\subsubsection{Random forest classifier}
-A random forest classifier was also constructed to predict
-the overall sentiment of a hotel review. It relies on feature
-importance: how important tokens are in determining overall sentiment.
-
-The model takes random samples from the dataset of hotel reviews
-and then generates multiple decision trees. After which, it averages
-out the results from each decision tree. As before, the precision-recall (Figure~\ref{fig:prc-rf})
-and receiver operating characterstic curves (Figure~\ref{fig:roc-rf}) were plotted.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.95\textwidth]{./gfx/rq3/rndforst_prc.png}
-	\caption{Precision-recall curve for random forest classifier}
-	\label{fig:prc-rf}
-\end{figure}
-
-Figure~\ref{fig:prc-rf} reflects an average precision of $0.68$,
-faring less well compared to the logistic regression model.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.95\textwidth]{./gfx/rq3/rndforst_roc.png}
-	\caption{Receiver operating characteristic curve for random forest classifier}
-	\label{fig:roc-rf}
-\end{figure}
-
-In contrast, Figure~\ref{fig:roc-rf} shows that the area under
-the receiver operating characteristic curve is $0.90$, which means
-that the random forest classifier performs better at distinguishing
-true and false positive predictions than the logistic regression model.
-
-\section{Discussion}
+\section{Conclusion}
 
 \subsection{Summary}
 
@@ -447,15 +476,15 @@ On a larger scale, the sentiments of individual hotel reviews were quantified
 using SentiStrength, with positive reviews greatly outnumbering negative ones
 by a considerable margin.
 
-A logistic regression model and a random forest classifier were trained to
+Multiple classification models were trained to
 predict the sentiments of hotel reviews. Upon making predictions, the models
 were found to have moderately high average precisions and high rates of
-success in distinguishing false and true positive predictions. The logistic
-regression model performed better than the random forest classifier in precision,
-but the random forest classifier was more capable of distinguishing false and true
-positive predictions.
+success in distinguishing false and true positive predictions. This was
+in part due to the integration of class weights into the training process,
+which reduced model bias.
 
 \subsection{Limitations}
+
 Homographs---words that have the same spelling but different meanings---could
 not be distinguished during tokenisation (Section~\ref{sec:tokens}), resulting in
 slightly unreliable sentiment scores. For instance, the word \textit{lobby} was shown to
@@ -466,17 +495,11 @@ Furthermore, the data collected was limited only to English international hotel 
 A more complete analysis of hotel reviews would include tourists of different language
 backgrounds; hence, sentiment analysis would need to be conducted in more than one language.
 
-While a random forest classifier generally gives more diverse results via random
-selection of token frequencies, it fails to discover trends that would enable it to extrapolate
-values that fall outside the training data. Instead, it relies on the average of all the results
-of its decision trees instead, predicting a value always within the maximum and minimum sentiment scores.
-A review that carries an overly positive or negative sentiment would produce unreliable results.
-
-A logistic regression model, on the other hand, assumes that the tf--idf values of tokens
+A logistic regression model, used to determine the optimal class weights, assumes that the tf--idf values of tokens
 and the overall sentiment of a review are linearly related (because of the linear component $\beta_0 + \beta_1x_i$
 in Equation~\ref{eq:sigmoid}), which may hinder the accuracy of the predictions it makes.
 
-\subsection{Future Work}
+\subsection{Future work}
 
 Much can be done to extend this project, because of the relatively small scale on which this project
 was conducted. As above, sentiment analysis could be conducted in more than one language (besides English)
@@ -487,11 +510,11 @@ Furthermore, more prediction models could be constructed. This would create a la
 variation in the predictions made, enabling the precision of the models used in this project to be
 compared with those of other models to evaluate the model with the highest accuracy. Constructing a
 wider range of prediction models also allows for the possibility of more advanced techniques,
-including Naïve Bayes prediction models or recurrent neural networks, both of which are
+including recurrent neural networks, which are
 widely used in analysing sentiment from textual data. In particular, recurrent neural
 networks perform better at analysing tokens in context, avoiding the issue
 of unreliable sentiment scores described above.
 
-% ** bibliography **
 \printbibliography[heading=bibintoc]
+
 \end{document}

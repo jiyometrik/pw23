@@ -1,0 +1,128 @@
+\documentclass[11pt, a4paper]{pancake-article}
+
+\usepackage[margin=1.2in]{geometry}
+
+\usepackage{mathtools}
+
+\usepackage{booktabs, csvsimple}
+
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmathfont{TeX Gyre Termes Math}
+\setmainfont{TeX Gyre Termes}[Ligatures=TeX]
+\setsansfont{TeX Gyre Heros}[Ligatures=TeX]
+\setmonofont{DejaVu Sans Mono}[Ligatures=TeX]
+
+\usepackage{siunitx}
+\sisetup{mode=math}
+
+\title{Sorting sentiments of hotel reviews through machine learning: a summary}
+\author{Yap Hao Ming Darren \and Tan Jia He \and Fu Jinghang}
+\date{\scshape Singapore Mathematics Project Festival 2024}
+
+% start the document!
+\begin{document}
+
+\pagestyle{plain}
+
+\maketitle
+
+% ** abstract **
+\begin{abstract}
+	Hotels depend on tourists to survive. They gather consumer opinions via customer
+	reviews to improve their services. This project used sentiment analysis---the
+	process of determining the emotional tone of text---to quantify consumers'
+	opinions on hotels, and predicted the overall sentiment of hotel reviews.
+	International hotel reviews in English were split into individual words,
+	assigning each word a score based on its relative intensity. The sentiment
+	makeup of the review dataset was highlighted and the most frequent tokens were
+	identified. Two machine learning models---a logistic regression model and a random
+	forest classifier---were also constructed to predict the overall sentiment of a
+	review. It was shown that the models were capable of predicting the overall
+	sentiment of hotel reviews. This project highlights the possibility of using
+	sentiment analysis models to create applications that allow customers to better
+	understand the perceived quality of a hotel and potentially combat review fraud---the
+	the dishonest practice of manipulating false reviews to boost a hotel's ratings.
+\end{abstract}
+
+\section{Introduction}
+After the Singapore government relaxed travel restrictions due to COVID-19,
+there has been a recent increase in the number of tourists travelling in and out of Singapore.
+As such, hotels have seen a rise in the number of prospective tourists to be housed,
+and this may encourage an increase in the number of reviews hotels may receive.
+
+Today, it is common to use social networks, messengers, and review websites
+to receive data from customer opinions. This is especially true for hotels,
+where previous occupants may evaluate the hotel on several factors through their
+reviews---be it cleanliness, facilities, location and convenience, etc.
+These come in two forms---quantitative reviews (based on stars, diamonds,
+hearts, etc.) and qualitative reviews through text.
+
+However, quantitative reviews do not always paint the full picture of customers'
+opinions towards a certain hotel. Though it is certainly helpful to have a more
+objective rating system using numerical scores, eg. the Department of Tourism
+grading system in the Philippines, or the European Hotelstars Union system,
+these are given by customers subjectively and do not reflect the reasons for
+customers giving the rating. There is also evidence of manipulation of ratings
+by hotel management itself, where hotels may be compelled to forge positive or
+negative ratings to bias the overall rating.
+Therefore, we propose using sentiment analysis to extract customers' true
+feedback on hotels instead.
+
+\section{Objectives}
+The objectives of this research were as such:
+\begin{enumerate}
+	\item To run sentiment analysis on individual words and quantify them on a numerical scale
+	\item To run sentiment analysis on paragraphs and quantify them on a numerical scale
+	\item To use sentiment analysis on hotel reviews to determine consumers' overall opinions of hotels
+\end{enumerate}
+
+\section{Methods and Results}
+
+\subsection{Token-based sentiment analysis}\label{sec:tokens}
+It was found that the vast majority
+of tokens in the dataset held a positive sentiment  after a large number of neutral tokens were disregarded.
+The high number of neutral tokens can be attributed to nouns
+describing the hotel, like \textit{food}, \textit{hotel} and \textit{pool}.
+
+\subsection{Review-based sentiment analysis}\label{sec:reviews}
+
+The software SentiStrength was used to generate two scores for each review:
+It is also observed that a large proportion of reviews were overall positive (\qty{70}{\percent})
+and only a handful of negative reviews were present (\qty{13}{\percent}) in the dataset.
+Though neutral reviews may seem to make up a sizeable proportion of the reviews, this merely
+shows that the magnitude of the positive and negative sentiment scores is equal.
+
+\subsection{Predicting sentiment via token frequency}
+
+For each review, a feature vector was constructed, which contains how
+relevant each token in a review is in determining the sentiment of the review
+---the term frequency--inverse document frequencies of each token (Equation~\ref{eq:tf-idf}).
+
+\begin{equation}
+	\text{tfidf}\left(t, d, D\right) = \text{tf}\left(t, d\right)\log\frac{N}{1 + \left|\left\{d \in D : t\in d\right\}\right|}
+	\label{eq:tf-idf}
+\end{equation}
+
+where \(t\), \(d\) and \(D\) represent a token, a review and the collection of reviews we have. This function is vital
+in normalising textual inputs to numerical values that can be modelled mathematically.
+
+Since positive reivews greatly outnumbered negative ones within the dataset, a logistic regression model was used to
+determine optimal class weights for both the \textit{positive} and \textit{negative} classes. Its performance was then evaluated using its F1 score (Equation~\ref{eq:f1}), which measures both the relevance of the prediction models made and its sensitivity to false positive predictions.
+
+\begin{equation}
+	\frac{2 T_p}{2 T_p + F_p + F_n}
+	\label{eq:f1}
+\end{equation}
+
+A large variety of machine learning models were constructed
+to predict the sentiment polarity of a review (its positive or negative nature) given the aforementioned tf--idf vectors, with
+the class weights obtained taken into consideration. Their F1 scores were evaluated.
+
+It was shown that all constructed models performed well in all three metrics, being
+able to make true positive predictions much of the time, distinguish true and false
+positive predictions with great success and return relevant results. Notably, the KMeans
+model performs the worst out of all models: due to the unsupervised nature of the prediction
+model, the target class of each review (either negative or positive) was not revealed to it,
+leading it to make more incorrect predictions.
+\end{document}

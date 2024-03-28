@@ -11,7 +11,7 @@ import seaborn as sns
 
 sns.set_theme(
     context="talk", style="white"
-)  # , font="serif")
+)
 
 # open the sentistrength data file
 DATAPATH = os.path.join(

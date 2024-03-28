@@ -1,0 +1,58 @@
+\documentclass[12pt, a4paper]{pancake-article}
+
+\usepackage{mathtools}
+
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmathfont{TeX Gyre Termes Math}
+\setmainfont{TeX Gyre Termes}[Ligatures=TeX]
+\setsansfont{TeX Gyre Heros}[Ligatures=TeX]
+\setmonofont{DejaVu Sans Mono}[Ligatures=TeX]
+
+\usepackage{setspace}
+\onehalfspacing
+
+\usepackage{siunitx}
+\sisetup{mode=math}
+
+% colors!
+\usepackage[usenames, dvipsnames]{xcolor}
+\newcommand{\tint}[1]{{\color{accent}#1}}
+
+\usepackage{hyperref}
+\hypersetup{
+	hidelinks,
+	colorlinks,
+	breaklinks=true,
+	urlcolor=accent,
+	citecolor=accent,
+	linkcolor=accent,
+	bookmarksopen=false,
+	pdftitle={Sorting sentiments of hotel reviews through machine learning},
+	pdfauthor={Darren Yap},
+}
+
+\title{Sorting \tint{sentiments} of hotel reviews through \tint{machine learning}}
+\author{\tint{Yap} Hao Ming Darren \and \tint{Tan} Jia He \and \tint{Fu} Jinghang}
+\date{\scshape Singapore Mathematics Project Festival 2024}
+
+% start the document!
+\begin{document}
+
+\maketitle
+\begin{abstract}
+	Hotels depend on tourists to survive. They gather consumer opinions via customer
+	reviews to improve their services. This project used sentiment analysis---the
+	process of determining the emotional tone of text---to quantify consumers'
+	opinions on hotels, and predicted the overall sentiment of hotel reviews.
+	International hotel reviews in English were split into individual words,
+	assigning each word a score based on its relative intensity. The sentiment
+	makeup of the review dataset was highlighted and the most frequent tokens were
+	identified. Two machine learning models---a logistic regression model and a random
+	forest classifier---were also constructed to predict the overall sentiment of a
+	review. It was shown that the models were capable of predicting the overall
+	sentiment of hotel reviews. This project highlights the possibility of using
+	sentiment analysis models to create applications that allow customers to better
+	understand the perceived quality of a hotel and potentially combat review fraud---the
+	the dishonest practice of manipulating false reviews to boost a hotel's ratings.
+\end{abstract}
