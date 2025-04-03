@@ -7,9 +7,9 @@
 % Font
 \RequirePackage{fontspec}
 \RequirePackage{unicode-math}
-\setmathfont{STIX Two Math}
-\setmainfont{STIX Two Text}[Ligatures=TeX]
-\setsansfont{TeX Gyre Heros}[Ligatures=TeX]
+\setmainfont{libertinus serif}[Ligatures=TeX]
+\setmathfont{libertinus math}
+\setsansfont{libertinus sans}[Ligatures=TeX]
 \setmonofont{DejaVu Sans Mono}[Ligatures=TeX]
 
 %* Headings
@@ -19,9 +19,9 @@
 \PassOptionsToPackage{usenames, dvipsnames}{xcolor}
 \definecolor{accent}{RGB}{0, 0, 90}
 
-\titleformat{\section}[hang]{\normalfont\Large}{\color{accent}\thesection}{0.5em}{}
-\titleformat{\subsection}[hang]{\normalfont\large}{\color{accent}\thesubsection}{0.5em}{}
-\titleformat{\subsubsection}[hang]{\normalfont\normalsize}{\color{accent}\thesubsubsection}{0.5em}{\color{gray}}
+\titleformat{\section}[hang]{\normalfont\Large}{\color{accent}\bfseries\thesection}{0.5em}{}
+\titleformat{\subsection}[hang]{\normalfont\large}{\color{accent}\bfseries\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}[hang]{\normalfont\normalsize}{\color{accent}\bfseries\thesubsubsection}{0.5em}{\color{gray}}
 
 %* Header/footer
 \RequirePackage{emptypage}

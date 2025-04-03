@@ -381,11 +381,11 @@ A large variety of classification models were constructed to make predictions us
 dataset of hotel reviews. These include:
 
 \begin{itemize}
-  \item a \textit{random forest classifier} (RandomForestClassifier), which makes predictions based on the average of the results from multiple decision trees,
-  \item a regularised linear model with \textit{stochastic gradient descent} (SGDClassifier): the gradient of the loss function is estimated one review at a time and the model's learning rate is updated accordingly,
-  \item a $k$-\textit{nearest neighbours} algorithm (KNeighborsClassifier), which predicts the polarities of new reviews based on its proximity to other reviews' tf--idf vectors in vector space,
-  \item a \textit{naive Bayes classifier} (BernoulliNB), which uses the rule in Equation~\ref{eq:nb} to make predictions, and
-  \item $k$-\textit{means clustering} (KMeans), which unsupervisedly classifies tf--idf vectors into two classes such that each vector belongs to the cluster with the mean of that cluster being the closest to it.
+  \item a \textit{random forest classifier} (\texttt{RandomForestClassifier}), which makes predictions based on the average of the results from multiple decision trees,
+  \item a regularised linear model with \textit{stochastic gradient descent} (\texttt{SGDClassifier}): the gradient of the loss function is estimated one review at a time and the model's learning rate is updated accordingly,
+  \item a $k$-\textit{nearest neighbours} algorithm (\texttt{KNeighborsClassifier}), which predicts the polarities of new reviews based on its proximity to other reviews' tf--idf vectors in vector space,
+  \item a \textit{naive Bayes classifier} (\texttt{BernoulliNB}), which uses the rule in Equation~\ref{eq:nb} to make predictions, and
+  \item $K$-\textit{means clustering} (\texttt{KMeans}), which unsupervisedly classifies tf--idf vectors into two classes such that each vector belongs to the cluster with the mean of that cluster being the closest to it.
 \end{itemize}
 
 \begin{equation}
@@ -409,9 +409,7 @@ curve (AUROC) and their average precisions (Table~\ref{tab:metrics}).
 			f1=\fone,
 			auroc=\auroc,
 			averageprecision=\avgprecision
-		}{
-		\name          & \fone       & \auroc         & \averageprecision
-		}
+		}{\texttt{\name} & \fone & \auroc & \averageprecision}
 		\bottomrule
 	\end{tabular}
 \end{table}
