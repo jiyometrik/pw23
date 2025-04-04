@@ -1,16 +1,13 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{pancake-article}[2021/09/09 Annotated article class based on Pancake's annotated book class]
+\ProvidesClass{pancake-article}[2021/09/09 Annotated article class
+based on Pancake's annotated book class]
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions\relax
 \LoadClass{article}
 
 % Font
 \RequirePackage{fontspec}
-\RequirePackage{unicode-math}
-\setmainfont{libertinus serif}[Ligatures=TeX]
-\setmathfont{libertinus math}
-\setsansfont{libertinus sans}[Ligatures=TeX]
-\setmonofont{DejaVu Sans Mono}[Ligatures=TeX]
+% \RequirePackage{unicode-math}
 
 %* Headings
 \RequirePackage{titlesec}
@@ -19,9 +16,9 @@
 \PassOptionsToPackage{usenames, dvipsnames}{xcolor}
 \definecolor{accent}{RGB}{0, 0, 90}
 
-\titleformat{\section}[hang]{\normalfont\Large}{\color{accent}\bfseries\thesection}{0.5em}{}
-\titleformat{\subsection}[hang]{\normalfont\large}{\color{accent}\bfseries\thesubsection}{0.5em}{}
-\titleformat{\subsubsection}[hang]{\normalfont\normalsize}{\color{accent}\bfseries\thesubsubsection}{0.5em}{\color{gray}}
+\titleformat{\section}[hang]{\normalfont\Large}{\color{accent}\thesection}{0.5em}{}
+\titleformat{\subsection}[hang]{\itshape\large}{\color{accent}\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}[hang]{\itshape\normalsize}{\color{accent}\thesubsubsection}{0.5em}{\color{gray}}
 
 %* Header/footer
 \RequirePackage{emptypage}
@@ -38,10 +35,10 @@
 \fancyfoot[R]{\thepage}
 
 \fancypagestyle{plain}{
-	\fancyhf{}
-	\renewcommand{\headrulewidth}{0pt}
-	\renewcommand{\footrulewidth}{0pt}
-	\fancyfoot[LO, RE]{\thepage}
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+  \fancyfoot[LO, RE]{\thepage}
 }
 
 %* Side notes
@@ -52,7 +49,8 @@
 \setlength{\marginparsep}{0.5in}
 \setlength{\marginparpush}{0.5in}
 
-\newcommand{\smartragged}{\checkoddpage \ifoddpage\raggedright \else \raggedleft\fi}
+\newcommand{\smartragged}{\checkoddpage \ifoddpage\raggedright \else
+\raggedleft\fi}
 
 \providecommand{\marginaliasize}{\footnotesize}
 \DeclareCaptionFont{marginaliasize}{\marginaliasize}
@@ -66,7 +64,7 @@
 
 \makeatletter
 \newcommand{\ifdraft}[2][]{\ifdim\overfullrule>\z@
-		\expandafter#2\else\expandafter#1\fi}
+\expandafter#2\else\expandafter#1\fi}
 \makeatother
 \newcommand{\notetoself}[1]{\sidenote{\color{gray}\itshape#1}}
 
