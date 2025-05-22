@@ -8,6 +8,17 @@ based on Pancake's annotated book class]
 % Font
 \RequirePackage{fontspec}
 % \RequirePackage{unicode-math}
+\defaultfontfeatures{Scale=MatchLowercase}
+\RequirePackage[
+  math-style=TeX,
+  bold-style=upright,
+  sans-style=upright,
+  warnings-off={mathtools-colon,mathtools-overbracket}
+]{unicode-math}
+\setmainfont{cochineal}
+\setsansfont{ubuntu sans}
+\setmonofont{ubuntu mono}
+\setmathfont{erewhon math}
 
 %* Headings
 \RequirePackage{titlesec}
@@ -38,7 +49,7 @@ based on Pancake's annotated book class]
   \fancyhf{}
   \renewcommand{\headrulewidth}{0pt}
   \renewcommand{\footrulewidth}{0pt}
-  \fancyfoot[LO, RE]{\thepage}
+  \fancyfoot[R]{\thepage}
 }
 
 %* Side notes

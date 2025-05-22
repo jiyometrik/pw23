@@ -1,24 +1,12 @@
-\documentclass[11pt, a4paper]{pancake-article}
+\documentclass[12pt, a4paper, oneside]{pancake-article}
 
 \usepackage{mathtools}
-
-\defaultfontfeatures{Scale=MatchUppercase, Ligatures=TeX}
-\usepackage[
-  math-style=TeX,
-  bold-style=upright,
-  sans-style=upright,
-  warnings-off={mathtools-colon,mathtools-overbracket}
-]{unicode-math}
-\setmainfont{tex gyre termes}
-\setmathfont{tex gyre termes math}
-\setsansfont{tex gyre heros}
-\setmonofont{tex gyre cursor}
 
 \usepackage{graphicx}
 \usepackage{booktabs, csvsimple}
 
 \usepackage[
-  style=apa
+  style=nature
 ]{biblatex}
 \addbibresource{Bibliography.bib}
 
@@ -116,7 +104,7 @@ these are given by customers subjectively and do not reflect the reasons for
 customers giving the rating. There is also evidence of manipulation of ratings
 by hotel management itself, where hotels may be compelled to forge positive or
 negative ratings to bias the overall rating. This made up \qty{2.1}{\percent}
-of the 66 million reviews submitted to TripAdvisor in 2019 (\cite{tripadvisor}).
+of the 66 million reviews submitted to TripAdvisor in 2019 \cite{tripadvisor}.
 Therefore, we propose using sentiment analysis to extract customers' true
 feedback on hotels instead.
 
@@ -199,7 +187,7 @@ quality and sustainability decision-making.
 
 SentiStrength, a tool for lexical sentiment analysis---sentiment analysis
 done on short, low quality texts---was used to study emotions expressed
-in GitHub commit comments of different open-source projects (\cite{github}).
+in GitHub commit comments of different open-source projects \cite{github}.
 Each word was assigned a score, then the net score for each comment
 was calculated.
 Eacch comment was split into snippets using SentiStrength, then
@@ -219,13 +207,13 @@ word a sentiment, then calculates a sentence's total sentiment score, can
 be used, due to its simplicity in implementation, and the availability of
 many open-source sentiment lexicons. In addition, sentiment categorisation
 using lexicon-based sentiment analysis makes accurate predictions upwards of
-\qty{70}{\percent} of the time (\cite{khoo}). SentiStrength would
+\qty{70}{\percent} of the time \cite{khoo}. SentiStrength would
 also be useful for
 detecting sentiment from hotel reviews which are usually short in length quickly
 and efficiently, facilitating the process of extracting sentiment from tourists'
 reviews of hotels. Using SentiStrength for sentiment calculation is also
 rather accurate, generating both positive and negative sentiments with a more
-than \qty{60}{\percent} accuracy (\cite{thelwall}). Therefore, the
+than \qty{60}{\percent} accuracy \cite{thelwall}. Therefore, the
 strategies listed
 above could be adopted or emulated on a smaller scale for this project.
 
@@ -442,9 +430,9 @@ $w_0$ and $w_1$
 to be the class weights for the negative ($0$) and positive ($1$) review classes
 respectively.
 
-It was determined that $w_1 \approx 0.44$ was the most optimal
+It was determined that $w_1 \approx 0.43$ was the most optimal
 positive class weight (Figure~\ref{fig:f1-variation}).
-$w_0$ was set to $1 - w_1 \approx 0.56$.
+$w_0$ was set to $1 - w_1 \approx 0.57$.
 
 \begin{figure}
   \begin{center}
@@ -505,8 +493,8 @@ dataset of hotel reviews. These include:
 \end{itemize}
 
 \begin{equation}
-  P\left(x_i|y \right) = P\left(x_i = 1 | y\right)x_i + \left(1 -
-  x_i\right)\left[1 - P\left(x_i=1|y\right)\right]
+  P\left(x_i \mid y \right) = P\left(x_i = 1 \mid y\right)x_i + \left(1 -
+  x_i\right)\left[1 - P\left(x_i=1\mid y\right)\right]
   \label{eq:nb}
 \end{equation}
 
@@ -516,21 +504,23 @@ curve (AUROC) and their average precisions (Table~\ref{tab:metrics}).
 
 \begin{table}
   \centering
-  \caption{Performance metrics for classification models}
   \label{tab:metrics}
   \begin{tabular}{lrrr}
     \toprule
-    \textbf{Model} & $F_1$ & AUROC & Avg. precision \\
+    \textbf{Model} & $F_1$ & AUROC & Ave. precision \\
     \midrule
     \csvreader[head to column names, late after
-    line=\\]{../results/model_metrics_27032024.csv}{
+    line=\\]{../results/model_metrics_07042025.csv}{
       name=\name,
       f1=\fone,
       auroc=\auroc,
       averageprecision=\avgprecision
-    }{\texttt{\name} & \fone & \auroc & \averageprecision}
+    }{\texttt{\name} & \num[round-mode=places,round-precision=3]{\fone} &
+      \num[round-mode=places,round-precision=3]{\auroc} &
+    \num[round-mode=places,round-precision=3]{\averageprecision}}
     \bottomrule
   \end{tabular}
+  \caption{Performance metrics for classification models}
 \end{table}
 
 It is shown that all constructed models performed well in all three

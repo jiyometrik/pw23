@@ -1,0 +1,7 @@
+name,f1,auroc,averageprecision
+LogisticRegression,0.915,0.836,0.96
+RandomForestClassifier,0.945,0.579,0.9
+SGDClassifier,0.95,0.649,0.916
+KNeighborsClassifier,0.946,0.639,0.913
+BernoulliNB,0.936,0.712,0.93
+KMeans,0.746,0.353,0.855
